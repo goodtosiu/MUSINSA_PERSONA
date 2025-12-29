@@ -1,0 +1,312 @@
+/* 1. 전체 초기화 및 기본 블랙 테마 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  background-color: #000 !important;
+  color: #fff;
+  font-family: 'Pretendard', sans-serif;
+  overflow-x: hidden;
+}
+
+/* 2. 전체 앱 컨테이너 */
+.App {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+}
+
+/* 3. 로고 및 메인 페이지 텍스트 */
+.logo { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; }
+.logo .x { color: #eb003b; }
+.subtitle { color: #888; font-size: 1.1rem; margin-bottom: 40px; }
+
+/* 4. 버튼 스타일 */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+.start-btn {
+  background: #fff; color: #000; border: none;
+  padding: 15px 50px; font-size: 1rem; font-weight: bold;
+  cursor: pointer; transition: 0.3s;
+}
+.start-btn:hover { background: #eb003b; color: #fff; }
+
+.secondary-btn {
+  background: transparent;
+  color: #666;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+/* 5. 질문지 및 진행바 */
+.question-container { 
+  width: 95%; 
+  max-width: 700px; 
+  text-align: center; 
+  margin: 0 auto;
+  padding: 40px 20px
+}
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #222;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress { height: 100%; background: #fff; transition: 0.3s; }
+
+.ans-btn {
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 25px 30px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.ans-btn:hover {
+  border-color: #fff;
+  background: #222;
+  transform: translateY(-2px);
+}
+
+.question-text {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.4;
+  margin: 60px 0 80px 0;
+  word-break: keep-all;
+}
+
+.answer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.q-count {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* 6. 결과 페이지 */
+.result-title { font-size: 3.5rem; margin: 20px 0; font-weight: 800; }
+
+/* 7. 콜라주 페이지 (개선된 가시성 버전) */
+.collage-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background:  #000;
+  align-items: center;
+}
+
+.canvas-area {
+  width: 46vw; 
+  height: 92vh;       
+  margin: 4vh 2vw;         
+  position: relative;
+  background-color: #f2f2f2; 
+  border-radius: 20px;   
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  border: none;
+}
+
+.canvas-hint {
+  position: absolute; 
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  color: #888;
+  pointer-events: none;
+  font-size: 0.9rem; 
+  text-align: center;
+}
+
+/* 상품 리스트 영역을 버튼 위까지만 차지하도록 조정 */
+.category-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 0; 
+  padding-bottom: 20px;
+}
+
+/* 사이드바 가시성 강화 */
+.product-sidebar {
+  width: 50vw;
+  height: 100vh;
+  padding: 30px 30px 0 30px;
+  background: #000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 25px;
+  color: #fff;
+  border-left: 5px solid #eb003b;
+  padding-left: 15px;
+}
+
+/* 카테고리명 큼직하게 수정 */
+.category-name {
+  font-size: 1.4rem; 
+  font-weight: 800;
+  color: #fff;
+  margin: 30px 0 15px 0;
+}
+
+.img-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: #111; /* 배경을 어둡게 변경 */
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+
+/* 기준 상품 가시성 극대화 */
+.target-highlight {
+  border: 3px solid #eb003b !important; /* 무신사 레드 테두리 */
+  box-shadow: 0 0 15px rgba(235, 0, 59, 0.4);
+}
+
+.target-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #eb003b;
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  font-weight: bold;
+  z-index: 5;
+  border-bottom-right-radius: 6px;
+}
+
+.draggable-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: grab;
+  transition: 0.2s;
+}
+.draggable-img:hover { transform: scale(1.05); }
+
+/* 캔버스 내 이미지 스타일 */
+.placed-img {
+  position: absolute;
+  width: 150px;
+  cursor: grab;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  transition: outline 0.1s;
+}
+.placed-img:hover {
+  outline: 2px solid #eb003b;
+  outline-offset: 2px;
+}
+
+/* 하단 버튼 그룹 가시성 및 레이아웃 복구 */
+.sidebar-action-group {
+  flex-shrink: 0;
+  margin-left: -30px;
+  margin-right: -30px;
+  padding: 20px 30px 30px 30px;
+  background: #000; 
+  border-top: 1px solid #222;
+  z-index: 100;
+}
+
+.checkout-btn {
+  width: 100%;
+  background-color: #eb003b !important;
+  color: #fff !important;
+  border: none;
+  padding: 18px !important;
+  font-weight: 900;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.checkout-btn:hover { background-color: #ff1a53; transform: translateY(-2px); }
+
+.sub-btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  flex: 1;
+  background-color: #1a1a1a !important;
+  color: #fff !important;
+  border: 1px solid #333 !important;
+  padding: 14px !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.action-btn:hover {
+  background-color: #252525;
+  color: #fff;
+  border-color: #555;
+}
+
+/* 애니메이션 */
+.fade-in { animation: fadeIn 0.6s forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.back-btn {
+  background: transparent;
+  color: #444;
+  border: 1px solid #222;
+  margin-top: 30px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+.back-btn:hover { color: #fff; border-color: #555; }
+
+.persona-desc {
+  color: #aaa;      
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto 40px;
+  word-break: keep-all;
+}

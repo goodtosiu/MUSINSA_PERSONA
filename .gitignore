@@ -1,0 +1,6 @@
+musinsa_web/
+*.png
+*.npz
+*.jpg
+*.jpeg
+*.pkl
