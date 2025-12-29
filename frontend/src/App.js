@@ -25,7 +25,7 @@ function App() {
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/products');
+      const res = await fetch('http://127.0.0.1:5000/api/products');
       const data = await res.json();
       setRecommendedProducts(data); // { 상의: [], 바지: [], ... } 형태 저장
       setStep('collage');
