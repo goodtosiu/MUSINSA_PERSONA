@@ -14,30 +14,30 @@ CATEGORIES = ["상의", "바지", "아우터", "신발"]
 
 @app.route('/api/products', methods=['GET'])
 def get_random_recommendations():
-    final_result = {"targets": {}}
+    # final_result = {"targets": {}}
     
-    for cat in CATEGORIES:
-        cat_path = os.path.join(BASE_CACHE_DIR, cat)
+    # for cat in CATEGORIES:
+    #     cat_path = os.path.join(BASE_CACHE_DIR, cat)
         
-        # 해당 카테고리 폴더의 파일 리스트 읽기
-        if not os.path.exists(cat_path):
-            os.makedirs(cat_path, exist_ok=True)
-            return jsonify({"error": f"{cat} 폴더에 파일이 없습니다."}), 500
+    #     # 해당 카테고리 폴더의 파일 리스트 읽기
+    #     if not os.path.exists(cat_path):
+    #         os.makedirs(cat_path, exist_ok=True)
+    #         return jsonify({"error": f"{cat} 폴더에 파일이 없습니다."}), 500
             
-        files = [f for f in os.listdir(cat_path) if f.endswith('.png')]
+    #     files = [f for f in os.listdir(cat_path) if f.endswith('.png')]
         
-        if not files:
-            return jsonify({"error": f"{cat} 폴더가 비어있습니다."}), 500
+    #     if not files:
+    #         return jsonify({"error": f"{cat} 폴더가 비어있습니다."}), 500
 
-        # 랜덤하게 타겟 1개, 추천 5개 뽑기 (중복 허용)
-        # 프론트엔드에 '파일명' 자체를 넘겨버립니다.
-        target_file = random.choice(files)
-        rec_files = random.sample(files, min(len(files), 6))
-        if target_file in rec_files: rec_files.remove(target_file)
+    #     # 랜덤하게 타겟 1개, 추천 5개 뽑기 (중복 허용)
+    #     # 프론트엔드에 '파일명' 자체를 넘겨버립니다.
+    #     target_file = random.choice(files)
+    #     rec_files = random.sample(files, min(len(files), 6))
+    #     if target_file in rec_files: rec_files.remove(target_file)
         
-        # 프론트엔드가 이해할 수 있게 경로 형식으로 전달
-        final_result["targets"][cat] = f"{cat}/{target_file}"
-        final_result[cat] = [f"{cat}/{f}" for f in rec_files[:5]]
+    #     # 프론트엔드가 이해할 수 있게 경로 형식으로 전달
+    #     final_result["targets"][cat] = f"{cat}/{target_file}"
+    #     final_result[cat] = [f"{cat}/{f}" for f in rec_files[:5]]
 
     return jsonify(final_result)
 
