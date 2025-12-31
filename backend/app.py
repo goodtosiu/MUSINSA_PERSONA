@@ -96,6 +96,18 @@ def get_recommendations():
             
             if not target_ids: return jsonify({"error": "Invalid Outfit ID"}), 404
 
+        # -----------------------------------------------------------------
+        # [✅ 확인용 로그 추가] 실제 어떤 상품들이 기준이 되었는지 이름 출력
+        # -----------------------------------------------------------------
+        print(f"   🎯 [기준(Target) 상품 목록] Outfit {selected_outfit}번 구성:")
+        target_indices_check = np.where(np.isin(master_data['ids'], target_ids))[0]
+        for t_idx in target_indices_check:
+            t_name = master_data['names'][t_idx]
+            t_cat = master_data['cats'][t_idx]
+            print(f"      - [{t_cat}] {t_name}")
+        print("   --------------------------------------------------")
+        # -----------------------------------------------------------------
+
         # [STEP 2] 타겟 아이템 매핑
         target_indices = np.where(np.isin(master_data['ids'], target_ids))[0]
         target_item_map = {}
