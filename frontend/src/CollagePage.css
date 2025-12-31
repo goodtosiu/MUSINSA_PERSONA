@@ -8,7 +8,9 @@
 
 /* 왼쪽 캔버스 영역 (고정 비율) */
 .left-canvas-area {
-  flex: 0 0 35%; 
+  /* flex: 0 0 35%;     <-- 삭제 */
+  width: 450px;         /* 캔버스(400px)보다 조금 더 여유 있게 고정 */
+  flex-shrink: 0;       /* 주변 요소가 밀어도 줄어들지 않음 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,13 +20,14 @@
 }
 
 .collage-canvas.white-bg {
-  width: 100%;
-  max-width: 400px;
-  height: 600px;
+  width: 400px;         /* 확실하게 400px로 고정 */
+  height: 600px;        /* 높이도 고정 (이미 되어 있음) */
   background: #fff;
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  /* [추가] 혹시 모를 축소 방지 */
+  flex-shrink: 0;
 }
 
 .canvas-item {
