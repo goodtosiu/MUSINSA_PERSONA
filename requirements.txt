@@ -1,0 +1,12 @@
+flask
+flask-cors
+mysql-connector-python
+python-dotenv
+numpy
+rembg
+pillow
+requests
+pandas
+scikit-learn
+axios
+onnxruntime
