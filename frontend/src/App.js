@@ -9,8 +9,12 @@ function App() {
   const [scores, setScores] = useState(Object.fromEntries(personas.map(p => [p, 0])));
   const [history, setHistory] = useState([]);
   const [result, setResult] = useState("");
-  const [recommendedProducts, setRecommendedProducts] = useState(null); // 서버에서 받은 데이터 저장
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  
+  // [수정] 서버 데이터 상태 관리
+  const [recommendedProducts, setRecommendedProducts] = useState(null); 
+  const [currentOutfitId, setCurrentOutfitId] = useState(null); // 셔플을 위한 Outfit ID 저장
+  
+  const [isLoading, setIsLoading] = useState(false);
 
   // 퀴즈 시작 핸들러
   const handleStart = () => {
@@ -19,16 +23,26 @@ function App() {
     setScores(Object.fromEntries(personas.map(p => [p, 0])));
     setHistory([]);
     setRecommendedProducts(null);
+    setCurrentOutfitId(null); // 초기화
   };
 
-  // Flask에서 추천 데이터 가져오는 함수
+  // [수정] Flask에서 추천 데이터 가져오는 함수
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/products');
+      // 1. 결과 페르소나를 쿼리 스트링으로 전달
+      const res = await fetch(`http://127.0.0.1:5000/api/products?persona=${result}`);
       const data = await res.json();
-      setRecommendedProducts(data); // { 상의: [], 바지: [], ... } 형태 저장
-      setStep('collage');
+
+      // 2. 변경된 데이터 구조 처리 ({ current_outfit_id, items })
+      if (data.items) {
+        setRecommendedProducts(data.items); // 상품 리스트 저장
+        setCurrentOutfitId(data.current_outfit_id); // 셔플용 ID 저장
+        setStep('collage');
+      } else {
+        alert("추천 상품을 불러오는데 문제가 발생했습니다.");
+      }
+
     } catch (err) {
       console.error("Flask 통신 에러:", err);
       alert("서버 연결에 실패했습니다. Flask 서버가 켜져 있는지 확인해주세요.");
@@ -111,7 +125,8 @@ function App() {
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
-          products={recommendedProducts} // Flask에서 받은 데이터 직접 전달
+          products={recommendedProducts} 
+          currentOutfitId={currentOutfitId} // [추가] 셔플을 위해 ID 전달
           onBackToMain={() => setStep('main')}
         />
       )}
