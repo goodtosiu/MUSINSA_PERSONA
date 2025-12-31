@@ -8,3 +8,4 @@ pillow
 requests
 pandas
 scikit-learn
+axios
