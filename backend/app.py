@@ -2,6 +2,9 @@ import os
 import random
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
+from dotenv import load_dotenv
+import pymysql
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -11,6 +14,46 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 BASE_CACHE_DIR = os.path.join(current_dir, 'static', 'processed_images')
 
 CATEGORIES = ["상의", "바지", "아우터", "신발"]
+
+@app.route('/api/', methods=['GET'])
+def load_data():
+    # 1. DB 연결 설정
+    db_config = {
+        "host": os.getenv('DB_HOST'),
+        "user": os.getenv('DB_USER'),
+        "password": os.getenv('DB_PASSWORD'),
+        "database": os.getenv('DB_NAME'),
+        "port": 3306,
+        "charset": "utf8mb4"
+    }
+
+    try:
+        # 2. 커넥션 생성
+        conn = pymysql.connect(**db_config)
+
+        # 3. 쿼리 작성
+        # 주의: 임베딩(BLOB)이 포함된 경우, 필요한 컬럼만 명시하는 것이 좋습니다.
+        sql = """
+            SELECT p.product_id, p.product_name, p.
+            FROM product p
+            JOIN brand b 
+            ON p.brand_id= b.brand_id
+            JOIN category c 
+            ON p.category_id = c.category_id
+        """
+
+        # 4. pandas로 쿼리 실행 및 DataFrame 생성
+        # con 인자에 pymysql connection 객체를 넣으면 됩니다.
+        df = pd.read_sql(sql, con=conn)
+
+        print("데이터 로드 성공!")
+        print(df.head())
+
+    finally:
+        # 5. 연결 종료 (필수)
+        conn.close()
+
+
 
 @app.route('/api/products', methods=['GET'])
 def get_random_recommendations():
