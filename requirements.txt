@@ -1,5 +1,10 @@
 flask
-flask_cors
-dotenv
-pymysql
+flask-cors
+mysql-connector-python
+python-dotenv
+numpy
+rembg
+pillow
+requests
 pandas
+scikit-learn
