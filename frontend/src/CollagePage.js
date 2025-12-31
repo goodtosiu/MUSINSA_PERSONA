@@ -149,7 +149,7 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain }) => {
             <button className="btn-secondary" onClick={onBackToMain}>메인으로</button>
             <button className="btn-secondary" onClick={() => setSelectedItems([])}>캔버스 초기화</button>
           </div>
-          <p className="instruction">클릭시 앞으로 이동 / 드래그로 배치 / 휠 크기 조절 / 우클릭 삭제</p>
+          <p className="instruction"> 드래그: 배치 / 휠: 크기 조절 / 우클릭: 삭제</p>
         </div>
 
         <div 

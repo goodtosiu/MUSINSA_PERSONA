@@ -52,36 +52,37 @@ db_url = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD
 engine = create_engine(db_url)
 
 # ---------------------------------------------------------
-# [기능] 누끼 따기 함수
+# [기능] 누끼 따기 및 저장 함수
 # ---------------------------------------------------------
 def process_and_save_image(image_url, save_path):
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(image_url, headers=headers, timeout=10)
+        
         if response.status_code == 200:
             input_image = Image.open(BytesIO(response.content)).convert("RGBA")
             output_image = remove(input_image)
             output_image.save(save_path, format="PNG")
             return True
-        return False
-    except:
+        else:
+            return False
+    except Exception as e:
+        print(f"   ⚠️ 누끼 에러: {e}")
         return False
 
 # ---------------------------------------------------------
-# [API] 추천 상품 반환 (최적화 적용)
+# [API] 추천 상품 반환
 # ---------------------------------------------------------
 @app.route('/api/products', methods=['GET'])
 def get_recommendations():
     persona = request.args.get('persona', '아메카지')
     fixed_outfit_id = request.args.get('outfit_id')
-    
-    # [수정 1] 특정 카테고리만 요청했는지 확인
-    target_category_filter = request.args.get('category') 
+    target_category_filter = request.args.get('category')
     
     if not master_data: return jsonify({"error": "Server data not loaded"}), 500
 
     try:
-        # [STEP 1] Outfit ID 결정
+        # [STEP 1] Outfit ID 결정 및 타겟 아이템 확보
         with engine.connect() as conn:
             if fixed_outfit_id:
                 selected_outfit = int(fixed_outfit_id)
@@ -92,43 +93,65 @@ def get_recommendations():
                 selected_outfit = int(np.random.choice(outfits_df['outfit'].tolist()))
                 print(f"\n🆕 [신규 선택] Outfit ID: {selected_outfit}")
 
-            # 타겟 상품 ID 추출
             item_query = "SELECT product_id FROM persona_item WHERE persona = %s AND outfit = %s"
             target_ids = pd.read_sql(item_query, conn, params=(persona, selected_outfit))['product_id'].tolist()
             
             if not target_ids: return jsonify({"error": "Invalid Outfit ID"}), 404
 
-        # [STEP 2] 타겟 분석
-        target_mask = np.isin(master_data['ids'], target_ids)
-        target_categories = set(master_data['cats'][target_mask]) 
+        # -----------------------------------------------------------------
+        # [✅ 확인용 로그 추가] 실제 어떤 상품들이 기준이 되었는지 이름 출력
+        # -----------------------------------------------------------------
+        print(f"   🎯 [기준(Target) 상품 목록] Outfit {selected_outfit}번 구성:")
+        target_indices_check = np.where(np.isin(master_data['ids'], target_ids))[0]
+        for t_idx in target_indices_check:
+            t_name = master_data['names'][t_idx]
+            t_cat = master_data['cats'][t_idx]
+            print(f"      - [{t_cat}] {t_name}")
+        print("   --------------------------------------------------")
+        # -----------------------------------------------------------------
 
-        t_vecs = {k: np.mean(master_data[f'{k}_vecs'][target_mask], axis=0) for k in ['name', 'brand', 'img', 'cat']}
-        sims = {k: master_data[f'{k}_vecs'] @ v for k, v in t_vecs.items()}
-        
-        final_scores = (sims['name']*0.3) + (sims['brand']*0.3) + (sims['img']*0.3) + (sims['cat']*0.1)
+        # [STEP 2] 타겟 아이템 매핑
+        target_indices = np.where(np.isin(master_data['ids'], target_ids))[0]
+        target_item_map = {}
+        for idx in target_indices:
+            cat_name = master_data['cats'][idx]
+            target_item_map[cat_name] = idx
 
-        # [STEP 3] 결과 추출
         CATEGORY_MAP = {"outer": "아우터", "top": "상의", "bottom": "바지", "shoes": "신발", "acc": "액세서리"}
         final_response = { "current_outfit_id": selected_outfit, "items": {} }
         
-        # 로그 헤더
         if not target_category_filter:
             print(f"\n📊 [점수 로그] 요청 페르소나: {persona} (Outfit {selected_outfit})")
-        else:
-            print(f"\n🔄 [부분 셔플] 카테고리: {target_category_filter} (Outfit {selected_outfit})")
 
         for eng_key, kor_val in CATEGORY_MAP.items():
             
-            # [수정 2] 셔플 시: 요청된 카테고리가 아니면 건너뜀 (성능 최적화 핵심)
-            if target_category_filter and target_category_filter != eng_key:
-                continue
+            # 부분 셔플 최적화
+            if target_category_filter and target_category_filter != eng_key: continue
 
-            # 1. 빈 카테고리 처리
-            if kor_val not in target_categories:
+            # 해당 코디에 없는 카테고리는 패스
+            if kor_val not in target_item_map:
                 final_response["items"][eng_key] = [] 
                 continue
 
-            # 2. 필터링 및 상위 100개 추출
+            # ---------------------------------------------------------------------
+            # [유사도 계산] 1:1 매칭 & 요청하신 가중치 적용
+            # ---------------------------------------------------------------------
+            target_idx = target_item_map[kor_val]
+
+            t_name = master_data['name_vecs'][target_idx]
+            t_brand = master_data['brand_vecs'][target_idx]
+            t_img = master_data['img_vecs'][target_idx]
+            t_cat = master_data['cat_vecs'][target_idx]
+
+            sim_name = master_data['name_vecs'] @ t_name
+            sim_brand = master_data['brand_vecs'] @ t_brand
+            sim_img = master_data['img_vecs'] @ t_img
+            sim_cat = master_data['cat_vecs'] @ t_cat
+
+            # 가중치: 이미지(0.6) + 이름(0.1) + 브랜드(0.1) + 카테고리(0.1)
+            final_scores = (sim_name * 0.1) + (sim_brand * 0.1) + (sim_img * 0.6) + (sim_cat * 0.1)
+
+            # 필터링
             cat_mask = (master_data['cats'] == kor_val)
             cat_scores = final_scores[cat_mask]
             
@@ -138,13 +161,11 @@ def get_recommendations():
 
             cat_real_indices = np.where(cat_mask)[0]
             sorted_indices = np.argsort(cat_scores)[::-1][:100]
-            
-            # 3. 셔플 (랜덤 5개)
             selected_local = np.random.choice(sorted_indices, min(5, len(sorted_indices)), replace=False)
             
             items_list = []
             
-            print(f"   📂 [{kor_val}] 이미지 처리 및 점수:")
+            print(f"   📂 [{kor_val}] 추천 점수 (가중치: Img 0.6 / 나머지 0.1)")
             
             for loc_idx in selected_local:
                 original_idx = cat_real_indices[loc_idx]
@@ -152,14 +173,17 @@ def get_recommendations():
                 p_name = str(master_data['names'][original_idx])
                 p_img_origin = str(master_data['imgs'][original_idx])
                 
-                # 점수 로그
+                # 로그 출력
                 s_total = final_scores[original_idx]
-                s_n = sims['name'][original_idx]
-                s_b = sims['brand'][original_idx]
-                s_i = sims['img'][original_idx]
-                print(f"      👉 [{p_name[:10]}..] 총점:{s_total:.3f} (N:{s_n:.2f} B:{s_b:.2f} I:{s_i:.2f})")
+                s_n = sim_name[original_idx]
+                s_b = sim_brand[original_idx]
+                s_i = sim_img[original_idx]
+                s_c = sim_cat[original_idx]
+                print(f"      👉 [{p_name[:10]}..] 총점:{s_total:.3f} (Img:{s_i:.2f} B:{s_b:.2f} N:{s_n:.2f} C:{s_c:.2f})")
 
-                # 누끼 처리 로직
+                # ==========================================================
+                # [수정됨] 누끼 처리: 조건 없이 파일 없으면 무조건 생성!
+                # ==========================================================
                 processed_filename = f"nobg_{p_id}.png"
                 processed_file_path = os.path.join(PROCESSED_DIR, processed_filename)
                 
@@ -167,17 +191,18 @@ def get_recommendations():
                     final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
                     is_processed = True
                 else:
-                    print(f"         ✂️ [누끼 생성] {p_id} 변환 중...", end="")
+                    # 🚀 셔플 여부 관계없이 무조건 실행
+                    print(f"         ✂️ [누끼] {p_id}...", end="")
                     success = process_and_save_image(p_img_origin, processed_file_path)
-                    
                     if success:
-                        print(" 성공!")
+                        print(" 완료")
                         final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
                         is_processed = True
                     else:
-                        print(" 실패 (원본 사용)")
+                        print(" 실패")
                         final_img_url = p_img_origin
                         is_processed = False
+                # ==========================================================
 
                 items_list.append({
                     "product_id": p_id,
