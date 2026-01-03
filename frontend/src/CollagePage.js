@@ -14,7 +14,7 @@ function CollagePage({ result, products, onBackToMain }) {
       item.id === id ? { ...item, scale: Math.max(0.2, item.scale + scaleAmount) } : item
     ));
   };
- 
+
   // 드래그 시작 핸들러
   const onDragStart = (e, imgUrl, moveId = null) => {
     e.dataTransfer.setData("imgUrl", imgUrl);
@@ -23,7 +23,7 @@ function CollagePage({ result, products, onBackToMain }) {
     img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     e.dataTransfer.setDragImage(img, 0, 0);
   };
- 
+
   // 드롭 핸들러
   const onDrop = (e) => {
     e.preventDefault();
@@ -53,43 +53,44 @@ function CollagePage({ result, products, onBackToMain }) {
 
   return (
     <div className="collage-container">
-      {/* 캔버스 영역: CSS에서 설정한 클래스 적용 */}
-      <div
-        className="canvas-area"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={onDrop}
-      >
-        <div className="canvas-hint">
-         {placedItems.length === 0 && (
-            <>
-              이미지를 드래그하여 코디해보세요<br/>
-              (휠: 크기조절, 우클릭: 삭제)
-            </>
-          )}
-        </div>
+      <div className="canvas-wrapper">
+        {/* 1. 힌트를 캔버스 밖(위)으로 추출 */}
+        {placedItems.length === 0 && (
+          <div className="canvas-hint">
+            이미지를 드래그하여 코디해보세요<br/>
+            (휠: 크기조절, 우클릭: 삭제)
+          </div>
+        )}
 
-        {placedItems.map((item) => (
-          <img
-            key={item.id}
-            src={`${FLASK_URL}/api/remove-bg?url=${encodeURIComponent(item.url)}`}
-            alt="placed"
-            className="placed-img"
-            style={{
-              left: `${item.x}px`,
-              top: `${item.y}px`,
-              transform: `translate(-50%, -50%) scale(${item.scale})`,
-              cursor: 'move',
-              position: 'absolute'
-            }}
-            draggable
-            onDragStart={(e) => onDragStart(e, item.url, item.id)}
-            onWheel={(e) => handleWheel(e, item.id)}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              setPlacedItems(prev => prev.filter(i => i.id !== item.id));
-            }}
-          />
-        ))}
+        {/* 2. 실제 캔버스 영역 */}
+        <div
+          className="canvas-area"
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={onDrop}
+        >
+          {placedItems.map((item) => (
+            <img
+              key={item.id}
+              src={`${FLASK_URL}/api/remove-bg?url=${encodeURIComponent(item.url)}`}
+              alt="placed"
+              className="placed-img"
+              style={{
+                left: `${item.x}px`,
+                top: `${item.y}px`,
+                transform: `translate(-50%, -50%) scale(${item.scale})`,
+                cursor: 'move',
+                position: 'absolute'
+              }}
+              draggable
+              onDragStart={(e) => onDragStart(e, item.url, item.id)}
+              onWheel={(e) => handleWheel(e, item.id)}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                setPlacedItems(prev => prev.filter(i => i.id !== item.id));
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       {/* 사이드바 영역: 이미지와 동일한 레이아웃으로 수정 */}
