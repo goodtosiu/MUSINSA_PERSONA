@@ -34,7 +34,7 @@ body, html {
 
 /* 3-2. 메인 큰 제목 */
 .main-title { 
-  font-size: 5.5rem; 
+  font-size: 5.0rem; 
   font-weight: 800; 
   margin-bottom: 40px; 
   color: #fff; 
@@ -50,6 +50,7 @@ body, html {
   color: #fff; 
   text-align: center;    /* 설명글도 중앙으로 */
   width: 100%;
+  margin-top: -30px;      /* 위로 살짝 올려서 배치 */
 }
 
 /* 3-4. 설명 안의 강조 문구 */
@@ -58,6 +59,7 @@ body, html {
   margin-top: 5px; 
   font-weight: bold; 
   text-align: center;    /* strong 태그도 중앙 정렬 확인 */
+  margin-top: -1px;      /* 위로 살짝 올려서 배치 */
 }
 
 /* 4. 버튼 스타일 */
@@ -80,6 +82,7 @@ body, html {
   border-radius: 4px; /* 살짝 들어간 라운드 값 */
   display: block;       /* 한 줄을 차지하는 박스 모델로 변경 */
   margin: 0 auto;      /* 상하는 0, 좌우는 자동으로 여백을 주어 정중앙 배치 */
+  margin-top: -30px;  /* 위로 살짝 올려서 배치 */
 }
 .start-btn:hover { 
   background: #e0e0e0; /* 마우스 올렸을 때 살짝 어두워지는 효과 */
@@ -94,6 +97,7 @@ body, html {
   text-decoration: underline;
   font-size: 1rem;
   transition: 0.3s;
+  transform: translateX(-5px);
 }
 
 /* 5. 질문지 및 진행바 */
@@ -167,10 +171,11 @@ body, html {
 }
 
 /* 8. 왼쪽 캔버스 영역 (50%) */
+/* 캔버스와 힌트를 감싸는 부모 */
 .canvas-wrapper {
-  flex: 1;            /* 공간을 1만큼 차지 */
-  width: 50%;         /* 정확히 절반 너비 고정 */
-  position: relative; /* 힌트 배치의 기준점 */
+  flex: 1;
+  width: 50%;
+  position: relative; /* 중요: 힌트의 기준점이 됨 */
   display: flex;
   flex-direction: column;
   align-items: center; 
@@ -178,21 +183,28 @@ body, html {
   height: 95%; 
 }
 
+/* 힌트 디자인 */
 .canvas-hint {
   position: absolute;
-  top: 20px; 
+  /* top: 15px; 이 캔버스 하얀 테두리 안쪽 상단에 고정되게 함 */
+  top: 5px; 
   left: 50%;
   transform: translateX(-50%);
+  font-size: 1.0rem;
   text-align: center;
-  color: #ffffff;
+  color: #0e0e0e; /* 혹은 가독성을 위해 검정 배경일 경우 화이트 */
   width: 100%;
   pointer-events: none; 
   z-index: 20; 
+  
+  /* 폰트 크기를 고정(px)하거나 화면에 비례하게(rem) 설정 */
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .canvas-area {
   width: 100%;
-  height: 90%; 
+  height: 100%; 
   background-color: #ffffff;
   border-radius: 20px;
   border: 2px solid #0e0e0e;
@@ -216,10 +228,10 @@ body, html {
 /* 10. 흰색 알약 슬라이더 디자인 (비율에 맞춰 너비 자동 조절) */
 .product-sidebar .slider-container {
   background-color: #ffffff; 
-  border-radius: 10px; 
+  border-radius: 20px; 
   display: flex;
   align-items: center;
-  padding: 20px 40px;     /* 좌우 패딩을 넉넉히 주어 여유 공간 확보 */
+  padding: 10px 20px;     /* 좌우 패딩을 넉넉히 주어 여유 공간 확보 */
   height: 100px; 
   margin-bottom: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);

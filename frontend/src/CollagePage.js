@@ -56,10 +56,10 @@ function CollagePage({ result, products, onBackToMain }) {
       <div className="canvas-wrapper">
         {/* 1. 힌트를 캔버스 밖(위)으로 추출 */}
         {placedItems.length === 0 && (
-          <div className="canvas-hint">
-            이미지를 드래그하여 코디해보세요<br/>
-            (휠: 크기조절, 우클릭: 삭제)
-          </div>
+        <div className="canvas-hint">
+          이미지를 드래그하여 코디해보세요<br/>
+          (휠: 크기조절, 우클릭: 삭제)
+        </div>
         )}
 
         {/* 2. 실제 캔버스 영역 */}

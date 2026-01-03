@@ -66,7 +66,7 @@ function App() {
         <div className="main-container fade-in">
           <div className="content-wrapper">
             <h2 className="top-title">패션 인격 찾기</h2>
-            <h1 className="main-title">LOOK × MBTI</h1>
+            <h1 className="main-title">MUSINSA × PERSONA</h1>
             
             <div className="description">
               <p>총 8가지 문항으로 옷장 속 숨겨진 당신의</p>
