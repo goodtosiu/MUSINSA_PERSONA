@@ -21,10 +21,21 @@ body, html {
   background-color: #000;
 }
 
+/* 메인 컨테이너: 모든 요소를 중앙으로 정렬 */
+.fade-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* 가로축 중앙 정렬 (X와 일직선) */
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    min-height: 200px;      /* 영역 확보 */
+}
+
 /* 3. 로고 및 메인 페이지 텍스트 */
 .logo { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; }
 .logo .x { color: #eb003b; }
-.subtitle { color: #888; font-size: 1.1rem; margin-bottom: 40px; }
+.subtitle { color: #888; font-size: 1.1rem; margin-bottom: 20px; width: 100%; }
 
 /* 4. 버튼 스타일 */
 .btn-group {
@@ -33,11 +44,13 @@ body, html {
   align-items: center;
   gap: 15px;
   margin-top: 30px;
+  width: 100%;
 }
 .start-btn {
   background: #fff; color: #000; border: none;
   padding: 15px 50px; font-size: 1rem; font-weight: bold;
-  cursor: pointer; transition: 0.3s;
+  cursor: pointer; transition: 0.3s; display: inline-block;
+  transform: translateX(-15px);
 }
 .start-btn:hover { background: #eb003b; color: #fff; }
 
