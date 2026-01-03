@@ -173,6 +173,9 @@ body, html {
   background-color: #ffffff; 
   min-width: 0;             /* flex 아이템의 최소 너비 제한 해제 */
   height: 95%;
+  border-radius: 20px;       /* 숫자가 클수록 더 둥글어집니다 (예: 15px, 20px) */
+  overflow: hidden;          /* 내부 요소들이 둥근 모서리 밖으로 나가지 않게 함 */
+  border: 2px solid #0e0e0e;    /* (선택사항) 캔버스 경계를 보여주기 위한 옅은 테두리 */
 }
 
 .canvas-area .canvas-hint {
@@ -204,8 +207,8 @@ body, html {
   border-radius: 10px; 
   display: flex;
   align-items: center;
-  padding: 20px 50px;
-  height: 85px; 
+  padding: 20px 40px;     /* 좌우 패딩을 넉넉히 주어 여유 공간 확보 */
+  height: 90px; 
   margin-bottom: 25px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   position: relative;
@@ -261,7 +264,7 @@ body, html {
   background: none;
   border: none;
   font-size: 1.8rem;
-  color: #888;
+  color: #000;
   cursor: pointer;
   padding: 0 10px;
   z-index: 5;
@@ -309,7 +312,7 @@ body, html {
 .sub-btn-row .secondary-action-btn {
   background: none;
   border: none;
-  color: #888;
+  color: #fff;
   font-size: 0.9rem;
   cursor: pointer;
   text-decoration: underline;
