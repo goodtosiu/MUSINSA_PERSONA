@@ -67,12 +67,10 @@ function App() {
           <div className="content-wrapper">
             <h2 className="top-title">패션 인격 찾기</h2>
             <h1 className="main-title">MUSINSA × PERSONA</h1>
-            
             <div className="description">
               <p>총 8가지 문항으로 옷장 속 숨겨진 당신의</p>
               <p><strong>16가지 패션 페르소나를 찾아보세요</strong></p>
             </div>
-
             <button className="start-btn" onClick={handleStart}>
               테스트 시작
             </button>

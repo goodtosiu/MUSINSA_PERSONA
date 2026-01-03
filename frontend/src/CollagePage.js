@@ -97,11 +97,11 @@ function CollagePage({ result, products, onBackToMain }) {
       <div className="product-sidebar">
         <div className="category-scroll-area">
           {[
-            { ko: "악세서리", en: "ACC" },
             { ko: "아우터", en: "OUTER" },
             { ko: "상의", en: "TOP" },
             { ko: "하의", en: "BOTTOM" },
-            { ko: "신발", en: "SHOES" }
+            { ko: "신발", en: "SHOES" },
+            { ko: "악세서리", en: "ACC" }
           ].map((cat) => (
             <div key={cat.en} className="category-section">
               <h4 className="category-name">{cat.en}</h4>
