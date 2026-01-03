@@ -22,9 +22,30 @@ body, html {
 }
 
 /* 3. 로고 및 메인 페이지 텍스트 */
-.logo { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; }
-.logo .x { color: #eb003b; }
-.subtitle { color: #888; font-size: 1.1rem; margin-bottom: 40px; }
+.top-title { 
+  font-size: 1.5rem; 
+  font-weight: 500; 
+  letter-spacing: 2px; 
+  margin-bottom: 10px; 
+  color: #fff; 
+}
+.main-title { 
+  font-size: 3.5rem; 
+  font-weight: 800; 
+  margin-bottom: 40px; 
+  color: #fff; 
+}
+.description { 
+  font-size: 1.1rem; 
+  line-height: 1.6; 
+  margin-bottom: 50px; 
+  color: #fff; 
+}
+.description strong { 
+  display: block; 
+  margin-top: 5px; 
+  font-weight: bold; 
+}
 
 /* 4. 버튼 스타일 */
 .btn-group {
@@ -35,11 +56,20 @@ body, html {
   margin-top: 30px;
 }
 .start-btn {
-  background: #fff; color: #000; border: none;
-  padding: 15px 50px; font-size: 1rem; font-weight: bold;
-  cursor: pointer; transition: 0.3s;
+  background: #fff; 
+  color: #000; 
+  border: none;
+  padding: 18px 100px; /* 스크린샷처럼 좌우로 길게 조절 */
+  font-size: 1.1rem; 
+  font-weight: bold;
+  cursor: pointer; 
+  transition: 0.3s;
+  border-radius: 4px; /* 살짝 들어간 라운드 값 */
 }
-.start-btn:hover { background: #eb003b; color: #fff; }
+.start-btn:hover { 
+  background: #e0e0e0; /* 마우스 올렸을 때 살짝 어두워지는 효과 */
+  transform: scale(1.02); 
+}
 
 .secondary-btn {
   background: transparent;

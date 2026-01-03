@@ -63,10 +63,20 @@ function App() {
   return (
     <div className="App">
       {step === 'main' && (
-        <div className="fade-in">
-          <h1 className="logo">MUSINSA <span className="x">x</span> PERSONA</h1>
-          <p className="subtitle">당신의 패션 페르소나를 찾아보세요</p>
-          <button className="start-btn" onClick={handleStart}>시작하기</button>
+        <div className="main-container fade-in">
+          <div className="content-wrapper">
+            <h2 className="top-title">LOOK × MBTI</h2>
+            <h1 className="main-title">패션 인격 찾기</h1>
+            
+            <div className="description">
+              <p>총 8가지 문항으로 옷장 속 숨겨진 당신의</p>
+              <p><strong>16가지 패션 페르소나를 찾아보세요</strong></p>
+            </div>
+
+            <button className="start-btn" onClick={handleStart}>
+              테스트 시작
+            </button>
+          </div>
         </div>
       )}
 
