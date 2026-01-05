@@ -31,6 +31,7 @@ def init_data():
             print(f"🚨 [오류] {path} 파일 없음")
             return
         data = np.load(path, allow_pickle=True)
+        # 키 이름 확인: 'prices' (복수형)인지 확인 필요
         required_keys = ['ids', 'names', 'prices', 'imgs', 'cats', 
                          'name_vecs', 'brand_vecs', 'img_vecs', 'cat_vecs']
         temp_data = {}
@@ -77,7 +78,7 @@ def get_recommendations():
     fixed_outfit_id = request.args.get('outfit_id')
     target_category_filter = request.args.get('category')
     
-    # [가격 필터 파라미터 수신]
+    # [가격 필터 파라미터 받기]
     min_price = request.args.get('min_price', type=int)
     max_price = request.args.get('max_price', type=int)
 
@@ -104,37 +105,33 @@ def get_recommendations():
         target_item_map = {master_data['cats'][idx]: idx for idx in target_indices}
 
         # [가격 필터 마스크 생성]
-        price_mask = np.ones(len(master_data['price']), dtype=bool)
+        # master_data['prices'] 키가 존재하는지 확인
+        price_mask = np.ones(len(master_data['prices']), dtype=bool)
         if min_price is not None:
-            price_mask &= (master_data['price'] >= min_price)
+            price_mask &= (master_data['prices'] >= min_price)
         if max_price is not None:
-            price_mask &= (master_data['price'] <= max_price)
+            price_mask &= (master_data['prices'] <= max_price)
 
         CATEGORY_MAP = {"outer": "아우터", "top": "상의", "bottom": "바지", "shoes": "신발", "acc": "액세서리"}
         final_response = { "current_outfit_id": selected_outfit, "items": {} }
 
-        # 각 카테고리별로 루프를 돌며 5개씩 추출
         for eng_key, kor_val in CATEGORY_MAP.items():
-            # 특정 카테고리만 요청받은 경우 해당 카테고리가 아니면 스킵
             if target_category_filter and target_category_filter != eng_key: continue
-
-            # 해당 코디 구성에 이 카테고리가 없으면 빈 리스트 반환
             if kor_val not in target_item_map:
                 final_response["items"][eng_key] = [] 
                 continue
 
             target_idx = target_item_map[kor_val]
 
-            # 유사도 계산 (벡터 내적)
+            # 유사도 계산
             sim_name = master_data['name_vecs'] @ master_data['name_vecs'][target_idx]
             sim_brand = master_data['brand_vecs'] @ master_data['brand_vecs'][target_idx]
             sim_img = master_data['img_vecs'] @ master_data['img_vecs'][target_idx]
             sim_cat = master_data['cat_vecs'] @ master_data['cat_vecs'][target_idx]
 
-            # 가중치 적용
             final_scores = (sim_name * 0.1) + (sim_brand * 0.1) + (sim_img * 0.6) + (sim_cat * 0.1)
 
-            # [핵심] 해당 카테고리이면서 가격 필터를 통과한 상품만 필터링
+            # 카테고리 + 가격 필터 적용
             combined_mask = (master_data['cats'] == kor_val) & price_mask
             cat_scores = final_scores[combined_mask]
             cat_real_indices = np.where(combined_mask)[0]
@@ -143,7 +140,7 @@ def get_recommendations():
                 final_response["items"][eng_key] = []
                 continue
 
-            # 가격 필터링된 상품 중 유사도 상위 100개 추출 후 랜덤 5개 선택
+            # 필터링된 범위 내 상위 100개 중 랜덤 5개
             sorted_indices = np.argsort(cat_scores)[::-1][:100]
             selected_local = np.random.choice(sorted_indices, min(5, len(sorted_indices)), replace=False)
             
@@ -152,7 +149,6 @@ def get_recommendations():
                 original_idx = cat_real_indices[loc_idx]
                 p_id = int(master_data['ids'][original_idx])
                 
-                # 누끼 이미지 경로 확인 및 처리
                 processed_filename = f"nobg_{p_id}.png"
                 processed_file_path = os.path.join(PROCESSED_DIR, processed_filename)
                 
@@ -165,12 +161,11 @@ def get_recommendations():
                 items_list.append({
                     "product_id": p_id,
                     "product_name": str(master_data['names'][original_idx]),
-                    "price": int(master_data['price'][original_idx]),
+                    "price": int(master_data['prices'][original_idx]),
                     "img_url": final_img_url,
                     "category": kor_val,
                 })
             
-            # 최종 응답 객체에 카테고리별로 5개씩 담김
             final_response["items"][eng_key] = items_list
 
         return jsonify(final_response)
