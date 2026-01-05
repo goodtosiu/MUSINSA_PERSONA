@@ -21,15 +21,6 @@ body, html {
   background-color: #000;
 }
 
-/* 메인 컨테이너: 모든 요소를 중앙으로 정렬 */
-.fade-in {
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-    min-height: 200px;      /* 영역 확보 */
-}
-
 /* 3. 로고 및 메인 페이지 텍스트 */
 .logo { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; }
 .logo .x { color: #eb003b; }
