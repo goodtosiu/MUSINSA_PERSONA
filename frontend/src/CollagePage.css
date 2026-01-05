@@ -1,0 +1,119 @@
+.advanced-collage-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+}
+
+/* 왼쪽 캔버스 영역 (고정 비율) */
+.left-canvas-area {
+  /* flex: 0 0 35%;     <-- 삭제 */
+  width: 450px;         /* 캔버스(400px)보다 조금 더 여유 있게 고정 */
+  flex-shrink: 0;       /* 주변 요소가 밀어도 줄어들지 않음 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: #111;
+  border-right: 1px solid #333;
+}
+
+.collage-canvas.white-bg {
+  width: 400px;         /* 확실하게 400px로 고정 */
+  height: 600px;        /* 높이도 고정 (이미 되어 있음) */
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  /* [추가] 혹시 모를 축소 방지 */
+  flex-shrink: 0;
+}
+
+.canvas-item {
+  position: absolute;
+  width: 120px; /* 초기 사이즈 제어 */
+  cursor: move;
+}
+.canvas-item img { width: 100%; }
+
+/* 오른쪽 리스트 영역 */
+.right-list-area {
+  flex: 0 0 65%;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 무조건 5개씩 가로 배치 */
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* 상품 카드 디자인 */
+.item-card {
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: grab;
+  border: 1px solid #333;
+}
+
+.img-box {
+  width: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+}
+
+.img-box img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.item-info { padding: 8px; text-align: center; }
+.price-text { font-size: 0.85rem; color: #fff; font-weight: bold; }
+
+/* 셔플 버튼 디자인 */
+.cat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0 5px;
+}
+.shuffle-btn {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+/* 버튼명 고정 및 색상 */
+.buy-red-btn {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+  padding: 15px;
+  background: #ff0000 !important;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #333;
+  color: #ccc;
+  border: none;
+  margin-right: 10px;
+  padding: 5px 15px;
+  cursor: pointer;
+}

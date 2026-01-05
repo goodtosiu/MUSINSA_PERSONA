@@ -1,166 +1,254 @@
-import React, { useState, useRef } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './CollagePage.css';
 
-function CollagePage({ result, products, onBackToMain }) {
-  const [placedItems, setPlacedItems] = useState([]);
-  const FLASK_URL = "http://localhost:5000";
-  const scrollRef = useRef({}); // 슬라이더 제어를 위한 ref 추가
+const CollagePage = ({ result, products, currentOutfitId, onBackToMain }) => {
+  const [displayItems, setDisplayItems] = useState(products);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  // 휠로 사이즈 조절
-  const handleWheel = (e, id) => {
+  // 드래그 관련 상태
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragTarget, setDragTarget] = useState(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  // 레이어(Z-Index)
+  const [maxZ, setMaxZ] = useState(10); 
+  
+  // 버튼 호버 상태
+  const [hoveredBtn, setHoveredBtn] = useState(null);
+
+  // [NEW] 셔플 로딩 상태 관리 (카테고리별로 로딩 중인지 체크)
+  const [shuffleLoading, setShuffleLoading] = useState({
+    outer: false, top: false, bottom: false, shoes: false, acc: false
+  });
+
+  useEffect(() => {
+    if (products) {
+      setDisplayItems(products);
+    }
+  }, [products]);
+
+  // 셔플 핸들러
+  const handleShuffle = async (category) => {
+    try {
+      // 1. 로딩 상태 시작 (해당 카테고리만 true)
+      setShuffleLoading(prev => ({ ...prev, [category]: true }));
+
+      // 2. 서버 요청 (해당 카테고리만 누끼 따오라고 요청)
+      const response = await axios.get(`http://127.0.0.1:5000/api/products`, {
+        params: {
+          persona: result,
+          outfit_id: currentOutfitId,
+          category: category, 
+          _t: Date.now()
+        }
+      });
+
+      const newItemsData = response.data.items;
+      
+      // 3. 데이터 업데이트
+      if (newItemsData && newItemsData[category]) {
+        setDisplayItems(prev => ({
+          ...prev, 
+          [category]: newItemsData[category]
+        }));
+      }
+    } catch (error) {
+      console.error("셔플 실패:", error);
+      alert("데이터를 불러오지 못했습니다.");
+    } finally {
+      // 4. 로딩 종료
+      setShuffleLoading(prev => ({ ...prev, [category]: false }));
+    }
+  };
+
+  const handleExternalDragStart = (e, item, cat) => {
+    e.dataTransfer.setData("item", JSON.stringify(item));
+    e.dataTransfer.setData("category", cat);
+  };
+
+  const handleCanvasDrop = (e) => {
     e.preventDefault();
-    const scaleAmount = e.deltaY > 0 ? -0.1 : 0.1;
-    setPlacedItems(prev => prev.map(item =>
-      item.id === id ? { ...item, scale: Math.max(0.2, item.scale + scaleAmount) } : item
+    const itemDataStr = e.dataTransfer.getData("item");
+    if (!itemDataStr) return; 
+
+    const canvasRect = e.currentTarget.getBoundingClientRect();
+    const itemData = JSON.parse(itemDataStr);
+    const cat = e.dataTransfer.getData("category");
+
+    const nextZ = maxZ + 1;
+    setMaxZ(nextZ);
+
+    const newItem = {
+      ...itemData,
+      instanceId: Date.now(),
+      x: e.clientX - canvasRect.left - 60,
+      y: e.clientY - canvasRect.top - 60,
+      scale: 0.8,
+      category: cat,
+      zIndex: nextZ 
+    };
+    setSelectedItems(prev => [...prev, newItem]);
+  };
+
+  const handleItemMouseDown = (e, instanceId) => {
+    e.stopPropagation();
+    const target = selectedItems.find(item => item.instanceId === instanceId);
+    if (!target) return;
+
+    setIsDragging(true);
+    setDragTarget(instanceId);
+    setOffset({ x: e.clientX - target.x, y: e.clientY - target.y });
+
+    const nextZ = maxZ + 1;
+    setMaxZ(nextZ);
+    
+    setSelectedItems(prev => prev.map(item => 
+      item.instanceId === instanceId 
+      ? { ...item, zIndex: nextZ } 
+      : item
     ));
   };
 
-  // 드래그 시작 핸들러
-  const onDragStart = (e, imgUrl, moveId = null) => {
-    e.dataTransfer.setData("imgUrl", imgUrl);
-    if (moveId) e.dataTransfer.setData("moveId", moveId);
-    const img = new Image();
-    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-    e.dataTransfer.setDragImage(img, 0, 0);
+  const handleCanvasMouseMove = (e) => {
+    if (!isDragging || dragTarget === null) return;
+    const newX = e.clientX - offset.x;
+    const newY = e.clientY - offset.y;
+    setSelectedItems(prev => prev.map(item => 
+      item.instanceId === dragTarget ? { ...item, x: newX, y: newY } : item
+    ));
   };
 
-  // 드롭 핸들러
-  const onDrop = (e) => {
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    setDragTarget(null);
+  };
+
+  const handleContextMenu = (e, instanceId) => {
     e.preventDefault();
-    const imgUrl = e.dataTransfer.getData("imgUrl");
-    const moveId = e.dataTransfer.getData("moveId");
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    if (moveId) {
-      setPlacedItems(prev => prev.map(item =>
-        item.id === parseInt(moveId) ? { ...item, x, y } : item
-      ));
-    } else {
-      setPlacedItems(prev => [...prev, { id: Date.now(), url: imgUrl, x, y, scale: 1 }]);
-    }
+    setSelectedItems(prev => prev.filter(item => item.instanceId !== instanceId));
   };
 
-  // 슬라이더 스크롤 함수
-  const handleScroll = (category, direction) => {
-    const container = scrollRef.current[category];
-    if (container) {
-      const scrollAmount = 200;
-      container.scrollLeft += direction === 'left' ? -scrollAmount : scrollAmount;
-    }
+  const handleWheel = (e, instanceId) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    setSelectedItems(prev => prev.map(item => 
+      item.instanceId === instanceId 
+      ? { ...item, scale: Math.min(Math.max(item.scale + delta, 0.2), 3) } 
+      : item
+    ));
   };
+
+  const CAT_KO = { outer: "아우터", top: "상의", bottom: "바지", shoes: "신발", acc: "액세서리" };
 
   return (
-    <div className="collage-container">
-      <div className="canvas-wrapper">
-        {/* 1. 힌트를 캔버스 밖(위)으로 추출 */}
-        {placedItems.length === 0 && (
-          <div className="canvas-hint">
-            이미지를 드래그하여 코디해보세요<br/>
-            (휠: 크기조절, 우클릭: 삭제)
+    <div className="advanced-collage-layout dark-theme" onMouseUp={handleMouseUp}>
+      <section className="left-canvas-area">
+        <div className="canvas-header">
+          <div className="button-group">
+            <button className="btn-secondary" onClick={onBackToMain}>메인으로</button>
+            <button className="btn-secondary" onClick={() => setSelectedItems([])}>캔버스 초기화</button>
           </div>
-        )}
+          <p className="instruction"> 드래그: 배치 / 휠: 크기 조절 / 우클릭: 삭제</p>
+        </div>
 
-        {/* 2. 실제 캔버스 영역 */}
-        <div
-          className="canvas-area"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={onDrop}
+        <div 
+          className="collage-canvas white-bg" 
+          onDragOver={(e) => e.preventDefault()} 
+          onDrop={handleCanvasDrop}
+          onMouseMove={handleCanvasMouseMove}
+          onMouseLeave={handleMouseUp}
         >
-          {placedItems.map((item) => (
-            <img
-              key={item.id}
-              src={`${FLASK_URL}/api/remove-bg?url=${encodeURIComponent(item.url)}`}
-              alt="placed"
-              className="placed-img"
+          {selectedItems.map((item) => (
+            <div
+              key={item.instanceId}
+              className="canvas-item"
+              onMouseDown={(e) => handleItemMouseDown(e, item.instanceId)}
+              onWheel={(e) => handleWheel(e, item.instanceId)}
+              onContextMenu={(e) => handleContextMenu(e, item.instanceId)} 
               style={{
                 left: `${item.x}px`,
                 top: `${item.y}px`,
-                transform: `translate(-50%, -50%) scale(${item.scale})`,
-                cursor: 'move',
-                position: 'absolute'
+                transform: `scale(${item.scale})`,
+                position: 'absolute',
+                zIndex: item.zIndex, 
+                cursor: 'move'
               }}
-              draggable
-              onDragStart={(e) => onDragStart(e, item.url, item.id)}
-              onWheel={(e) => handleWheel(e, item.id)}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                setPlacedItems(prev => prev.filter(i => i.id !== item.id));
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* 사이드바 영역: 이미지와 동일한 레이아웃으로 수정 */}
-      <div className="product-sidebar">
-        <div className="category-scroll-area">
-          {[
-            { ko: "악세서리", en: "ACC" },
-            { ko: "아우터", en: "OUTER" },
-            { ko: "상의", en: "TOP" },
-            { ko: "하의", en: "BOTTOM" },
-            { ko: "신발", en: "SHOES" }
-          ].map((cat) => (
-            <div key={cat.en} className="category-section">
-              <h4 className="category-name">{cat.en}</h4>
-              <div className="slider-container">
-                <button className="nav-btn prev" onClick={() => handleScroll(cat.en, 'left')}>‹</button>
-                <div
-                  className="img-horizontal-scroll"
-                  ref={(el) => (scrollRef.current[cat.en] = el)}
-                >
-                  {/* [기준 상품] */}
-                  {products.targets && products.targets[cat.ko] && (
-                    <div className="img-wrapper target-highlight">
-                      <img
-                        src={`${FLASK_URL}/api/remove-bg?url=${encodeURIComponent(products.targets[cat.ko])}`}
-                        alt="target"
-                        className="draggable-img"
-                        draggable
-                        onDragStart={(e) => onDragStart(e, products.targets[cat.ko])}
-                      />
-                    </div>
-                  )}
-
-                  {/* [추천 상품들] */}
-                  {products[cat.ko]?.map((url, idx) => (
-                    <div key={idx} className="img-wrapper">
-                      <img
-                        src={`${FLASK_URL}/api/remove-bg?url=${encodeURIComponent(url)}`}
-                        alt="recommend"
-                        className="draggable-img"
-                        draggable
-                        onDragStart={(e) => onDragStart(e, url)}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <button className="nav-btn next" onClick={() => handleScroll(cat.en, 'right')}>›</button>
-              </div>
+            >
+              <img src={item.img_url} alt="" draggable="false" style={{ userSelect: 'none' }} />
             </div>
           ))}
         </div>
+        <button className="buy-red-btn" onClick={() => alert("구매 페이지로 이동!")}>선택 조합 구매하기</button>
+      </section>
 
-        {/* 하단 버튼 영역: 이미지 디자인에 맞춰 수정 */}
-        <div className="sidebar-action-group">
-          <button className="decision-btn" onClick={() => alert("스타일이 저장되었습니다!")}>
-            아웃핏 결정하기
-          </button>
-          <div className="sub-btn-row">
-            <button className="secondary-action-btn" onClick={() => setPlacedItems([])}>
-              캔버스 초기화
-            </button>
-            <span className="divider">|</span>
-            <button className="secondary-action-btn" onClick={onBackToMain}>
-              메인으로
-            </button>
+      <section className="right-list-area">
+        <h2 className="sidebar-title">STYLE PIECES</h2>
+        {['outer', 'top', 'bottom', 'shoes', 'acc'].map(cat => (
+          <div key={cat} className="cat-section">
+            <div className="cat-header">
+              <span className="cat-name">{cat.toUpperCase()}</span>
+              {/* 버튼 표시 조건: 로딩 중이 아니고 & 데이터가 있을 때 */}
+              {(!shuffleLoading[cat] && displayItems && displayItems[cat]?.length > 0) && (
+                <button 
+                  className="shuffle-btn"
+                  onMouseEnter={() => setHoveredBtn(cat)}
+                  onMouseLeave={() => setHoveredBtn(null)}
+                  onClick={() => handleShuffle(cat)}
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor: hoveredBtn === cat ? '#ff4d4d' : '#333', 
+                    color: 'white',
+                    border: '1px solid #555',
+                    padding: '5px 10px',
+                    borderRadius: '5px',
+                    transition: 'background-color 0.2s'
+                  }}
+                >
+                  셔플 🔄
+                </button>
+              )}
+            </div>
+
+            <div className="item-grid">
+              {/* [렌더링 로직 분기] */}
+              
+              {/* Case 1: 로딩 중이면? -> 빈 화면 (기존 상품 지움) */}
+              {shuffleLoading[cat] ? (
+                <div className="empty-msg-box" style={{ minHeight: '150px' }}>
+                  {/* 필요시 <p>새로운 스타일을 찾는 중...</p> */}
+                </div>
+              ) : (
+                // Case 2: 로딩 끝났는데 데이터가 있으면? -> 상품 리스트 출력
+                (displayItems && displayItems[cat] && displayItems[cat].length > 0) ? (
+                  displayItems[cat].map(item => (
+                    <div 
+                      key={item.product_id} 
+                      className="item-card" 
+                      draggable 
+                      onDragStart={(e) => handleExternalDragStart(e, item, cat)}
+                    >
+                      <div className="img-box">
+                        <img src={item.img_url} alt={item.product_name} />
+                      </div>
+                      <div className="item-info">
+                        <p className="price-text">{item.price?.toLocaleString()}원</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  // Case 3: 로딩 끝났는데 데이터가 0개면? -> "추천 안 함" 메시지
+                  <div className="empty-msg-box" style={{ padding: '30px', color: '#888', textAlign: 'center', fontSize: '0.9rem' }}>
+                    <p>🚫 해당 조합에서는<br/>추천되지 않는 항목입니다.</p>
+                  </div>
+                )
+              )}
+            </div>
           </div>
-        </div>
-      </div>
+        ))}
+      </section>
     </div>
   );
-}
+};
 
 export default CollagePage;

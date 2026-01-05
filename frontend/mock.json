@@ -1,0 +1,83 @@
+{
+    "outer": [
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandName" : 0,
+            "similarity" : 0
+        },
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandId" : 0,
+            "similarity" : 0
+        }
+    ],
+    "top": [
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandName" : 0,
+            "similarity" : 0
+        },
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandId" : 0,
+            "similarity" : 0
+        }
+    ],
+    "bottom": [
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandName" : 0,
+            "similarity" : 0
+        },
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandId" : 0,
+            "similarity" : 0
+        }
+    ],
+    "shoes": [
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandName" : 0,
+            "similarity" : 0
+        },
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandId" : 0,
+            "similarity" : 0
+        }
+    ],
+    "acc": [
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandName" : 0,
+            "similarity" : 0
+        },
+        {   "productId" : "",
+            "productName" : "",
+            "price" : 0,
+            "imageUrl" : "" ,
+            "brandId" : 0,
+            "similarity" : 0
+        }
+    ]
+  }
+  
