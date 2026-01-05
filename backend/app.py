@@ -1,57 +1,228 @@
 import os
-import random
-from flask import Flask, jsonify, request, send_file
+import numpy as np
+import pandas as pd
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from sqlalchemy import create_engine
+import requests
+from io import BytesIO
+from PIL import Image
+from rembg import remove
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# 카테고리별로 폴더를 나눈 경로
-BASE_CACHE_DIR = os.path.join(current_dir, 'static', 'processed_images')
+# [설정]
+master_data = {}
+PROCESSED_DIR = os.path.join(os.getcwd(), "static", "processed_imgs")
+os.makedirs(PROCESSED_DIR, exist_ok=True)
 
-CATEGORIES = ["상의", "바지", "아우터", "신발"]
+# ---------------------------------------------------------
+# [초기화] 데이터 로드
+# ---------------------------------------------------------
+def init_data():
+    global master_data
+    try:
+        path = 'master_data.npz'
+        if not os.path.exists(path):
+            print(f"🚨 [오류] {path} 파일 없음")
+            return
+        data = np.load(path, allow_pickle=True)
+        required_keys = ['ids', 'names', 'prices', 'imgs', 'cats', 
+                         'name_vecs', 'brand_vecs', 'img_vecs', 'cat_vecs']
+        temp_data = {}
+        for key in required_keys:
+            if key not in data:
+                print(f"❌ [키 누락] {key}")
+                return
+            temp_data[key] = data[key]
+        master_data = temp_data
+        print(f"✅ 데이터 로드 완료! (총 {len(master_data['ids'])}개)")
+    except Exception as e:
+        print(f"❌ 데이터 로딩 에러: {e}")
 
+init_data()
+
+db_url = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+engine = create_engine(db_url)
+
+# ---------------------------------------------------------
+# [기능] 누끼 따기 및 저장 함수
+# ---------------------------------------------------------
+def process_and_save_image(image_url, save_path):
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(image_url, headers=headers, timeout=10)
+        
+        if response.status_code == 200:
+            input_image = Image.open(BytesIO(response.content)).convert("RGBA")
+            output_image = remove(input_image)
+            output_image.save(save_path, format="PNG")
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"   ⚠️ 누끼 에러: {e}")
+        return False
+
+# ---------------------------------------------------------
+# [API] 추천 상품 반환
+# ---------------------------------------------------------
 @app.route('/api/products', methods=['GET'])
-def get_random_recommendations():
-    final_result = {"targets": {}}
+def get_recommendations():
+    persona = request.args.get('persona', '아메카지')
+    fixed_outfit_id = request.args.get('outfit_id')
+    target_category_filter = request.args.get('category')
     
-    for cat in CATEGORIES:
-        cat_path = os.path.join(BASE_CACHE_DIR, cat)
-        
-        # 해당 카테고리 폴더의 파일 리스트 읽기
-        if not os.path.exists(cat_path):
-            os.makedirs(cat_path, exist_ok=True)
-            return jsonify({"error": f"{cat} 폴더에 파일이 없습니다."}), 500
+    if not master_data: return jsonify({"error": "Server data not loaded"}), 500
+
+    try:
+        # [STEP 1] Outfit ID 결정 및 타겟 아이템 확보
+        with engine.connect() as conn:
+            if fixed_outfit_id:
+                selected_outfit = int(fixed_outfit_id)
+            else:
+                outfit_query = "SELECT DISTINCT outfit FROM persona_item WHERE persona = %s"
+                outfits_df = pd.read_sql(outfit_query, conn, params=(persona,))
+                if outfits_df.empty: return jsonify({"error": "Persona not found"}), 404
+                selected_outfit = int(np.random.choice(outfits_df['outfit'].tolist()))
+                print(f"\n🆕 [신규 선택] Outfit ID: {selected_outfit}")
+
+            item_query = "SELECT product_id FROM persona_item WHERE persona = %s AND outfit = %s"
+            target_ids = pd.read_sql(item_query, conn, params=(persona, selected_outfit))['product_id'].tolist()
             
-        files = [f for f in os.listdir(cat_path) if f.endswith('.png')]
+            if not target_ids: return jsonify({"error": "Invalid Outfit ID"}), 404
+
+        # -----------------------------------------------------------------
+        # [✅ 확인용 로그 추가] 실제 어떤 상품들이 기준이 되었는지 이름 출력
+        # -----------------------------------------------------------------
+        print(f"   🎯 [기준(Target) 상품 목록] Outfit {selected_outfit}번 구성:")
+        target_indices_check = np.where(np.isin(master_data['ids'], target_ids))[0]
+        for t_idx in target_indices_check:
+            t_name = master_data['names'][t_idx]
+            t_cat = master_data['cats'][t_idx]
+            print(f"      - [{t_cat}] {t_name}")
+        print("   --------------------------------------------------")
+        # -----------------------------------------------------------------
+
+        # [STEP 2] 타겟 아이템 매핑
+        target_indices = np.where(np.isin(master_data['ids'], target_ids))[0]
+        target_item_map = {}
+        for idx in target_indices:
+            cat_name = master_data['cats'][idx]
+            target_item_map[cat_name] = idx
+
+        CATEGORY_MAP = {"outer": "아우터", "top": "상의", "bottom": "바지", "shoes": "신발", "acc": "액세서리"}
+        final_response = { "current_outfit_id": selected_outfit, "items": {} }
         
-        if not files:
-            return jsonify({"error": f"{cat} 폴더가 비어있습니다."}), 500
+        if not target_category_filter:
+            print(f"\n📊 [점수 로그] 요청 페르소나: {persona} (Outfit {selected_outfit})")
 
-        # 랜덤하게 타겟 1개, 추천 5개 뽑기 (중복 허용)
-        # 프론트엔드에 '파일명' 자체를 넘겨버립니다.
-        target_file = random.choice(files)
-        rec_files = random.sample(files, min(len(files), 6))
-        if target_file in rec_files: rec_files.remove(target_file)
-        
-        # 프론트엔드가 이해할 수 있게 경로 형식으로 전달
-        final_result["targets"][cat] = f"{cat}/{target_file}"
-        final_result[cat] = [f"{cat}/{f}" for f in rec_files[:5]]
+        for eng_key, kor_val in CATEGORY_MAP.items():
+            
+            # 부분 셔플 최적화
+            if target_category_filter and target_category_filter != eng_key: continue
 
-    return jsonify(final_result)
+            # 해당 코디에 없는 카테고리는 패스
+            if kor_val not in target_item_map:
+                final_response["items"][eng_key] = [] 
+                continue
 
-@app.route('/api/remove-bg')
-def remove_bg():
-    # 이제 url 파라미터 대신 위에서 보낸 "카테고리/파일명"이 들어옵니다.
-    img_path = request.args.get('url') 
-    if not img_path: return "Path Required", 400
-    
-    full_path = os.path.join(BASE_CACHE_DIR, img_path)
-    
-    if os.path.exists(full_path):
-        return send_file(full_path, mimetype='image/png')
-    return "File Not Found", 404
+            # ---------------------------------------------------------------------
+            # [유사도 계산] 1:1 매칭 & 요청하신 가중치 적용
+            # ---------------------------------------------------------------------
+            target_idx = target_item_map[kor_val]
+
+            t_name = master_data['name_vecs'][target_idx]
+            t_brand = master_data['brand_vecs'][target_idx]
+            t_img = master_data['img_vecs'][target_idx]
+            t_cat = master_data['cat_vecs'][target_idx]
+
+            sim_name = master_data['name_vecs'] @ t_name
+            sim_brand = master_data['brand_vecs'] @ t_brand
+            sim_img = master_data['img_vecs'] @ t_img
+            sim_cat = master_data['cat_vecs'] @ t_cat
+
+            # 가중치: 이미지(0.6) + 이름(0.1) + 브랜드(0.1) + 카테고리(0.1)
+            final_scores = (sim_name * 0.1) + (sim_brand * 0.1) + (sim_img * 0.6) + (sim_cat * 0.1)
+
+            # 필터링
+            cat_mask = (master_data['cats'] == kor_val)
+            cat_scores = final_scores[cat_mask]
+            
+            if len(cat_scores) == 0:
+                final_response["items"][eng_key] = []
+                continue
+
+            cat_real_indices = np.where(cat_mask)[0]
+            sorted_indices = np.argsort(cat_scores)[::-1][:100]
+            selected_local = np.random.choice(sorted_indices, min(5, len(sorted_indices)), replace=False)
+            
+            items_list = []
+            
+            print(f"   📂 [{kor_val}] 추천 점수 (가중치: Img 0.6 / 나머지 0.1)")
+            
+            for loc_idx in selected_local:
+                original_idx = cat_real_indices[loc_idx]
+                p_id = int(master_data['ids'][original_idx])
+                p_name = str(master_data['names'][original_idx])
+                p_img_origin = str(master_data['imgs'][original_idx])
+                
+                # 로그 출력
+                s_total = final_scores[original_idx]
+                s_n = sim_name[original_idx]
+                s_b = sim_brand[original_idx]
+                s_i = sim_img[original_idx]
+                s_c = sim_cat[original_idx]
+                print(f"      👉 [{p_name[:10]}..] 총점:{s_total:.3f} (Img:{s_i:.2f} B:{s_b:.2f} N:{s_n:.2f} C:{s_c:.2f})")
+
+                # ==========================================================
+                # [수정됨] 누끼 처리: 조건 없이 파일 없으면 무조건 생성!
+                # ==========================================================
+                processed_filename = f"nobg_{p_id}.png"
+                processed_file_path = os.path.join(PROCESSED_DIR, processed_filename)
+                
+                if os.path.exists(processed_file_path):
+                    final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
+                    is_processed = True
+                else:
+                    # 🚀 셔플 여부 관계없이 무조건 실행
+                    print(f"         ✂️ [누끼] {p_id}...", end="")
+                    success = process_and_save_image(p_img_origin, processed_file_path)
+                    if success:
+                        print(" 완료")
+                        final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
+                        is_processed = True
+                    else:
+                        print(" 실패")
+                        final_img_url = p_img_origin
+                        is_processed = False
+                # ==========================================================
+
+                items_list.append({
+                    "product_id": p_id,
+                    "product_name": p_name,
+                    "price": int(master_data['prices'][original_idx]),
+                    "img_url": final_img_url,
+                    "category": kor_val,
+                })
+            
+            final_response["items"][eng_key] = items_list
+
+        response = jsonify(final_response)
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        return response
+
+    except Exception as e:
+        print(f"❌ API 에러 발생: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/static/processed_imgs/<path:filename>')
+def serve_processed_image(filename):
+    return send_from_directory(PROCESSED_DIR, filename)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
