@@ -53,8 +53,8 @@ def create_master_data():
         return mapping
 
     print("\n📦 개별 벡터 파일 로딩 및 분석...")
-    name_map = get_vec_map('embedding_name.npz', "상품명")
-    img_map = get_vec_map('image_embeddings.npz', "이미지")
+    name_map = get_vec_map('name_emb.npz', "상품명")
+    img_map = get_vec_map('total_image_emb.npz', "이미지")
     cat_map = get_vec_map('cat_emb.npz', "카테고리")
     brand_map = get_vec_map('brand_emb.npz', "브랜드")
 
