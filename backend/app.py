@@ -31,7 +31,6 @@ def init_data():
             print(f"🚨 [오류] {path} 파일 없음")
             return
         data = np.load(path, allow_pickle=True)
-        # 키 이름 확인: 'prices' (복수형)인지 확인 필요
         required_keys = ['ids', 'names', 'prices', 'imgs', 'cats', 
                          'name_vecs', 'brand_vecs', 'img_vecs', 'cat_vecs']
         temp_data = {}
@@ -70,19 +69,16 @@ def process_and_save_image(image_url, save_path):
         return False
 
 # ---------------------------------------------------------
-# [API] 추천 상품 반환
+# [API] 추천 상품 반환 (카테고리별 개별 가격 필터 적용)
 # ---------------------------------------------------------
 @app.route('/api/products', methods=['GET'])
 def get_recommendations():
     persona = request.args.get('persona', '아메카지')
     fixed_outfit_id = request.args.get('outfit_id')
-    target_category_filter = request.args.get('category')
-    
-    # [가격 필터 파라미터 받기]
-    min_price = request.args.get('min_price', type=int)
-    max_price = request.args.get('max_price', type=int)
+    target_category_filter = request.args.get('category') # 셔플용 필터
 
-    if not master_data: return jsonify({"error": "Server data not loaded"}), 500
+    if not master_data: 
+        return jsonify({"error": "Server data not loaded"}), 500
 
     try:
         # [STEP 1] Outfit ID 결정 및 타겟 아이템 확보
@@ -104,34 +100,43 @@ def get_recommendations():
         target_indices = np.where(np.isin(master_data['ids'], target_ids))[0]
         target_item_map = {master_data['cats'][idx]: idx for idx in target_indices}
 
-        # [가격 필터 마스크 생성]
-        # master_data['prices'] 키가 존재하는지 확인
-        price_mask = np.ones(len(master_data['prices']), dtype=bool)
-        if min_price is not None:
-            price_mask &= (master_data['prices'] >= min_price)
-        if max_price is not None:
-            price_mask &= (master_data['prices'] <= max_price)
-
         CATEGORY_MAP = {"outer": "아우터", "top": "상의", "bottom": "바지", "shoes": "신발", "acc": "액세서리"}
         final_response = { "current_outfit_id": selected_outfit, "items": {} }
 
+        # [STEP 3] 각 카테고리별로 개별 가격 필터 적용 및 추출
         for eng_key, kor_val in CATEGORY_MAP.items():
-            if target_category_filter and target_category_filter != eng_key: continue
+            # 셔플 요청 시 특정 카테고리만 처리하도록 필터링
+            if target_category_filter and target_category_filter != eng_key:
+                continue
+
+            # 해당 코디 구성에 이 카테고리가 없으면 빈 리스트 반환
             if kor_val not in target_item_map:
                 final_response["items"][eng_key] = [] 
                 continue
 
+            # 해당 카테고리의 전용 가격 파라미터 수신 (예: min_outer, max_outer)
+            cat_min = request.args.get(f'min_{eng_key}', type=int)
+            cat_max = request.args.get(f'max_{eng_key}', type=int)
+
             target_idx = target_item_map[kor_val]
 
-            # 유사도 계산
+            # 유사도 계산 (벡터 내적)
             sim_name = master_data['name_vecs'] @ master_data['name_vecs'][target_idx]
             sim_brand = master_data['brand_vecs'] @ master_data['brand_vecs'][target_idx]
             sim_img = master_data['img_vecs'] @ master_data['img_vecs'][target_idx]
             sim_cat = master_data['cat_vecs'] @ master_data['cat_vecs'][target_idx]
 
+            # 가중치 적용 점수
             final_scores = (sim_name * 0.1) + (sim_brand * 0.1) + (sim_img * 0.6) + (sim_cat * 0.1)
 
-            # 카테고리 + 가격 필터 적용
+            # [카테고리별 가격 필터 마스크 생성]
+            price_mask = np.ones(len(master_data['prices']), dtype=bool)
+            if cat_min is not None:
+                price_mask &= (master_data['prices'] >= cat_min)
+            if cat_max is not None:
+                price_mask &= (master_data['prices'] <= cat_max)
+
+            # 카테고리 일치 + 가격 필터 동시 적용
             combined_mask = (master_data['cats'] == kor_val) & price_mask
             cat_scores = final_scores[combined_mask]
             cat_real_indices = np.where(combined_mask)[0]
@@ -140,7 +145,7 @@ def get_recommendations():
                 final_response["items"][eng_key] = []
                 continue
 
-            # 필터링된 범위 내 상위 100개 중 랜덤 5개
+            # 상위 100개 중 랜덤으로 선택
             sorted_indices = np.argsort(cat_scores)[::-1][:100]
             selected_local = np.random.choice(sorted_indices, min(5, len(sorted_indices)), replace=False)
             
@@ -149,6 +154,7 @@ def get_recommendations():
                 original_idx = cat_real_indices[loc_idx]
                 p_id = int(master_data['ids'][original_idx])
                 
+                # 누끼 이미지 처리
                 processed_filename = f"nobg_{p_id}.png"
                 processed_file_path = os.path.join(PROCESSED_DIR, processed_filename)
                 
@@ -156,7 +162,10 @@ def get_recommendations():
                     final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
                 else:
                     success = process_and_save_image(master_data['imgs'][original_idx], processed_file_path)
-                    final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}" if success else master_data['imgs'][original_idx]
+                    if success:
+                        final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
+                    else:
+                        final_img_url = master_data['imgs'][original_idx]
 
                 items_list.append({
                     "product_id": p_id,
