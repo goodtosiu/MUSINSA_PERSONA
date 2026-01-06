@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-
 from sqlalchemy import create_engine
 import requests
 from io import BytesIO
@@ -12,7 +11,6 @@ from rembg import remove
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 app = Flask(__name__)
 CORS(app)
@@ -75,7 +73,7 @@ def process_and_save_image(image_url, save_path):
 # ---------------------------------------------------------
 @app.route('/api/products', methods=['GET'])
 def get_recommendations():
-    persona = request.args.get('persona', '아메카지')
+    persona = request.args.get('persona',)
     fixed_outfit_id = request.args.get('outfit_id')
     target_category_filter = request.args.get('category')
     
