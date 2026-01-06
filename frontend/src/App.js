@@ -53,12 +53,10 @@ function App() {
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      // 모든 카테고리의 가격 정보를 쿼리 스트링 파라미터로 변환
       const priceParams = Object.keys(prices).map(cat => 
         `min_${cat}=${prices[cat].min}&max_${cat}=${prices[cat].max}`
       ).join('&');
 
-      // (중요) 첫 로딩 시에도 가격 필터를 포함하여 요청
       const url = `http://127.0.0.1:5000/api/products?persona=${result}&${priceParams}`;
       const res = await fetch(url);
       
@@ -129,17 +127,29 @@ function App() {
         </div>
       )}
 
-      {/* 질문 화면 */}
+      {/* 질문 화면 (진행 바 통합 버전) */}
       {step === 'question' && (
         <div className="question-container fade-in">
-          <div className="progress-bar">
-            <div className="progress" style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}></div>
+          {/* 상단 진행 바 영역 */}
+          <div className="progress-area">
+            <div className="progress-bar">
+              <div 
+                className="progress" 
+                style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}
+              ></div>
+            </div>
+            <p className="q-count">
+              <span className="current">{currentIdx + 1}</span> / {questions.length}
+            </p>
           </div>
-          <p className="q-count">{currentIdx + 1} / {questions.length}</p>
+
           <h2 className="question-text">{questions[currentIdx].q}</h2>
+          
           <div className="answer-group">
             {questions[currentIdx].a.map((ans, i) => (
-              <button key={i} className="ans-btn" onClick={() => handleAnswer(ans.score)}>{ans.text}</button>
+              <button key={i} className="ans-btn" onClick={() => handleAnswer(ans.score)}>
+                {ans.text}
+              </button>
             ))}
           </div>
           <button className="back-btn" onClick={handleBack}>이전 질문으로</button>
@@ -203,7 +213,7 @@ function App() {
         </div>
       )}
 
-      {/* 콜라주 페이지: (중요) currentPrices 프롭스를 추가로 전달합니다 */}
+      {/* 콜라주 페이지 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 

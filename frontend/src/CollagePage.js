@@ -201,7 +201,7 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
                     transition: 'background-color 0.2s'
                   }}
                 >
-                  셔플 🔄
+                  셔플
                 </button>
               )}
             </div>
