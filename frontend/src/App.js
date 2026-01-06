@@ -109,7 +109,7 @@ function App() {
       {step === 'main' && (
         <div className="main-container fade-in">
           <div className="content-wrapper">
-            <h2 className="top-title">패션 인격 찾기</h2>
+            <h2 className="top-title">패션 페르소나 찾기</h2>
             <h1 className="main-title">
               <span className="brand">MUSINSA</span>
               <span className="separator"> X </span>

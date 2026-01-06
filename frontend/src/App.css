@@ -1,5 +1,5 @@
 /* ==========================================================
-   1. 무신사 브랜드 폰트 등록
+   1. 무신사 공통 폰트 및 초기화
    ========================================================== */
 @font-face {
   font-family: 'MusinsaFont';
@@ -17,17 +17,16 @@
   font-weight: 800;
 }
 
-/* ==========================================================
-   2. 전체 초기화 및 기본 레이아웃
-   ========================================================== */
 * {
   box-sizing: border-box;
-  font-family: 'MusinsaFont', sans-serif;
+  font-family: 'MusinsaFont', sans-serif !important;
+  text-align: center;
 }
 
 body, html {
-  margin: 0; padding: 0;
-  background-color: #000;
+  margin: 0;
+  padding: 0;
+  background-color: #000 !important;
   color: #fff;
   overflow-x: hidden;
   height: 100%;
@@ -39,94 +38,66 @@ body, html {
   justify-content: center;
   align-items: center;
   background-color: #000;
-  text-align: center;
-}
-
-/* 3. 로고 및 메인 페이지 텍스트 */
-.logo { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; }
-.logo .x { color: #eb003b; }
-.subtitle { color: #888; font-size: 1.1rem; margin-bottom: 20px; width: 100%; }
-
-/* 4. 버튼 스타일 */
-.btn-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  margin-top: 30px;
-  width: 100%;
-}
-.start-btn {
-  background: #fff; color: #000; border: none;
-  padding: 15px 50px; font-size: 1rem; font-weight: bold;
-  cursor: pointer; transition: 0.3s; display: inline-block;
-  transform: translateX(-15px);
-}
-
-.secondary-btn {
-  background: transparent;
-  color: #666;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 1rem;
-  transition: 0.3s;
-  transform: translateX(-15px);
-}
-
-.main-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 5.0rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  line-height: 1.2;
-}
-
-.main-title .separator {
-  font-weight: 200;
-  margin: 0 25px;
-}
-
-.ans-btn {
-  background: #1a1a1a;
-  color: #fff;
-  border: 1px solid #333;
-  padding: 25px 30px;
-  font-size: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.description .strong {
-  display: block;
-  font-weight: 800;
 }
 
 /* ==========================================================
-   4. 답변 버튼 시스템 (크기 고정 및 정렬)
+   2. 메인 페이지 (MainPage) 상세 수정
    ========================================================== */
-.question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 자식 요소들을 가로축 기준 가운데 정렬 */
+.top-title {
+  font-size: 1.65rem !important;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: #fff;
+  margin-bottom: 10px;
 }
 
-/* 진행 바 영역 */
+.main-title {
+  font-size: 4.0rem !important;
+  color: #fff;
+  line-height: 1.0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  letter-spacing: 0.05em !important; 
+}
+
+.main-title .separator, 
+.main-title span:nth-child(2) {
+  font-weight: 200 !important; 
+  margin: 0 30px;
+  letter-spacing: normal !important;
+}
+
+.description {
+  font-size: 1.38rem !important;
+  font-weight: 400 !important;
+  color: #fff;
+  word-break: keep-all;
+  line-height: 1.76 !important; 
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.description strong {
+  display: block;
+  font-weight: 800;
+  margin-top: 5px;
+}
+
+/* ==========================================================
+   3. [ProgressBar] 동료 기능 추가 영역
+   ========================================================== */
 .progress-area {
   width: 100%;
-  max-width: 600px;
-  margin-bottom: 40px;
-
+  max-width: 672px; /* 답변 버튼 너비에 맞춤 */
+  margin: 0 auto 40px auto;
 }
 
 .progress-bar {
   width: 100%;
   height: 4px;
-  background-color: #333; /* 배경색 */
+  background-color: #333;
   border-radius: 2px;
   overflow: hidden;
   margin-bottom: 10px;
@@ -134,191 +105,105 @@ body, html {
 
 .progress {
   height: 100%;
-  background-color: #fff; /* 채워지는 색상 */
+  background-color: #fff;
   transition: width 0.3s ease-in-out;
 }
 
-.q-count {
-  color: #666;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.q-count .current {
-  color: #fff;
-  font-weight: bold;
-}
-
-   /* [추가] 질문지 페이지의 질문 텍스트 */
-.question-text {
-  font-size: 2.45rem;
-  font-weight: 800;
-  margin: 50px 0px;
-  line-height: 1.4;
-  word-break: keep-all;
-  color: #fff;
-}
-
-/* 답변 버튼들을 감싸는 영역 */
-.answer-group {
+/* ==========================================================
+   4. 질문 페이지 (QuestionPage)
+   ========================================================== */
+.question-container.fade-in {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  gap: 18px; /* 버튼 사이 간격 */
-  align-items: stretch; 
+  align-items: center; /* 중앙 정렬 강제 */
+  gap: 40px !important; 
 }
 
-/* 선택지 버튼 (높이 88px 고정) */
-.ans-btn {
-  width: 100%;
-  height: 88px; 
-  padding: 0 26px;
-  background-color: #fff;
-  color: #000;
-  border-radius: 12px;
-  border: none;
-  font-size: 1.15rem;
+.q-count {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: -15px !important;
+}
+
+.question-text {
+  font-size: 1.8rem;
   font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+/* 공통 버튼 규격 복구 (확인, 다시하기 등) */
+.start-btn, .secondary-btn, .secondary-action-btn {
+  width: 638px !important;
+  height: 61px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  border-radius: 12px !important;
+  font-size: 24px !important;
+  font-weight: 500 !important;
+  border: none !important;
   cursor: pointer;
+}
+
+.ans-btn {
+  width: 672px !important;
+  height: 74px !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  border-radius: 12px !important;
+  font-size: 1.26rem !important;
+  margin-bottom: 32px !important; 
   display: flex;
   align-items: center;
   justify-content: center;
-  word-break: keep-all;
-  line-height: 1.2;
-  transition: background-color 0.2s;
-}
-
-.ans-btn:hover {
-  background-color: #f3f4f6;
-}
-
-/* 메인 시작 및 확인 버튼 */
-.start-btn {
-  width: 100%;
-  max-width: 450px;
-  min-height: 80px;
-  padding: 20px;
-  background-color: #fff;
-  color: #000;
-  border: 1px solid #fff;
-  border-radius: 12px;
-  font-size: 1.15rem;
-  font-weight: 500;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.start-btn:hover {
-  background-color: #f3f4f6;
-  transform: scale(1.02);
-}
-
-.secondary-btn {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.back-btn {
+  display: block;
+  margin: 14px auto 20px auto !important;
   color: #9ca3af;
-  padding: 15px 25px;
-  border-radius: 12px;
-  font-size: 1rem;
+  background: none;
+  border: none;
+  text-decoration: underline;
   cursor: pointer;
-  transition: all 0.2s ease;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
 /* ==========================================================
-   5. 결과 및 예산 설정 컨테이너
+   5. 결과 페이지 (ResultPage) 상세 복구
    ========================================================== */
-.result-container, .price-setting-container {
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 50px 40px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
-}
-
-.result-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin: 20px 0;
+.result-label {
+  font-size: 1.32rem !important;
+  color: #fff;
+  margin-bottom: 10px;
 }
 
 .persona-desc {
-  font-size: 1.2rem;
+  font-size: 1.32rem !important;
   line-height: 1.8;
-  color: #ccc;
+  color: rgb(204, 204, 204);
   margin-bottom: 40px;
-  font-weight: 200;
 }
 
-.price-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 12px 20px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
-
-.category-label {
-  width: 90px;
-  color: #eee;
-  font-weight: 800;
-  font-size: 1rem;
-  text-align: left;
-}
-
-.price-input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: #222;
-  color: #fff;
-  font-size: 0.9rem;
-  outline: none;
-}
-
-/* ==========================================================
-   6. 콜라주 페이지 및 애니메이션
-   ========================================================== */
-.collage-container {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-}
-
-.canvas-area {
-  width: 100%;
-  height: 85%;
-  background-color: #fff;
-  border-radius: 24px;
-  border: 1px solid #e5e7eb;
-}
-
-.product-sidebar {
-  flex: 1;
-  background-color: #000;
+.content-wrapper {
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  border-left: 1px solid #1f2937;
-}
-
-.decision-btn {
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  min-height: 60px; 
-  padding: 12px 26px;
-  background-color: #fff;
-  color: #000;
-  border-radius: 12px;
-  border: none;
-  font-size: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
+  max-width: 800px;
+  gap: 40px;
 }
 
+/* 애니메이션 */
 .fade-in {
   animation: fadeIn 0.6s ease-out forwards;
 }
