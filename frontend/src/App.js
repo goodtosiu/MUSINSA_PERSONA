@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import CollagePage from './CollagePage';
+// data.js 파일이 src 폴더에 있어야 합니다.
 import { questions, personas, personaDescriptions } from './data'; 
 
 function App() {
@@ -10,11 +11,31 @@ function App() {
   const [history, setHistory] = useState([]);
   const [result, setResult] = useState("");
   
-  // [수정] 서버 데이터 상태 관리
+  // 서버 데이터 상태 관리
   const [recommendedProducts, setRecommendedProducts] = useState(null); 
-  const [currentOutfitId, setCurrentOutfitId] = useState(null); // 셔플을 위한 Outfit ID 저장
+  const [currentOutfitId, setCurrentOutfitId] = useState(null); 
   
   const [isLoading, setIsLoading] = useState(false);
+
+  // [수정 완료] 누락되었던 prices 상태 추가
+  const [prices, setPrices] = useState({
+    outer: { min: '', max: '' },
+    top: { min: '', max: '' },
+    bottom: { min: '', max: '' },
+    shoes: { min: '', max: '' },
+    accessory: { min: '', max: '' }
+  });
+
+  // [수정 완료] 누락되었던 handlePriceChange 함수 추가
+  const handlePriceChange = (category, type, value) => {
+    setPrices(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [type]: value
+      }
+    }));
+  };
 
   // 퀴즈 시작 핸들러
   const handleStart = () => {
@@ -23,28 +44,22 @@ function App() {
     setScores(Object.fromEntries(personas.map(p => [p, 0])));
     setHistory([]);
     setRecommendedProducts(null);
-    setCurrentOutfitId(null); // 초기화
+    setCurrentOutfitId(null);
   };
 
-  // [수정] Flask에서 추천 데이터 가져오는 함수
+  // Flask에서 추천 데이터 가져오는 함수
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      const priceParams = Object.keys(prices).map(cat => 
-        `min_${cat}=${prices[cat].min}&max_${cat}=${prices[cat].max}`
-      ).join('&');
-
-      const url = `http://127.0.0.1:5000/api/products?persona=${result}&${priceParams}`;
-      const res = await fetch(url);
-      
-      if (!res.ok) throw new Error("서버 응답 에러");
-      
+      // 1. 결과 페르소나를 쿼리 스트링으로 전달
+      // 필요하다면 prices 정보도 여기서 함께 보낼 수 있습니다.
+      const res = await fetch(`http://127.0.0.1:5000/api/products?persona=${result}`);
       const data = await res.json();
 
       // 2. 변경된 데이터 구조 처리 ({ current_outfit_id, items })
       if (data.items) {
-        setRecommendedProducts(data.items); // 상품 리스트 저장
-        setCurrentOutfitId(data.current_outfit_id); // 셔플용 ID 저장
+        setRecommendedProducts(data.items); 
+        setCurrentOutfitId(data.current_outfit_id); 
         setStep('collage');
       } else {
         alert("추천 상품을 불러오는데 문제가 발생했습니다.");
@@ -106,29 +121,17 @@ function App() {
         </div>
       )}
 
-      {/* 질문 화면 (진행 바 통합 버전) */}
+      {/* 질문 화면 */}
       {step === 'question' && (
         <div className="question-container fade-in">
-          {/* 상단 진행 바 영역 */}
-          <div className="progress-area">
-            <div className="progress-bar">
-              <div 
-                className="progress" 
-                style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}
-              ></div>
-            </div>
-            <p className="q-count">
-              <span className="current">{currentIdx + 1}</span> / {questions.length}
-            </p>
+          <div className="progress-bar">
+            <div className="progress" style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}></div>
           </div>
-
+          <p className="q-count">{currentIdx + 1} / {questions.length}</p>
           <h2 className="question-text">{questions[currentIdx].q}</h2>
-          
           <div className="answer-group">
             {questions[currentIdx].a.map((ans, i) => (
-              <button key={i} className="ans-btn" onClick={() => handleAnswer(ans.score)}>
-                {ans.text}
-              </button>
+              <button key={i} className="ans-btn" onClick={() => handleAnswer(ans.score)}>{ans.text}</button>
             ))}
           </div>
           <button className="back-btn" onClick={handleBack}>이전 질문으로</button>
@@ -157,6 +160,7 @@ function App() {
           <p style={{ color: '#888', marginBottom: '25px' }}>각 카테고리별로 원하는 가격대를 입력해주세요.</p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            {/* prices 객체가 정의되었으므로 이제 에러가 나지 않습니다 */}
             {Object.keys(prices).map((cat) => (
               <div key={cat} style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(0,0,0,0.3)', padding: '12px 20px', borderRadius: '12px' }}>
                 <span style={{ width: '90px', color: '#eee', fontWeight: 'bold', fontSize: '1rem', textAlign: 'left' }}>
@@ -176,7 +180,6 @@ function App() {
                   placeholder="최대"
                   step="5000"
                   value={prices[cat].max}
-                  step="5000"
                   onChange={(e) => handlePriceChange(cat, 'max', e.target.value)}
                   style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #444', background: '#222', color: '#fff', fontSize: '0.9rem' }}
                 />
@@ -198,7 +201,7 @@ function App() {
         <CollagePage 
           result={result} 
           products={recommendedProducts} 
-          currentOutfitId={currentOutfitId} // [추가] 셔플을 위해 ID 전달
+          currentOutfitId={currentOutfitId} 
           onBackToMain={() => setStep('main')}
           onBackToResult={() => setStep('price_setting')}
         />

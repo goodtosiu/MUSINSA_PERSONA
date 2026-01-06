@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CollagePage.css';
 
-const CollagePage = ({ result, products, currentOutfitId, onBackToMain }) => {
+const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackToResult }) => {
   const [displayItems, setDisplayItems] = useState(products);
   const [selectedItems, setSelectedItems] = useState([]);
 
