@@ -69,16 +69,15 @@ def process_and_save_image(image_url, save_path):
         return False
 
 # ---------------------------------------------------------
-# [API] 추천 상품 반환 (카테고리별 개별 가격 필터 적용)
+# [API] 추천 상품 반환
 # ---------------------------------------------------------
 @app.route('/api/products', methods=['GET'])
 def get_recommendations():
-    persona = request.args.get('persona', '아메카지')
+    persona = request.args.get('persona',)
     fixed_outfit_id = request.args.get('outfit_id')
-    target_category_filter = request.args.get('category') # 셔플용 필터
-
-    if not master_data: 
-        return jsonify({"error": "Server data not loaded"}), 500
+    target_category_filter = request.args.get('category')
+    
+    if not master_data: return jsonify({"error": "Server data not loaded"}), 500
 
     try:
         # [STEP 1] Outfit ID 결정 및 타겟 아이템 확보
@@ -90,86 +89,122 @@ def get_recommendations():
                 outfits_df = pd.read_sql(outfit_query, conn, params=(persona,))
                 if outfits_df.empty: return jsonify({"error": "Persona not found"}), 404
                 selected_outfit = int(np.random.choice(outfits_df['outfit'].tolist()))
+                print(f"\n🆕 [신규 선택] Outfit ID: {selected_outfit}")
 
             item_query = "SELECT product_id FROM persona_item WHERE persona = %s AND outfit = %s"
             target_ids = pd.read_sql(item_query, conn, params=(persona, selected_outfit))['product_id'].tolist()
             
             if not target_ids: return jsonify({"error": "Invalid Outfit ID"}), 404
 
+        # -----------------------------------------------------------------
+        # [✅ 확인용 로그 추가] 실제 어떤 상품들이 기준이 되었는지 이름 출력
+        # -----------------------------------------------------------------
+        print(f"   🎯 [기준(Target) 상품 목록] Outfit {selected_outfit}번 구성:")
+        target_indices_check = np.where(np.isin(master_data['ids'], target_ids))[0]
+        for t_idx in target_indices_check:
+            t_name = master_data['names'][t_idx]
+            t_cat = master_data['cats'][t_idx]
+            print(f"      - [{t_cat}] {t_name}")
+        print("   --------------------------------------------------")
+        # -----------------------------------------------------------------
+
         # [STEP 2] 타겟 아이템 매핑
         target_indices = np.where(np.isin(master_data['ids'], target_ids))[0]
-        target_item_map = {master_data['cats'][idx]: idx for idx in target_indices}
+        target_item_map = {}
+        for idx in target_indices:
+            cat_name = master_data['cats'][idx]
+            target_item_map[cat_name] = idx
 
         CATEGORY_MAP = {"outer": "아우터", "top": "상의", "bottom": "바지", "shoes": "신발", "acc": "액세서리"}
         final_response = { "current_outfit_id": selected_outfit, "items": {} }
+        
+        if not target_category_filter:
+            print(f"\n📊 [점수 로그] 요청 페르소나: {persona} (Outfit {selected_outfit})")
 
-        # [STEP 3] 각 카테고리별로 개별 가격 필터 적용 및 추출
         for eng_key, kor_val in CATEGORY_MAP.items():
-            # 셔플 요청 시 특정 카테고리만 처리하도록 필터링
-            if target_category_filter and target_category_filter != eng_key:
-                continue
+            
+            # 부분 셔플 최적화
+            if target_category_filter and target_category_filter != eng_key: continue
 
-            # 해당 코디 구성에 이 카테고리가 없으면 빈 리스트 반환
+            # 해당 코디에 없는 카테고리는 패스
             if kor_val not in target_item_map:
                 final_response["items"][eng_key] = [] 
                 continue
 
-            # 해당 카테고리의 전용 가격 파라미터 수신 (예: min_outer, max_outer)
-            cat_min = request.args.get(f'min_{eng_key}', type=int)
-            cat_max = request.args.get(f'max_{eng_key}', type=int)
-
+            # ---------------------------------------------------------------------
+            # [유사도 계산] 1:1 매칭 & 요청하신 가중치 적용
+            # ---------------------------------------------------------------------
             target_idx = target_item_map[kor_val]
 
-            # 유사도 계산 (벡터 내적)
-            sim_name = master_data['name_vecs'] @ master_data['name_vecs'][target_idx]
-            sim_brand = master_data['brand_vecs'] @ master_data['brand_vecs'][target_idx]
-            sim_img = master_data['img_vecs'] @ master_data['img_vecs'][target_idx]
-            sim_cat = master_data['cat_vecs'] @ master_data['cat_vecs'][target_idx]
+            t_name = master_data['name_vecs'][target_idx]
+            t_brand = master_data['brand_vecs'][target_idx]
+            t_img = master_data['img_vecs'][target_idx]
+            t_cat = master_data['cat_vecs'][target_idx]
 
-            # 가중치 적용 점수
+            sim_name = master_data['name_vecs'] @ t_name
+            sim_brand = master_data['brand_vecs'] @ t_brand
+            sim_img = master_data['img_vecs'] @ t_img
+            sim_cat = master_data['cat_vecs'] @ t_cat
+
+            # 가중치: 이미지(0.6) + 이름(0.1) + 브랜드(0.1) + 카테고리(0.1)
             final_scores = (sim_name * 0.1) + (sim_brand * 0.1) + (sim_img * 0.6) + (sim_cat * 0.1)
 
-            # [카테고리별 가격 필터 마스크 생성]
-            price_mask = np.ones(len(master_data['prices']), dtype=bool)
-            if cat_min is not None:
-                price_mask &= (master_data['prices'] >= cat_min)
-            if cat_max is not None:
-                price_mask &= (master_data['prices'] <= cat_max)
-
-            # 카테고리 일치 + 가격 필터 동시 적용
-            combined_mask = (master_data['cats'] == kor_val) & price_mask
-            cat_scores = final_scores[combined_mask]
-            cat_real_indices = np.where(combined_mask)[0]
+            # 필터링
+            cat_mask = (master_data['cats'] == kor_val)
+            cat_scores = final_scores[cat_mask]
             
             if len(cat_scores) == 0:
                 final_response["items"][eng_key] = []
                 continue
 
-            # 상위 100개 중 랜덤으로 선택
+            cat_real_indices = np.where(cat_mask)[0]
             sorted_indices = np.argsort(cat_scores)[::-1][:100]
             selected_local = np.random.choice(sorted_indices, min(5, len(sorted_indices)), replace=False)
             
             items_list = []
+            
+            print(f"   📂 [{kor_val}] 추천 점수 (가중치: Img 0.6 / 나머지 0.1)")
+            
             for loc_idx in selected_local:
                 original_idx = cat_real_indices[loc_idx]
                 p_id = int(master_data['ids'][original_idx])
+                p_name = str(master_data['names'][original_idx])
+                p_img_origin = str(master_data['imgs'][original_idx])
                 
-                # 누끼 이미지 처리
+                # 로그 출력
+                s_total = final_scores[original_idx]
+                s_n = sim_name[original_idx]
+                s_b = sim_brand[original_idx]
+                s_i = sim_img[original_idx]
+                s_c = sim_cat[original_idx]
+                print(f"      👉 [{p_name[:10]}..] 총점:{s_total:.3f} (Img:{s_i:.2f} B:{s_b:.2f} N:{s_n:.2f} C:{s_c:.2f})")
+
+                # ==========================================================
+                # [수정됨] 누끼 처리: 조건 없이 파일 없으면 무조건 생성!
+                # ==========================================================
                 processed_filename = f"nobg_{p_id}.png"
                 processed_file_path = os.path.join(PROCESSED_DIR, processed_filename)
                 
                 if os.path.exists(processed_file_path):
                     final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
+                    is_processed = True
                 else:
-                    success = process_and_save_image(master_data['imgs'][original_idx], processed_file_path)
+                    # 🚀 셔플 여부 관계없이 무조건 실행
+                    print(f"         ✂️ [누끼] {p_id}...", end="")
+                    success = process_and_save_image(p_img_origin, processed_file_path)
                     if success:
+                        print(" 완료")
                         final_img_url = f"{request.host_url}static/processed_imgs/{processed_filename}"
+                        is_processed = True
                     else:
-                        final_img_url = master_data['imgs'][original_idx]
+                        print(" 실패")
+                        final_img_url = p_img_origin
+                        is_processed = False
+                # ==========================================================
 
                 items_list.append({
                     "product_id": p_id,
-                    "product_name": str(master_data['names'][original_idx]),
+                    "product_name": p_name,
                     "price": int(master_data['prices'][original_idx]),
                     "img_url": final_img_url,
                     "category": kor_val,
@@ -177,7 +212,9 @@ def get_recommendations():
             
             final_response["items"][eng_key] = items_list
 
-        return jsonify(final_response)
+        response = jsonify(final_response)
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        return response
 
     except Exception as e:
         print(f"❌ API 에러 발생: {e}")
