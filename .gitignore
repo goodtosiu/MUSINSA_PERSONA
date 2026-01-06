@@ -4,3 +4,4 @@ musinsa_web/
 *.jpg
 *.jpeg
 *.pkl
+*.env
