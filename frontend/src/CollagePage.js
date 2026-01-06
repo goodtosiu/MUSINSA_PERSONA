@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CollagePage.css';
 
-// [수정] props에 currentPrices(가격 설정값)를 추가로 받습니다.
-const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackToMain, onBackToResult }) => {
+const CollagePage = ({ result, products, currentOutfitId, onBackToMain }) => {
   const [displayItems, setDisplayItems] = useState(products);
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -18,7 +17,7 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
   // 버튼 호버 상태
   const [hoveredBtn, setHoveredBtn] = useState(null);
 
-  // [NEW] 셔플 로딩 상태 관리
+  // [NEW] 셔플 로딩 상태 관리 (카테고리별로 로딩 중인지 체크)
   const [shuffleLoading, setShuffleLoading] = useState({
     outer: false, top: false, bottom: false, shoes: false, acc: false
   });
@@ -29,31 +28,25 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
     }
   }, [products]);
 
-  // 셔플 핸들러 [수정됨: 가격 필터 파라미터 추가]
+  // 셔플 핸들러
   const handleShuffle = async (category) => {
     try {
+      // 1. 로딩 상태 시작 (해당 카테고리만 true)
       setShuffleLoading(prev => ({ ...prev, [category]: true }));
-      
-      // 모든 카테고리의 가격 필터 정보를 객체로 구성
-      const priceParams = {};
-      if (currentPrices) {
-        Object.keys(currentPrices).forEach(cat => {
-          priceParams[`min_${cat}`] = currentPrices[cat].min;
-          priceParams[`max_${cat}`] = currentPrices[cat].max;
-        });
-      }
 
+      // 2. 서버 요청 (해당 카테고리만 누끼 따오라고 요청)
       const response = await axios.get(`http://127.0.0.1:5000/api/products`, {
         params: {
           persona: result,
           outfit_id: currentOutfitId,
           category: category, 
-          _t: Date.now(),
-          ...priceParams // 기존 설정된 가격 필터들을 파라미터에 포함
+          _t: Date.now()
         }
       });
 
       const newItemsData = response.data.items;
+      
+      // 3. 데이터 업데이트
       if (newItemsData && newItemsData[category]) {
         setDisplayItems(prev => ({
           ...prev, 
@@ -64,6 +57,7 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
       console.error("셔플 실패:", error);
       alert("데이터를 불러오지 못했습니다.");
     } finally {
+      // 4. 로딩 종료
       setShuffleLoading(prev => ({ ...prev, [category]: false }));
     }
   };
@@ -101,13 +95,18 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
     e.stopPropagation();
     const target = selectedItems.find(item => item.instanceId === instanceId);
     if (!target) return;
+
     setIsDragging(true);
     setDragTarget(instanceId);
     setOffset({ x: e.clientX - target.x, y: e.clientY - target.y });
+
     const nextZ = maxZ + 1;
     setMaxZ(nextZ);
+    
     setSelectedItems(prev => prev.map(item => 
-      item.instanceId === instanceId ? { ...item, zIndex: nextZ } : item
+      item.instanceId === instanceId 
+      ? { ...item, zIndex: nextZ } 
+      : item
     ));
   };
 
@@ -140,6 +139,8 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
     ));
   };
 
+  const CAT_KO = { outer: "아우터", top: "상의", bottom: "바지", shoes: "신발", acc: "액세서리" };
+
   return (
     <div className="advanced-collage-layout dark-theme" onMouseUp={handleMouseUp}>
       <section className="left-canvas-area">
@@ -147,7 +148,6 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
           <div className="button-group">
             <button className="btn-secondary" onClick={onBackToMain}>메인으로</button>
             <button className="btn-secondary" onClick={() => setSelectedItems([])}>캔버스 초기화</button>
-            <button className="btn-secondary" onClick={onBackToResult}>이전으로</button>
           </div>
           <p className="instruction"> 드래그: 배치 / 휠: 크기 조절 / 우클릭: 삭제</p>
         </div>
@@ -188,6 +188,7 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
           <div key={cat} className="cat-section">
             <div className="cat-header">
               <span className="cat-name">{cat.toUpperCase()}</span>
+              {/* 버튼 표시 조건: 로딩 중이 아니고 & 데이터가 있을 때 */}
               {(!shuffleLoading[cat] && displayItems && displayItems[cat]?.length > 0) && (
                 <button 
                   className="shuffle-btn"
@@ -210,9 +211,15 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
             </div>
 
             <div className="item-grid">
+              {/* [렌더링 로직 분기] */}
+              
+              {/* Case 1: 로딩 중이면? -> 빈 화면 (기존 상품 지움) */}
               {shuffleLoading[cat] ? (
-                <div className="empty-msg-box" style={{ minHeight: '150px' }}></div>
+                <div className="empty-msg-box" style={{ minHeight: '150px' }}>
+                  {/* 필요시 <p>새로운 스타일을 찾는 중...</p> */}
+                </div>
               ) : (
+                // Case 2: 로딩 끝났는데 데이터가 있으면? -> 상품 리스트 출력
                 (displayItems && displayItems[cat] && displayItems[cat].length > 0) ? (
                   displayItems[cat].map(item => (
                     <div 
@@ -230,6 +237,7 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
                     </div>
                   ))
                 ) : (
+                  // Case 3: 로딩 끝났는데 데이터가 0개면? -> "추천 안 함" 메시지
                   <div className="empty-msg-box" style={{ padding: '30px', color: '#888', textAlign: 'center', fontSize: '0.9rem' }}>
                     <p>🚫 해당 조합에서는<br/>추천되지 않는 항목입니다.</p>
                   </div>
