@@ -35,7 +35,7 @@ function App() {
       }
     }));
   };
-    
+
   // 퀴즈 시작 핸들러
   const handleStart = () => {
     setStep('question');
@@ -194,7 +194,6 @@ function App() {
                 <input 
                   type="number" 
                   placeholder="최대"
-                  step="5000"
                   value={prices[cat].max}
                   step="5000"
                   onChange={(e) => handlePriceChange(cat, 'max', e.target.value)}
