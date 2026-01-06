@@ -10,27 +10,11 @@ function App() {
   const [history, setHistory] = useState([]);
   const [result, setResult] = useState("");
   
-  // 서버 데이터 상태 관리
+  // [수정] 서버 데이터 상태 관리
   const [recommendedProducts, setRecommendedProducts] = useState(null); 
-  const [currentOutfitId, setCurrentOutfitId] = useState(null); 
+  const [currentOutfitId, setCurrentOutfitId] = useState(null); // 셔플을 위한 Outfit ID 저장
+  
   const [isLoading, setIsLoading] = useState(false);
-
-  // 카테고리별 가격 상태 관리
-  const [prices, setPrices] = useState({
-    outer: { min: '', max: '' },
-    top: { min: '', max: '' },
-    bottom: { min: '', max: '' },
-    shoes: { min: '', max: '' },
-    acc: { min: '', max: '' }
-  });
-
-  // 가격 입력 핸들러
-  const handlePriceChange = (cat, type, value) => {
-    setPrices(prev => ({
-      ...prev,
-      [cat]: { ...prev[cat], [type]: value }
-    }));
-  };
 
   // 퀴즈 시작 핸들러
   const handleStart = () => {
@@ -39,17 +23,10 @@ function App() {
     setScores(Object.fromEntries(personas.map(p => [p, 0])));
     setHistory([]);
     setRecommendedProducts(null);
-    setCurrentOutfitId(null);
-    setPrices({
-      outer: { min: '', max: '' },
-      top: { min: '', max: '' },
-      bottom: { min: '', max: '' },
-      shoes: { min: '', max: '' },
-      acc: { min: '', max: '' }
-    });
+    setCurrentOutfitId(null); // 초기화
   };
 
-  // Flask에서 추천 데이터 가져오는 함수
+  // [수정] Flask에서 추천 데이터 가져오는 함수
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
@@ -63,14 +40,16 @@ function App() {
       if (!res.ok) throw new Error("서버 응답 에러");
       
       const data = await res.json();
-      
+
+      // 2. 변경된 데이터 구조 처리 ({ current_outfit_id, items })
       if (data.items) {
-        setRecommendedProducts(data.items);
-        setCurrentOutfitId(data.current_outfit_id);
+        setRecommendedProducts(data.items); // 상품 리스트 저장
+        setCurrentOutfitId(data.current_outfit_id); // 셔플용 ID 저장
         setStep('collage');
       } else {
-        alert("추천 결과를 가져오는데 실패했습니다.");
+        alert("추천 상품을 불러오는데 문제가 발생했습니다.");
       }
+
     } catch (err) {
       console.error(err);
       alert("서버 연결에 실패했습니다. Flask 서버가 실행 중인지 확인해주세요.");
@@ -195,6 +174,7 @@ function App() {
                 <input 
                   type="number" 
                   placeholder="최대"
+                  step="5000"
                   value={prices[cat].max}
                   step="5000"
                   onChange={(e) => handlePriceChange(cat, 'max', e.target.value)}
@@ -218,8 +198,7 @@ function App() {
         <CollagePage 
           result={result} 
           products={recommendedProducts} 
-          currentOutfitId={currentOutfitId}
-          currentPrices={prices} 
+          currentOutfitId={currentOutfitId} // [추가] 셔플을 위해 ID 전달
           onBackToMain={() => setStep('main')}
           onBackToResult={() => setStep('price_setting')}
         />
