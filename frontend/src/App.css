@@ -1,24 +1,45 @@
-/* 1. 전체 초기화 및 기본 블랙 테마 */
+/* ==========================================================
+   1. 무신사 브랜드 폰트 등록
+   ========================================================== */
+@font-face {
+  font-family: 'MusinsaFont';
+  src: url('./assets/fonts/musinsa-Light.ttf') format('truetype');
+  font-weight: 200;
+}
+@font-face {
+  font-family: 'MusinsaFont';
+  src: url('./assets/fonts/musinsa-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'MusinsaFont';
+  src: url('./assets/fonts/musinsa-Bold.ttf') format('truetype');
+  font-weight: 800;
+}
+
+/* ==========================================================
+   2. 전체 초기화 및 기본 레이아웃
+   ========================================================== */
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  font-family: 'MusinsaFont', sans-serif;
 }
 
 body, html {
-  background-color: #000 !important;
+  margin: 0; padding: 0;
+  background-color: #000;
   color: #fff;
-  font-family: 'Pretendard', sans-serif;
   overflow-x: hidden;
+  height: 100%;
 }
 
-/* 2. 전체 앱 컨테이너 */
 .App {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #000;
+  text-align: center;
 }
 
 /* 3. 로고 및 메인 페이지 텍스트 */
@@ -41,7 +62,6 @@ body, html {
   cursor: pointer; transition: 0.3s; display: inline-block;
   transform: translateX(-15px);
 }
-.start-btn:hover { background: #eb003b; color: #fff; }
 
 .secondary-btn {
   background: transparent;
@@ -54,23 +74,20 @@ body, html {
   transform: translateX(-15px);
 }
 
-/* 5. 질문지 및 진행바 */
-.question-container { 
-  width: 95%; 
-  max-width: 700px; 
-  text-align: center; 
-  margin: 0 auto;
-  padding: 40px 20px
+.main-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5.0rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  line-height: 1.2;
 }
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background: #222;
-  margin-bottom: 40px;
-  border-radius: 10px;
-  overflow: hidden;
+
+.main-title .separator {
+  font-weight: 200;
+  margin: 0 25px;
 }
-.progress { height: 100%; background: #fff; transition: 0.3s; }
 
 .ans-btn {
   background: #1a1a1a;
@@ -83,232 +100,191 @@ body, html {
   border-radius: 8px;
   transition: all 0.2s ease;
 }
-.ans-btn:hover {
-  border-color: #fff;
-  background: #222;
-  transform: translateY(-2px);
-}
 
-.question-text {
-  font-size: 2.2rem;
+.description .strong {
+  display: block;
   font-weight: 800;
-  color: #fff;
-  line-height: 1.4;
-  margin: 60px 0 80px 0;
-  word-break: keep-all;
 }
 
+/* ==========================================================
+   4. 답변 버튼 시스템 (크기 고정 및 정렬)
+   ========================================================== */
+
+/* [추가] 질문지 페이지의 질문 텍스트 */
+.question-text {
+  font-size: 2.45rem;
+  font-weight: 800;
+  margin: 50px 0px;
+  line-height: 1.4;
+  word-break: keep-all;
+  color: #fff;
+}
+
+/* 답변 버튼들을 감싸는 영역 */
 .answer-group {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  width: 100%;
+  gap: 18px; /* 버튼 사이 간격 */
+  align-items: stretch; 
 }
 
-.q-count {
+/* 선택지 버튼 (높이 88px 고정) */
+.ans-btn {
+  width: 100%;
+  height: 88px; 
+  padding: 0 26px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.15rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+  line-height: 1.2;
+  transition: background-color 0.2s;
+}
+
+.ans-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* 메인 시작 및 확인 버튼 */
+.start-btn {
+  width: 100%;
+  max-width: 450px;
+  min-height: 80px;
+  padding: 20px;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #fff;
+  border-radius: 12px;
+  font-size: 1.15rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.start-btn:hover {
+  background-color: #f3f4f6;
+  transform: scale(1.02);
+}
+
+.secondary-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #9ca3af;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* ==========================================================
+   5. 결과 및 예산 설정 컨테이너
+   ========================================================== */
+.result-container, .price-setting-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 50px 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.result-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 20px 0;
+}
+
+.persona-desc {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #ccc;
+  margin-bottom: 40px;
+  font-weight: 200;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.category-label {
+  width: 90px;
+  color: #eee;
+  font-weight: 800;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.price-input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
   font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 10px;
+  outline: none;
 }
 
-/* 6. 결과 페이지 */
-.result-title { font-size: 3.5rem; margin: 20px 0; font-weight: 800; }
-
-/* 7. 콜라주 페이지 (개선된 가시성 버전) */
+/* ==========================================================
+   6. 콜라주 페이지 및 애니메이션
+   ========================================================== */
 .collage-container {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background:  #000;
-  align-items: center;
 }
 
 .canvas-area {
-  width: 46vw; 
-  height: 92vh;       
-  margin: 4vh 2vw;         
-  position: relative;
-  background-color: #f2f2f2; 
-  border-radius: 20px;   
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  border: none;
+  width: 100%;
+  height: 85%;
+  background-color: #fff;
+  border-radius: 24px;
+  border: 1px solid #e5e7eb;
 }
 
-.canvas-hint {
-  position: absolute; 
-  top: 50%; 
-  left: 50%;
-  transform: translate(-50%, -50%); 
-  color: #888;
-  pointer-events: none;
-  font-size: 0.9rem; 
-  text-align: center;
-}
-
-/* 상품 리스트 영역을 버튼 위까지만 차지하도록 조정 */
-.category-scroll-area {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 0; 
-  padding-bottom: 20px;
-}
-
-/* 사이드바 가시성 강화 */
 .product-sidebar {
-  width: 50vw;
-  height: 100vh;
-  padding: 30px 30px 0 30px;
-  background: #000;
-  overflow-y: auto;
+  flex: 1;
+  background-color: #000;
   display: flex;
   flex-direction: column;
+  padding: 24px;
+  border-left: 1px solid #1f2937;
 }
 
-.sidebar-title {
-  font-size: 1.8rem;
-  font-weight: 900;
-  margin-bottom: 25px;
-  color: #fff;
-  border-left: 5px solid #eb003b;
-  padding-left: 15px;
-}
-
-/* 카테고리명 큼직하게 수정 */
-.category-name {
-  font-size: 1.4rem; 
-  font-weight: 800;
-  color: #fff;
-  margin: 30px 0 15px 0;
-}
-
-.img-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.img-wrapper {
-  position: relative;
+.decision-btn {
   width: 100%;
-  aspect-ratio: 1/1;
-  background: #111; /* 배경을 어둡게 변경 */
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid #222;
-}
-
-/* 기준 상품 가시성 극대화 */
-.target-highlight {
-  border: 3px solid #eb003b !important; /* 무신사 레드 테두리 */
-  box-shadow: 0 0 15px rgba(235, 0, 59, 0.4);
-}
-
-.target-badge {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #eb003b;
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  font-weight: bold;
-  z-index: 5;
-  border-bottom-right-radius: 6px;
-}
-
-.draggable-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  cursor: grab;
-  transition: 0.2s;
-}
-.draggable-img:hover { transform: scale(1.05); }
-
-/* 캔버스 내 이미지 스타일 */
-.placed-img {
-  position: absolute;
-  width: 150px;
-  cursor: grab;
-  transform: translate(-50%, -50%);
-  user-select: none;
-  transition: outline 0.1s;
-}
-.placed-img:hover {
-  outline: 2px solid #eb003b;
-  outline-offset: 2px;
-}
-
-/* 하단 버튼 그룹 가시성 및 레이아웃 복구 */
-.sidebar-action-group {
-  flex-shrink: 0;
-  margin-left: -30px;
-  margin-right: -30px;
-  padding: 20px 30px 30px 30px;
-  background: #000; 
-  border-top: 1px solid #222;
-  z-index: 100;
-}
-
-.checkout-btn {
-  width: 100%;
-  background-color: #eb003b !important;
-  color: #fff !important;
+  min-height: 60px; 
+  padding: 12px 26px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 12px;
   border: none;
-  padding: 18px !important;
-  font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-.checkout-btn:hover { background-color: #ff1a53; transform: translateY(-2px); }
-
-.sub-btn-row {
-  display: flex;
-  gap: 10px;
 }
 
-.action-btn {
-  flex: 1;
-  background-color: #1a1a1a !important;
-  color: #fff !important;
-  border: 1px solid #333 !important;
-  padding: 14px !important;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 6px;
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
-.action-btn:hover {
-  background-color: #252525;
-  color: #fff;
-  border-color: #555;
-}
-
-/* 애니메이션 */
-.fade-in { animation: fadeIn 0.6s forwards; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.back-btn {
-  background: transparent;
-  color: #444;
-  border: 1px solid #222;
-  margin-top: 30px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: 0.3s;
-}
-.back-btn:hover { color: #fff; border-color: #555; }
-
-.persona-desc {
-  color: #aaa;      
-  font-size: 1.1rem;
-  line-height: 1.6;
-  max-width: 400px;
-  margin: 0 auto 40px;
-  word-break: keep-all;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
