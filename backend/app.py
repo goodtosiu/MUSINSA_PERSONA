@@ -103,6 +103,8 @@ def get_recommendations():
         CATEGORY_MAP = {"outer": "아우터", "top": "상의", "bottom": "바지", "shoes": "신발", "acc": "액세서리"}
         final_response = { "current_outfit_id": selected_outfit, "items": {} }
 
+        print(f"\n🚀 [추천 시작] 페르소나: {persona} | 코디 ID: {selected_outfit}")
+
         # [STEP 3] 각 카테고리별로 개별 가격 필터 적용 및 추출
         for eng_key, kor_val in CATEGORY_MAP.items():
             # 셔플 요청 시 특정 카테고리만 처리하도록 필터링
@@ -115,10 +117,16 @@ def get_recommendations():
                 continue
 
             # 해당 카테고리의 전용 가격 파라미터 수신 (예: min_outer, max_outer)
+            target_idx = target_item_map[kor_val]
+
+            # --- [추가된 로그: 카테고리별 대표(Target) 상품 정보] ---
+            print(f"\n--- Category: {kor_val} ({eng_key}) ---")
+            print(f"📍 대표 상품(Target): [ID: {master_data['ids'][target_idx]}] {master_data['names'][target_idx]}")
+            # --------------------------------------------------
+
             cat_min = request.args.get(f'min_{eng_key}', type=int)
             cat_max = request.args.get(f'max_{eng_key}', type=int)
 
-            target_idx = target_item_map[kor_val]
 
             # 유사도 계산 (벡터 내적)
             sim_name = master_data['name_vecs'] @ master_data['name_vecs'][target_idx]
@@ -147,13 +155,22 @@ def get_recommendations():
 
             # 상위 100개 중 랜덤으로 선택
             sorted_indices = np.argsort(cat_scores)[::-1][:100]
+            print(f"🔍 후보 상품 수: {len(cat_scores)}개 (상위 100개 중 5개 무작위 추출)")
+
             selected_local = np.random.choice(sorted_indices, min(5, len(sorted_indices)), replace=False)
             
             items_list = []
+            print(f"✨ 최종 추천된 상품 리스트:")
+
             for loc_idx in selected_local:
                 original_idx = cat_real_indices[loc_idx]
                 p_id = int(master_data['ids'][original_idx])
+                score = cat_scores[loc_idx]  # 해당 상품의 유사도 점수
+                p_name = str(master_data['names'][original_idx])
                 
+                # --- [추가된 로그: 선택된 상품별 상세 정보] ---
+                print(f"   - [Score: {score:.4f}] ID: {p_id} | {p_name}")
+                # ------------------------------------------
                 # 누끼 이미지 처리
                 processed_filename = f"nobg_{p_id}.png"
                 processed_file_path = os.path.join(PROCESSED_DIR, processed_filename)

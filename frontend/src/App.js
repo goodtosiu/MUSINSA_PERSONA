@@ -30,8 +30,15 @@ function App() {
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      // 1. 결과 페르소나를 쿼리 스트링으로 전달
-      const res = await fetch(`http://127.0.0.1:5000/api/products?persona=${result}`);
+      const priceParams = Object.keys(prices).map(cat => 
+        `min_${cat}=${prices[cat].min}&max_${cat}=${prices[cat].max}`
+      ).join('&');
+
+      const url = `http://127.0.0.1:5000/api/products?persona=${result}&${priceParams}`;
+      const res = await fetch(url);
+      
+      if (!res.ok) throw new Error("서버 응답 에러");
+      
       const data = await res.json();
 
       // 2. 변경된 데이터 구조 처리 ({ current_outfit_id, items })
@@ -99,17 +106,29 @@ function App() {
         </div>
       )}
 
-      {/* 질문 화면 */}
+      {/* 질문 화면 (진행 바 통합 버전) */}
       {step === 'question' && (
         <div className="question-container fade-in">
-          <div className="progress-bar">
-            <div className="progress" style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}></div>
+          {/* 상단 진행 바 영역 */}
+          <div className="progress-area">
+            <div className="progress-bar">
+              <div 
+                className="progress" 
+                style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}
+              ></div>
+            </div>
+            <p className="q-count">
+              <span className="current">{currentIdx + 1}</span> / {questions.length}
+            </p>
           </div>
-          <p className="q-count">{currentIdx + 1} / {questions.length}</p>
+
           <h2 className="question-text">{questions[currentIdx].q}</h2>
+          
           <div className="answer-group">
             {questions[currentIdx].a.map((ans, i) => (
-              <button key={i} className="ans-btn" onClick={() => handleAnswer(ans.score)}>{ans.text}</button>
+              <button key={i} className="ans-btn" onClick={() => handleAnswer(ans.score)}>
+                {ans.text}
+              </button>
             ))}
           </div>
           <button className="back-btn" onClick={handleBack}>이전 질문으로</button>
@@ -157,6 +176,7 @@ function App() {
                   placeholder="최대"
                   step="5000"
                   value={prices[cat].max}
+                  step="5000"
                   onChange={(e) => handlePriceChange(cat, 'max', e.target.value)}
                   style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #444', background: '#222', color: '#fff', fontSize: '0.9rem' }}
                 />
@@ -173,7 +193,7 @@ function App() {
         </div>
       )}
 
-      {/* 콜라주 페이지: (중요) currentPrices 프롭스를 추가로 전달합니다 */}
+      {/* 콜라주 페이지 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
