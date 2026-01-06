@@ -177,6 +177,7 @@ function App() {
                   type="number" 
                   placeholder="최소"
                   value={prices[cat].min}
+                  step="5000"
                   onChange={(e) => handlePriceChange(cat, 'min', e.target.value)}
                   style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #444', background: '#222', color: '#fff', fontSize: '0.9rem' }}
                 />
@@ -185,6 +186,7 @@ function App() {
                   type="number" 
                   placeholder="최대"
                   value={prices[cat].max}
+                  step="5000"
                   onChange={(e) => handlePriceChange(cat, 'max', e.target.value)}
                   style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #444', background: '#222', color: '#fff', fontSize: '0.9rem' }}
                 />
