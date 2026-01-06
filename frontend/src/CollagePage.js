@@ -142,13 +142,10 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
 
   return (
     <div className="advanced-collage-layout dark-theme" onMouseUp={handleMouseUp}>
+      {/* 왼쪽: 캔버스 영역 (상단 버튼과 하단 구매 버튼 삭제) */}
       <section className="left-canvas-area">
         <div className="canvas-header">
-          <div className="button-group">
-            <button className="btn-secondary" onClick={onBackToMain}>메인으로</button>
-            <button className="btn-secondary" onClick={() => setSelectedItems([])}>캔버스 초기화</button>
-            <button className="btn-secondary" onClick={onBackToResult}>이전으로</button>
-          </div>
+          {/* 가이드 문구만 남겨둠 */}
           <p className="instruction"> 드래그: 배치 / 휠: 크기 조절 / 우클릭: 삭제</p>
         </div>
 
@@ -179,9 +176,9 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
             </div>
           ))}
         </div>
-        <button className="buy-red-btn" onClick={() => alert("구매 페이지로 이동!")}>선택 조합 구매하기</button>
       </section>
 
+      {/* 오른쪽: 리스트 영역 (하단에 버튼들 추가) */}
       <section className="right-list-area">
         <h2 className="sidebar-title">STYLE PIECES</h2>
         {['outer', 'top', 'bottom', 'shoes', 'acc'].map(cat => (
@@ -238,6 +235,27 @@ const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackT
             </div>
           </div>
         ))}
+
+        {/* --- 여기서부터 이동된 버튼들 --- */}
+        <hr style={{ border: '0.5px solid #333', margin: '40px 0 20px 0' }} />
+        
+        <div className="action-button-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '0 20px 40px 20px' }}>
+          {/* 상단에 있던 내비게이션 버튼들 */}
+          <div className="button-group" style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+            <button className="btn-secondary" onClick={onBackToMain} style={{ flex: 1 }}>메인으로</button>
+            <button className="btn-secondary" onClick={() => setSelectedItems([])} style={{ flex: 1 }}>캔버스 초기화</button>
+            <button className="btn-secondary" onClick={onBackToResult} style={{ flex: 1 }}>이전으로</button>
+          </div>
+
+          {/* 구매 버튼 */}
+          <button 
+            className="buy-red-btn" 
+            onClick={() => alert("구매 페이지로 이동!")}
+            style={{ width: '100%', marginTop: '10px' }}
+          >
+            선택 조합 구매하기
+          </button>
+        </div>
       </section>
     </div>
   );
