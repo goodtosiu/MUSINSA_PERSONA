@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CollagePage.css';
 
-// [수정] props에 onBackToResult를 추가로 받습니다.
-const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackToResult }) => {
+// [수정] props에 currentPrices(가격 설정값)를 추가로 받습니다.
+const CollagePage = ({ result, products, currentOutfitId, currentPrices, onBackToMain, onBackToResult }) => {
   const [displayItems, setDisplayItems] = useState(products);
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -29,18 +29,30 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
     }
   }, [products]);
 
-  // 셔플 핸들러
+  // 셔플 핸들러 [수정됨: 가격 필터 파라미터 추가]
   const handleShuffle = async (category) => {
     try {
       setShuffleLoading(prev => ({ ...prev, [category]: true }));
+      
+      // 모든 카테고리의 가격 필터 정보를 객체로 구성
+      const priceParams = {};
+      if (currentPrices) {
+        Object.keys(currentPrices).forEach(cat => {
+          priceParams[`min_${cat}`] = currentPrices[cat].min;
+          priceParams[`max_${cat}`] = currentPrices[cat].max;
+        });
+      }
+
       const response = await axios.get(`http://127.0.0.1:5000/api/products`, {
         params: {
           persona: result,
           outfit_id: currentOutfitId,
           category: category, 
-          _t: Date.now()
+          _t: Date.now(),
+          ...priceParams // 기존 설정된 가격 필터들을 파라미터에 포함
         }
       });
+
       const newItemsData = response.data.items;
       if (newItemsData && newItemsData[category]) {
         setDisplayItems(prev => ({
@@ -135,8 +147,6 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
           <div className="button-group">
             <button className="btn-secondary" onClick={onBackToMain}>메인으로</button>
             <button className="btn-secondary" onClick={() => setSelectedItems([])}>캔버스 초기화</button>
-            
-            {/* [수정 부분] 부모로부터 받은 onBackToResult 함수를 호출하여 'result' 스텝으로 돌아갑니다. */}
             <button className="btn-secondary" onClick={onBackToResult}>이전으로</button>
           </div>
           <p className="instruction"> 드래그: 배치 / 휠: 크기 조절 / 우클릭: 삭제</p>

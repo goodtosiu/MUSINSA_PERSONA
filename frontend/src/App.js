@@ -58,6 +58,7 @@ function App() {
         `min_${cat}=${prices[cat].min}&max_${cat}=${prices[cat].max}`
       ).join('&');
 
+      // (중요) 첫 로딩 시에도 가격 필터를 포함하여 요청
       const url = `http://127.0.0.1:5000/api/products?persona=${result}&${priceParams}`;
       const res = await fetch(url);
       
@@ -91,7 +92,7 @@ function App() {
     } else {
       const sorted = Object.keys(newScores).sort((a, b) => newScores[b] - newScores[a]);
       setResult(sorted[0]);
-      setStep('result'); // 퀴즈가 끝나면 먼저 결과 설명 창으로 이동
+      setStep('result'); 
     }
   };
 
@@ -200,14 +201,15 @@ function App() {
         </div>
       )}
 
-      {/* 콜라주 페이지 */}
+      {/* 콜라주 페이지: (중요) currentPrices 프롭스를 추가로 전달합니다 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
           products={recommendedProducts} 
           currentOutfitId={currentOutfitId}
+          currentPrices={prices} 
           onBackToMain={() => setStep('main')}
-          onBackToResult={() => setStep('price_setting')} // CollagePage에서 이전 버튼 누를 시 가격 설정 창으로 복귀
+          onBackToResult={() => setStep('price_setting')}
         />
       )}
     </div>

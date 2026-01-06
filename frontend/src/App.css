@@ -1,18 +1,16 @@
 /* ==========================================================
-   1. 무신사 폰트 등록 (@font-face)
+   1. 무신사 브랜드 폰트 등록
    ========================================================== */
 @font-face {
   font-family: 'MusinsaFont';
   src: url('./assets/fonts/musinsa-Light.ttf') format('truetype');
   font-weight: 200;
 }
-
 @font-face {
   font-family: 'MusinsaFont';
   src: url('./assets/fonts/musinsa-Medium.ttf') format('truetype');
   font-weight: 500;
 }
-
 @font-face {
   font-family: 'MusinsaFont';
   src: url('./assets/fonts/musinsa-Bold.ttf') format('truetype');
@@ -20,18 +18,16 @@
 }
 
 /* ==========================================================
-   2. 전체 초기화 및 중앙 정렬 레이아웃
+   2. 전체 초기화 및 기본 레이아웃
    ========================================================== */
 * {
   box-sizing: border-box;
-  font-family: 'MusinsaFont', sans-serif !important;
+  font-family: 'MusinsaFont', sans-serif;
 }
 
-body,
-html {
-  margin: 0;
-  padding: 0;
-  background-color: #000 !important;
+body, html {
+  margin: 0; padding: 0;
+  background-color: #000;
   color: #fff;
   overflow-x: hidden;
   height: 100%;
@@ -44,159 +40,199 @@ html {
   align-items: center;
   background-color: #000;
   text-align: center;
-  /* 전체 텍스트 중앙 정렬 */
 }
 
-/* 모든 요소를 감싸는 컨테이너 중앙 정렬 */
 .content-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 800px;
+  max-width: 700px;
   padding: 20px;
 }
 
 /* ==========================================================
-   3. 메인 페이지 컴포넌트 (중앙 정렬 및 자간 조정)
+   3. 메인 히어로 및 질문지 텍스트
    ========================================================== */
 .top-title {
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: 4px;
-  /* 글자 사이 간격 살짝 확대 */
-  margin-bottom: 15px;
-  color: #fff;
-  width: 100%;
+  margin-bottom: 0px;
 }
 
 .main-title {
   display: flex;
   justify-content: center;
-  /* MUSINSA X PERSONA 중앙 정렬 */
   align-items: center;
   font-size: 5.0rem;
-  margin-top: 0px;
-  margin-bottom: 50px;
-  color: #fff;
-  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
   line-height: 1.2;
-  /* 세로 자간 조정 */
-}
-
-.main-title .brand {
-  font-weight: 500;
 }
 
 .main-title .separator {
   font-weight: 200;
   margin: 0 25px;
-  /* X 좌우 간격 확대 */
 }
 
-/* [요청] 설명 문구 세로 자간(line-height) 확대 */
 .description {
   display: block;
   font-size: 1.25rem;
   font-weight: 200;
   line-height: 2.2;
-  /* 세로 자간을 넉넉하게 늘림 */
-  margin-bottom: 60px;
-  color: #fff;
-  width: 100%;
+  margin-bottom: 20px;
   word-break: keep-all;
 }
 
-.description strong {
+.description .strong {
   display: block;
   font-weight: 800;
-  margin-top: 5px;
 }
 
 /* ==========================================================
-   4. 버튼 규격 (확대 및 중앙 정렬)
+   4. 답변 버튼 시스템 (크기 고정 및 정렬)
    ========================================================== */
-.start-btn {
-  width: 100% !important;
-  max-width: 450px;
-  /* 시작 버튼은 너무 퍼지지 않게 너비 제한 */
-  min-height: 88px;
-  padding: 26px !important;
-  background-color: #fff !important;
-  color: #000 !important;
-  border: 1px solid #fff !important;
-  border-radius: 12px !important;
-  font-size: 1.15rem !important;
-  font-weight: 500 !important;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
-}
 
-.start-btn:hover {
-  background-color: #f3f4f6 !important;
-  transform: scale(1.02);
-}
-
-/* ==========================================================
-   5. 질문지 및 기타 (이전 설정 유지)
-   ========================================================== */
-.ans-btn {
-  width: 100% !important;
-  min-height: 88px;
-  padding: 26px !important;
-  background-color: #fff !important;
-  color: #000 !important;
-  border-radius: 12px !important;
-  font-size: 1.15rem !important;
-  font-weight: 500 !important;
-  margin-bottom: 16px;
-  cursor: pointer;
-}
-
+/* [추가] 질문지 페이지의 질문 텍스트 */
 .question-text {
-  font-size: 2.45rem !important;
+  font-size: 2.45rem;
   font-weight: 800;
-  margin: 50px 0;
+  margin: 50px 0px;
   line-height: 1.4;
+  word-break: keep-all;
+  color: #fff;
 }
 
+/* 답변 버튼들을 감싸는 영역 */
 .answer-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 18px;
+  gap: 18px; /* 버튼 사이 간격 */
+  align-items: stretch; 
 }
 
-.back-btn,
-.secondary-btn,
-.secondary-action-btn,
-.shuffle-btn {
-  background: none !important;
-  border: none !important;
-  color: #9ca3af !important;
-  font-size: 1rem !important;
-  text-decoration: underline !important;
+/* 선택지 버튼 (높이 88px 고정) */
+.ans-btn {
+  width: 100%;
+  height: 88px; 
+  padding: 0 26px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.15rem;
+  font-weight: 500;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+  line-height: 1.2;
+  transition: background-color 0.2s;
+}
+
+.ans-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* 메인 시작 및 확인 버튼 */
+.start-btn {
+  width: 100%;
+  max-width: 450px;
+  min-height: 80px;
+  padding: 20px;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #fff;
+  border-radius: 12px;
+  font-size: 1.15rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.start-btn:hover {
+  background-color: #f3f4f6;
+  transform: scale(1.02);
+}
+
+.secondary-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #9ca3af;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* ==========================================================
+   5. 결과 및 예산 설정 컨테이너
+   ========================================================== */
+.result-container, .price-setting-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 50px 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.result-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 20px 0;
+}
+
+.persona-desc {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #ccc;
+  margin-bottom: 40px;
   font-weight: 200;
 }
 
-/* CollagePage 배치는 기존 무너짐 방지값 유지 */
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.category-label {
+  width: 90px;
+  color: #eee;
+  font-weight: 800;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.price-input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+/* ==========================================================
+   6. 콜라주 페이지 및 애니메이션
+   ========================================================== */
 .collage-container {
   display: flex;
   width: 100vw;
   height: 100vh;
-}
-
-.canvas-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
 }
 
 .canvas-area {
@@ -216,65 +252,24 @@ html {
   border-left: 1px solid #1f2937;
 }
 
-.slider-container {
-  background-color: #fff;
-  border-radius: 16px;
-  padding: 16px;
-  height: 125px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.img-horizontal-scroll {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-}
-
-.img-wrapper {
-  width: 85px;
-  height: 85px;
-  background-color: #f9fafb;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .decision-btn {
-  width: 100% !important;
+  width: 100%;
   min-height: 60px; 
-  padding: 12px 26px !important;
-  background-color: #fff !important;
-  color: #000 !important;
-  border-radius: 12px !important;
-  
-  /* -------------------------------------------------- */
-  font-size: 1.2rem !important;  /* 기존 1.15rem에서 1.5rem으로 확대 */
-  /* -------------------------------------------------- */
-  
-  font-weight: 500 !important;   /* 결정 버튼은 더 굵게 강조 */
-  text-align: center;
+  padding: 12px 26px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 500;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
 }
 
 .fade-in {
-  animation: fadeIn 0.6s forwards;
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
