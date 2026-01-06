@@ -16,6 +16,26 @@ function App() {
   
   const [isLoading, setIsLoading] = useState(false);
 
+    // [수정 완료] 누락되었던 prices 상태 추가
+  const [prices, setPrices] = useState({
+    outer: { min: '', max: '' },
+    top: { min: '', max: '' },
+    bottom: { min: '', max: '' },
+    shoes: { min: '', max: '' },
+    accessory: { min: '', max: '' }
+  });
+
+  // [수정 완료] 누락되었던 handlePriceChange 함수 추가
+  const handlePriceChange = (category, type, value) => {
+    setPrices(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [type]: value
+      }
+    }));
+  };
+    
   // 퀴즈 시작 핸들러
   const handleStart = () => {
     setStep('question');
