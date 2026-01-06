@@ -74,7 +74,6 @@ def process_and_save_image(image_url, save_path):
 @app.route('/api/products', methods=['GET'])
 def get_recommendations():
     persona = request.args.get('persona')
-
     fixed_outfit_id = request.args.get('outfit_id')
     target_category_filter = request.args.get('category')
     
