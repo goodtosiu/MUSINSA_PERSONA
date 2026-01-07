@@ -7,3 +7,4 @@ musinsa_web/
 *.env
 *.json
 *.csv
+*.ipynb
