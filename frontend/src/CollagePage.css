@@ -38,12 +38,11 @@
   margin-bottom: 30px;
 }
 
-/* 캔버스 본체 - 세로 길이 15% 연장 */
-.collage-canvas.white-bg {
+/* 캔버스 본체 - 배경 이미지 노출을 위해 background-color: #fff !important; 제거함 */
+.collage-canvas {
   width: 560px !important;
   height: 805px !important; 
-  background-color: #fff !important;
-  border: 4px solid #fff !important;
+  border: 1px solid #fff !important;
   border-radius: 12px !important;
   position: relative !important;
   overflow: hidden !important;
@@ -102,7 +101,7 @@
   overflow: visible !important;
 }
 
-/* 아이템 카드 - 이미지와 가격이 하나의 흰 배경 안에 통합 */
+/* 아이템 카드 */
 .item-card {
   flex: 0 0 115px !important;
   display: flex;
@@ -129,7 +128,6 @@
   object-fit: contain; 
 }
 
-/* 가격 텍스트 커스텀 */
 .item-info { 
   display: block !important; 
   text-align: center; 
@@ -139,20 +137,13 @@
   color: #000 !important; 
   font-size: 0.83rem; 
   font-weight: 500; 
-  background: transparent !important; 
 }
 
-/* 구분선 위쪽 여백 축소 */
 hr {
   border: 0.5px solid #333;
   margin: 20px 0 20px 0 !important;
 }
 
-.action-button-group {
-  margin-top: 10px;
-}
-
-/* 보조 버튼들 */
 .btn-secondary {
   background: none !important;
   border: 1px solid rgba(255, 255, 255, 0.4) !important;
@@ -163,7 +154,6 @@ hr {
   cursor: pointer;
 }
 
-/* [수정 사항 반영] 구매하기 버튼 - 폰트 두께 대폭 감소 */
 .buy-red-btn {
   width: 100% !important;
   height: 52px !important; 
@@ -172,21 +162,14 @@ hr {
   border: none !important;
   border-radius: 12px !important; 
   font-size: 1.25rem !important;
-  /* 폰트 두께 수정: 기존 600(Semi-Bold)에서 400(Regular)으로 변경하여 더 얇게 만듦 */
   font-weight: 400 !important; 
   cursor: pointer;
   margin-top: 10px !important;
-  transition: all 0.2s;
 }
 
 .buy-red-btn:hover { background-color: #e5e5e5 !important; }
 
-/* [수정 사항 반영] 셔플 버튼 - 크기 고정 및 폰트 설정 */
 .shuffle-btn {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  /* 버튼 크기 자체를 48*15로 고정 */
   width: 70px !important;
   height: 25px !important;
   background: #222 !important;
@@ -194,8 +177,6 @@ hr {
   border: 1px solid #444 !important;
   border-radius: 6px !important;
   cursor: pointer;
-  /* 글씨 크기 21 및 굵기 감소(400) */
   font-size: 14px !important;
   font-weight: 400 !important;
-  padding: 0 !important; /* 고정 크기를 위해 패딩 제거 */
 }

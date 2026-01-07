@@ -1,63 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CollagePage.css';
+import { personaBackMap } from './data'; 
 
 const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackToResult }) => {
-  const [displayItems, setDisplayItems] = useState(products);
+  // [수정] 초기 데이터가 리스트로 올 경우를 대비해 분류 로직 추가
+  const [displayItems, setDisplayItems] = useState({
+    outer: [], top: [], bottom: [], shoes: [], acc: []
+  });
   const [selectedItems, setSelectedItems] = useState([]);
-
-  // 드래그 관련 상태
   const [isDragging, setIsDragging] = useState(false);
   const [dragTarget, setDragTarget] = useState(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  // 레이어(Z-Index)
   const [maxZ, setMaxZ] = useState(10); 
-  
-  // 버튼 호버 상태
-  const [hoveredBtn, setHoveredBtn] = useState(null);
-
-  // [NEW] 셔플 로딩 상태 관리 (카테고리별로 로딩 중인지 체크)
   const [shuffleLoading, setShuffleLoading] = useState({
     outer: false, top: false, bottom: false, shoes: false, acc: false
   });
 
+  // [중요 수정] 백엔드에서 온 리스트 형태의 products를 카테고리별 객체로 변환
   useEffect(() => {
-    if (products) {
-      setDisplayItems(products);
+    if (products && Array.isArray(products)) {
+      const grouped = { outer: [], top: [], bottom: [], shoes: [], acc: [] };
+      products.forEach(item => {
+        if (grouped[item.category]) {
+          grouped[item.category].push(item);
+        }
+      });
+      setDisplayItems(grouped);
+    } else if (products && typeof products === 'object') {
+      // 이미 객체 형태라면 그대로 설정
+      setDisplayItems(prev => ({ ...prev, ...products }));
     }
   }, [products]);
 
-  // 셔플 핸들러
+  const bgImageName = personaBackMap[result];
+  const bgPath = bgImageName ? `/backgrounds/${bgImageName}` : null;
+
+  // 셔플 핸들러 수정
   const handleShuffle = async (category) => {
     try {
-      // 1. 로딩 상태 시작 (해당 카테고리만 true)
       setShuffleLoading(prev => ({ ...prev, [category]: true }));
-
-      // 2. 서버 요청 (해당 카테고리만 누끼 따오라고 요청)
-      const response = await axios.get(`http://127.0.0.1:5000/api/products`, {
-        params: {
-          persona: result,
-          outfit_id: currentOutfitId,
-          category: category, 
-          _t: Date.now()
-        }
+      // app.py의 /api/recommend 엔드포인트를 POST로 호출 (일관성 유지)
+      const response = await axios.post(`http://127.0.0.1:5000/api/recommend`, {
+        persona: result,
+        prices: {} // 필요 시 여기에 현재 가격대 전달 가능
       });
 
-      const newItemsData = response.data.items;
-      
-      // 3. 데이터 업데이트
-      if (newItemsData && newItemsData[category]) {
+      const newItems = response.data.items;
+      if (newItems && Array.isArray(newItems)) {
+        // 셔플된 결과 중 해당 카테고리만 업데이트
+        const filtered = newItems.filter(it => it.category === category);
         setDisplayItems(prev => ({
           ...prev, 
-          [category]: newItemsData[category]
+          [category]: filtered.length > 0 ? filtered : prev[category]
         }));
       }
     } catch (error) {
       console.error("셔플 실패:", error);
-      alert("데이터를 불러오지 못했습니다.");
     } finally {
-      // 4. 로딩 종료
       setShuffleLoading(prev => ({ ...prev, [category]: false }));
     }
   };
@@ -95,18 +95,13 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
     e.stopPropagation();
     const target = selectedItems.find(item => item.instanceId === instanceId);
     if (!target) return;
-
     setIsDragging(true);
     setDragTarget(instanceId);
     setOffset({ x: e.clientX - target.x, y: e.clientY - target.y });
-
     const nextZ = maxZ + 1;
     setMaxZ(nextZ);
-    
     setSelectedItems(prev => prev.map(item => 
-      item.instanceId === instanceId 
-      ? { ...item, zIndex: nextZ } 
-      : item
+      item.instanceId === instanceId ? { ...item, zIndex: nextZ } : item
     ));
   };
 
@@ -139,23 +134,27 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
     ));
   };
 
-  const CAT_KO = { outer: "아우터", top: "상의", bottom: "바지", shoes: "신발", acc: "액세서리" };
-
   return (
     <div className="advanced-collage-layout dark-theme" onMouseUp={handleMouseUp}>
-      {/* 왼쪽: 캔버스 영역 (상단 버튼과 하단 구매 버튼 삭제) */}
       <section className="left-canvas-area">
         <div className="canvas-header">
-          {/* 가이드 문구만 남겨둠 */}
-          <p className="instruction"> 드래그: 배치 / 휠: 크기 조절 / 우클릭: 삭제</p>
+          <p className="instruction">드래그: 배치 / 휠: 크기 조절 / 우클릭: 삭제</p>
         </div>
-
         <div 
-          className="collage-canvas white-bg" 
+          className="collage-canvas" 
           onDragOver={(e) => e.preventDefault()} 
           onDrop={handleCanvasDrop}
           onMouseMove={handleCanvasMouseMove}
           onMouseLeave={handleMouseUp}
+          style={{
+            backgroundImage: bgPath ? `url(${bgPath})` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundColor: bgPath ? 'transparent' : '#111',
+            position: 'relative',
+            overflow: 'hidden',
+            border: '1px solid #333'
+          }}
         >
           {selectedItems.map((item) => (
             <div
@@ -173,59 +172,29 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
                 cursor: 'move'
               }}
             >
-              <img src={item.img_url} alt="" draggable="false" style={{ userSelect: 'none' }} />
+              <img src={item.img_url} alt="" draggable="false" style={{ userSelect: 'none', width: '150px' }} />
             </div>
           ))}
         </div>
       </section>
 
-      {/* 오른쪽: 리스트 영역 */}
       <section className="right-list-area">
-        <h2 className="sidebar-title">STYLE PIECES</h2>
+        <h2 className="sidebar-title">{result} 스타일 추천</h2>
         {['outer', 'top', 'bottom', 'shoes', 'acc'].map(cat => (
           <div key={cat} className="cat-section">
             <div className="cat-header">
               <span className="cat-name">{cat.toUpperCase()}</span>
-              {/* 버튼 표시 조건: 로딩 중이 아니고 & 데이터가 있을 때 */}
-              {(!shuffleLoading[cat] && displayItems && displayItems[cat]?.length > 0) && (
-                <button 
-                  className="shuffle-btn"
-                  onMouseEnter={() => setHoveredBtn(cat)}
-                  onMouseLeave={() => setHoveredBtn(null)}
-                  onClick={() => handleShuffle(cat)}
-                  style={{
-                    cursor: 'pointer',
-                    backgroundColor: hoveredBtn === cat ? '#ff4d4d' : '#333', 
-                    color: 'white',
-                    border: '1px solid #555',
-                    padding: '5px 10px',
-                    borderRadius: '5px',
-                    transition: 'background-color 0.2s'
-                  }}
-                >
-                  셔플
-                </button>
+              {(!shuffleLoading[cat] && displayItems[cat]?.length > 0) && (
+                <button className="shuffle-btn" onClick={() => handleShuffle(cat)}>셔플</button>
               )}
             </div>
-
-            {/* item-grid를 조건문 밖으로 빼서 데이터 유무/로딩 여부와 상관없이 
-                cat-header와의 일정한 간격을 유지하게 합니다.
-            */}
             <div className="item-grid">
               {shuffleLoading[cat] ? (
-                /* Case 1: 로딩 중 - 5개의 빈 카드를 보여주거나, 
-                  기존 높이를 유지하는 placeholder를 렌더링하여 간격이 튀는 것을 방지합니다. */
-                Array.from({ length: 5 }).map((_, index) => (
-                  <div key={`loading-${cat}-${index}`} className="item-card" style={{ opacity: 0.3 }}>
-                    <div className="img-box" style={{ backgroundColor: '#f9f9f9' }}></div>
-                    <div className="item-info">
-                      <p className="price-text" style={{ visibility: 'hidden' }}>로딩중</p>
-                    </div>
-                  </div>
+                Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="item-card skeleton" />
                 ))
               ) : (
-                (displayItems && displayItems[cat] && displayItems[cat].length > 0) ? (
-                  /* Case 2: 로딩 끝났는데 데이터가 있으면? -> 상품 리스트 출력 */
+                displayItems[cat] && displayItems[cat].length > 0 ? (
                   displayItems[cat].map(item => (
                     <div 
                       key={item.product_id} 
@@ -234,7 +203,7 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
                       onDragStart={(e) => handleExternalDragStart(e, item, cat)}
                     >
                       <div className="img-box">
-                        <img src={item.img_url} alt={item.product_name} />
+                        <img src={item.img_url} alt={item.product_name} onError={(e) => e.target.src = 'https://via.placeholder.com/150'} />
                       </div>
                       <div className="item-info">
                         <p className="price-text">{item.price?.toLocaleString()}원</p>
@@ -242,44 +211,19 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
                     </div>
                   ))
                 ) : (
-                  /* Case 3: 데이터가 없을 때 (5개 알약 디자인 통일) */
-                  Array.from({ length: 5 }).map((_, index) => (
-                    <div 
-                      key={`empty-${cat}-${index}`} 
-                      className="item-card" 
-                      style={{ cursor: 'default' }}
-                    >
-                      <div className="img-box">
-                        <div className="empty-img-placeholder" style={{ width: '100%', height: '100%' }}></div>
-                      </div>
-                      <div className="item-info">
-                        <p className="price-text" style={{ color: '#ccc' }}>해당상품 없음</p>
-                      </div>
-                    </div>
-                  ))
+                  <p className="empty-text">상품 정보가 없습니다.</p>
                 )
               )}
             </div>
           </div>
         ))}
-
-        {/* --- 여기서부터 이동된 버튼들 --- */}
-        <hr style={{ border: '0.5px solid #333', margin: '40px 0 20px 0' }} />
-        
-        <div className="action-button-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '0 20px 40px 20px' }}>
-          {/* 상단에 있던 내비게이션 버튼들 */}
-          <div className="button-group" style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
-            <button className="btn-secondary" onClick={onBackToMain} style={{ flex: 1 }}>메인으로</button>
-            <button className="btn-secondary" onClick={() => setSelectedItems([])} style={{ flex: 1 }}>캔버스 초기화</button>
-            <button className="btn-secondary" onClick={onBackToResult} style={{ flex: 1 }}>이전으로</button>
+        <div className="action-button-group">
+          <div className="button-group">
+            <button className="btn-secondary" onClick={onBackToMain}>메인으로</button>
+            <button className="btn-secondary" onClick={() => setSelectedItems([])}>초기화</button>
+            <button className="btn-secondary" onClick={onBackToResult}>이전으로</button>
           </div>
-
-          {/* 구매 버튼 */}
-          <button 
-            className="buy-red-btn" 
-            onClick={() => alert("구매 페이지로 이동!")}
-            style={{ width: '100%', marginTop: '10px' }}
-          >
+          <button className="buy-red-btn" onClick={() => alert(`${result} 스타일 구매 페이지로 이동합니다!`)}>
             선택 조합 구매하기
           </button>
         </div>
