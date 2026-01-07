@@ -5,3 +5,5 @@ musinsa_web/
 *.jpeg
 *.pkl
 *.env
+*.json
+*.csv
