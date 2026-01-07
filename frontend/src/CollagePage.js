@@ -179,7 +179,7 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
         </div>
       </section>
 
-      {/* 오른쪽: 리스트 영역 (하단에 버튼들 추가) */}
+      {/* 오른쪽: 리스트 영역 */}
       <section className="right-list-area">
         <h2 className="sidebar-title">STYLE PIECES</h2>
         {['outer', 'top', 'bottom', 'shoes', 'acc'].map(cat => (
@@ -208,17 +208,24 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
               )}
             </div>
 
+            {/* item-grid를 조건문 밖으로 빼서 데이터 유무/로딩 여부와 상관없이 
+                cat-header와의 일정한 간격을 유지하게 합니다.
+            */}
             <div className="item-grid">
-              {/* [렌더링 로직 분기] */}
-              
-              {/* Case 1: 로딩 중이면? -> 빈 화면 (기존 상품 지움) */}
               {shuffleLoading[cat] ? (
-                <div className="empty-msg-box" style={{ minHeight: '150px' }}>
-                  {/* 필요시 <p>새로운 스타일을 찾는 중...</p> */}
-                </div>
+                /* Case 1: 로딩 중 - 5개의 빈 카드를 보여주거나, 
+                  기존 높이를 유지하는 placeholder를 렌더링하여 간격이 튀는 것을 방지합니다. */
+                Array.from({ length: 5 }).map((_, index) => (
+                  <div key={`loading-${cat}-${index}`} className="item-card" style={{ opacity: 0.3 }}>
+                    <div className="img-box" style={{ backgroundColor: '#f9f9f9' }}></div>
+                    <div className="item-info">
+                      <p className="price-text" style={{ visibility: 'hidden' }}>로딩중</p>
+                    </div>
+                  </div>
+                ))
               ) : (
-                // Case 2: 로딩 끝났는데 데이터가 있으면? -> 상품 리스트 출력
                 (displayItems && displayItems[cat] && displayItems[cat].length > 0) ? (
+                  /* Case 2: 로딩 끝났는데 데이터가 있으면? -> 상품 리스트 출력 */
                   displayItems[cat].map(item => (
                     <div 
                       key={item.product_id} 
@@ -235,10 +242,21 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
                     </div>
                   ))
                 ) : (
-                  // Case 3: 로딩 끝났는데 데이터가 0개면? -> "추천 안 함" 메시지
-                  <div className="empty-msg-box" style={{ padding: '30px', color: '#888', textAlign: 'center', fontSize: '0.9rem' }}>
-                    <p>🚫 해당 조합에서는<br/>추천되지 않는 항목입니다.</p>
-                  </div>
+                  /* Case 3: 데이터가 없을 때 (5개 알약 디자인 통일) */
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <div 
+                      key={`empty-${cat}-${index}`} 
+                      className="item-card" 
+                      style={{ cursor: 'default' }}
+                    >
+                      <div className="img-box">
+                        <div className="empty-img-placeholder" style={{ width: '100%', height: '100%' }}></div>
+                      </div>
+                      <div className="item-info">
+                        <p className="price-text" style={{ color: '#ccc' }}>해당상품 없음</p>
+                      </div>
+                    </div>
+                  ))
                 )
               )}
             </div>
