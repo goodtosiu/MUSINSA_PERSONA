@@ -18,33 +18,22 @@ function App() {
   const [serverPriceRanges, setServerPriceRanges] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 1. 가격 필터링 반영: app.py 규격에 맞춰 키값을 'acc'로 관리
   const [prices, setPrices] = useState({
     outer: { min: '', max: '' },
     top: { min: '', max: '' },
     bottom: { min: '', max: '' },
     shoes: { min: '', max: '' },
-    acc: { min: '', max: '' } // accessory 대신 acc 사용
+    acc: { min: '', max: '' }
   });
 
-  const isAnyPriceError = Object.keys(prices).some((cat) => {
-    const range = serverPriceRanges ? serverPriceRanges[cat] : null;
-    if (!range) return false;
-    const isMinErr = prices[cat].min !== '' && Number(prices[cat].min) > range.max;
-    const isMaxErr = prices[cat].max !== '' && Number(prices[cat].max) < range.min;
-    return isMinErr || isMaxErr;
-  });
-
-  const handlePriceChange = (category, type, value) => {
-    setPrices(prev => ({ ...prev, [category]: { ...prev[category], [type]: value } }));
-  };
-
+  // [수정] 앱 시작 시 서버에서 가격 범위를 즉시 가져옴
   useEffect(() => {
     const fetchInitialRanges = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:5000/api/products?persona=아메카지');
+        // 특정 페르소나에 국한되지 않고 전체 범위를 가져오기 위해 파라미터 없이 호출하거나 기본값 사용
+        const res = await fetch('http://127.0.0.1:5000/api/products'); 
         const data = await res.json();
-        if (data.price_ranges) {
+        if (data && data.price_ranges) {
           setServerPriceRanges(data.price_ranges);
         }
       } catch (err) {
@@ -54,9 +43,26 @@ function App() {
     fetchInitialRanges();
   }, []);
 
+  const isAnyPriceError = Object.keys(prices).some((cat) => {
+    const range = serverPriceRanges ? serverPriceRanges[cat] : null;
+    if (!range) return false;
+
+    const minVal = prices[cat].min !== '' ? Number(prices[cat].min) : null;
+    const maxVal = prices[cat].max !== '' ? Number(prices[cat].max) : null;
+
+    const isMinErr = minVal !== null && minVal >= range.max;
+    const isMaxErr = maxVal !== null && maxVal <= range.min;
+    const isCrossErr = (minVal !== null && maxVal !== null) && minVal > maxVal;
+
+    return isMinErr || isMaxErr || isCrossErr;
+  });
+
+  const handlePriceChange = (category, type, value) => {
+    setPrices(prev => ({ ...prev, [category]: { ...prev[category], [type]: value } }));
+  };
+
   const handleAnswer = (answer) => {
     setHistory([...history, { typeScores: {...typeScores}, personaScores: {...personaScores}, currentIdx, selectedType, step }]);
-
     if (step === 'step1') {
       const newScores = { ...typeScores, [answer.type]: typeScores[answer.type] + 1 };
       setTypeScores(newScores);
@@ -94,28 +100,23 @@ function App() {
     setHistory(history.slice(0, -1));
   };
 
-  // 2. 가격 필터링을 app.py API 규격에 맞춰 전송
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      // app.py가 기대하는 min_카테고리, max_카테고리 형태로 쿼리 생성
       const queryParams = new URLSearchParams({ persona: result });
       Object.keys(prices).forEach(cat => {
         if (prices[cat].min) queryParams.append(`min_${cat}`, prices[cat].min);
         if (prices[cat].max) queryParams.append(`max_${cat}`, prices[cat].max);
       });
-
       const res = await fetch(`http://127.0.0.1:5000/api/products?${queryParams.toString()}`);
       const data = await res.json();
-
       if (data.items) {
         setRecommendedProducts(data.items); 
         setCurrentOutfitId(data.current_outfit_id); 
         setStep('collage');
       }
     } catch (err) {
-      console.error(err);
-      alert("서버 연결에 실패했습니다.");
+      alert("데이터 로드 실패");
     } finally {
       setIsLoading(false);
     }
@@ -123,10 +124,12 @@ function App() {
 
   return (
     <div className="App">
+      {/* ... (중략: main, step1, step2, result 단계는 기존과 동일) ... */}
+      
       {step === 'main' && (
         <div className="main-container fade-in">
           <div className="content-wrapper">
-            <h2 className="top-title">패션 인격 찾기</h2>
+            <h2 className="top-title">패션 페르소나 찾기</h2>
             <h1 className="main-title">
               <span className="brand">MUSINSA</span>
               <span className="separator"> X </span>
@@ -177,12 +180,17 @@ function App() {
         <div className="price-setting-container fade-in">
           <h2 className="price-title">예산 설정</h2>
           <p className="price-subtitle">각 카테고리별로 원하는 가격대를 입력해주세요.</p>
+          
           <div className="price-input-list">
             {Object.keys(prices).map((cat) => {
               const range = serverPriceRanges ? serverPriceRanges[cat] : null;
-              const isMinError = range && prices[cat].min !== '' && Number(prices[cat].min) > range.max;
-              const isMaxError = range && prices[cat].max !== '' && Number(prices[cat].max) < range.min;
-              const hasError = isMinError || isMaxError;
+              const minVal = prices[cat].min !== '' ? Number(prices[cat].min) : null;
+              const maxVal = prices[cat].max !== '' ? Number(prices[cat].max) : null;
+
+              const isMinErr = range && minVal !== null && minVal >= range.max;
+              const isMaxErr = range && maxVal !== null && maxVal <= range.min;
+              const isCrossErr = (minVal !== null && maxVal !== null) && minVal > maxVal;
+              const hasError = isMinErr || isMaxErr || isCrossErr;
 
               return (
                 <div key={cat} className="price-item-wrapper">
@@ -190,19 +198,44 @@ function App() {
                     <span className="price-cat-label">
                       {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
                     </span>
-                    <input type="number" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "최소"} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
+                    <input 
+                      type="number" 
+                      step="5000"
+                      className="price-input-field" 
+                      // [수정] 데이터 로딩 전에는 빈 값 대신 로딩 상태를 보여주거나 조건부 렌더링
+                      placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} 
+                      value={prices[cat].min} 
+                      onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} 
+                    />
                     <span className="price-tilde">~</span>
-                    <input type="number" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "최대"} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
+                    <input 
+                      type="number" 
+                      step="5000"
+                      className="price-input-field" 
+                      placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} 
+                      value={prices[cat].max} 
+                      onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} 
+                    />
                   </div>
                   {hasError && range && (
-                    <p className="error-message">{range.min.toLocaleString()}원 ~ {range.max.toLocaleString()}원 사이만 가능합니다.</p>
+                    <p className="error-message" style={{ color: '#ff4d4f', fontSize: '13px', marginTop: '6px' }}>
+                      {isCrossErr 
+                        ? "최소 가격이 최대 가격보다 클 수 없습니다." 
+                        : `${range.min.toLocaleString()}원 ~ ${range.max.toLocaleString()}원 사이로 입력해주세요.`}
+                    </p>
                   )}
                 </div>
               );
             })}
           </div>
+
           <div className="btn-group-center mt-30">
-            <button className="start-btn" onClick={fetchRecommendations} disabled={isLoading || isAnyPriceError}>
+            <button 
+              className="start-btn" 
+              onClick={fetchRecommendations} 
+              disabled={isLoading || isAnyPriceError || !serverPriceRanges}
+              style={{ opacity: (isLoading || isAnyPriceError || !serverPriceRanges) ? 0.6 : 1 }}
+            >
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
             </button>
             <button className="secondary-btn" onClick={() => setStep('main')}>다시하기</button>
@@ -211,7 +244,13 @@ function App() {
       )}
 
       {step === 'collage' && recommendedProducts && (
-        <CollagePage result={result} products={recommendedProducts} currentOutfitId={currentOutfitId} onBackToMain={() => setStep('main')} onBackToResult={() => setStep('price_setting')} />
+        <CollagePage 
+          result={result} 
+          products={recommendedProducts} 
+          currentOutfitId={currentOutfitId} 
+          onBackToMain={() => setStep('main')} 
+          onBackToResult={() => setStep('price_setting')} 
+        />
       )}
     </div>
   );
