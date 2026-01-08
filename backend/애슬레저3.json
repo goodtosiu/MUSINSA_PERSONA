@@ -1,0 +1,1123 @@
+[
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5721988,
+            "top": 4013456,
+            "bottom": 4312560,
+            "shoes": 5182567
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:06:02.911214"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4835947,
+            "top": 4027969,
+            "bottom": 5235331,
+            "shoes": 4697192
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:06:03.583747"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3860727,
+            "top": 4949515,
+            "bottom": 4152902,
+            "shoes": 4917570
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:06:45.999429"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3821378,
+            "top": 3533458,
+            "bottom": 4648219,
+            "shoes": 5253206
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:07:50.638810"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5468806,
+            "top": 4387271,
+            "bottom": 4060770,
+            "shoes": 4944002
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:07:53.842509"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5342862,
+            "top": 4333964,
+            "bottom": 4680438,
+            "shoes": 3817479,
+            "acc": 3600196
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:07:55.174746"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3065355,
+            "top": 4884097,
+            "bottom": 5551105,
+            "shoes": 3913014,
+            "acc": 1991866
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:07:58.271803"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5623024,
+            "top": 3189398,
+            "bottom": 4219680,
+            "shoes": 5485499
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:02.166793"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3510127,
+            "top": 5132949,
+            "bottom": 4699070,
+            "shoes": 5167850,
+            "acc": 4960536
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:03.816828"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4548611,
+            "top": 3922629,
+            "bottom": 4642696,
+            "shoes": 5463248
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:05.721750"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5251607,
+            "top": 4987038,
+            "bottom": 3751788,
+            "shoes": 4452581
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:08.200715"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5400091,
+            "top": 4027962,
+            "bottom": 4292555,
+            "shoes": 5460511
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:12.264649"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4709065,
+            "top": 4027962,
+            "bottom": 5129613,
+            "shoes": 4992573
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:08:15.449376"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4614963,
+            "top": 4013449,
+            "bottom": 2998906,
+            "shoes": 4172860
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:08:18.255944"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4375083,
+            "top": 3931250,
+            "bottom": 3881665,
+            "shoes": 5292000
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:20.385916"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3997204,
+            "top": 2323594,
+            "bottom": 3521649,
+            "shoes": 5261715
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:22.805661"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5558184,
+            "top": 5180668,
+            "bottom": 3131602,
+            "shoes": 5042301
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:24.411949"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4544967,
+            "top": 3533458,
+            "bottom": 5324576,
+            "shoes": 5535910
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:08:28.657378"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5438135,
+            "top": 4387055,
+            "bottom": 3778648,
+            "shoes": 5058990
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:30.522357"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5468937,
+            "top": 4110879,
+            "bottom": 2390874,
+            "shoes": 2325702
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:31.980563"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5241508,
+            "top": 4921483,
+            "bottom": 4031189,
+            "shoes": 5292972
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:33.316101"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5104627,
+            "top": 4227740,
+            "bottom": 2998880,
+            "shoes": 4827462
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:35.288117"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5646669,
+            "top": 5140817,
+            "bottom": 4942513,
+            "shoes": 3933426
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:39.248884"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4306188,
+            "top": 4030019,
+            "bottom": 5495978,
+            "shoes": 4884650
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:08:43.892794"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3658454,
+            "top": 4982698,
+            "bottom": 4747264,
+            "shoes": 5253553,
+            "acc": 2012944
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:08:45.452614"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3063159,
+            "top": 4939812,
+            "bottom": 2352653,
+            "shoes": 4916104,
+            "acc": 978524
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:23.727159"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5076170,
+            "top": 4457389,
+            "bottom": 4933228,
+            "shoes": 4720273
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:29.245976"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5323401,
+            "top": 5140822,
+            "bottom": 3152293,
+            "shoes": 5261644
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:32.407300"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5280661,
+            "top": 3132090,
+            "bottom": 4659652,
+            "shoes": 5335626,
+            "acc": 1063607
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:34.625829"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5243292,
+            "top": 3834312,
+            "bottom": 4458868,
+            "shoes": 5253212
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:37.783240"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5036283,
+            "top": 2479825,
+            "bottom": 4747264,
+            "shoes": 5309825,
+            "acc": 1313990
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:39.542439"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4429744,
+            "top": 5114902,
+            "bottom": 2390874,
+            "shoes": 4932620
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:42.059300"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5280669,
+            "top": 5130381,
+            "bottom": 4892471,
+            "shoes": 4774236,
+            "acc": 5125884
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:43.672878"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4644518,
+            "top": 5161160,
+            "bottom": 2352654,
+            "shoes": 5654603,
+            "acc": 415634
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:45.321575"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5312783,
+            "top": 1039142,
+            "bottom": 5352289,
+            "shoes": 4399494
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:46.824032"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5558184,
+            "top": 4932289,
+            "bottom": 5050085,
+            "shoes": 4425591
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:48.239844"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5716113,
+            "top": 5046231,
+            "bottom": 4312560,
+            "shoes": 3392006
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:51.132211"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4630195,
+            "top": 4333543,
+            "bottom": 5357097,
+            "shoes": 5081505,
+            "acc": 5396381
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:52.568606"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5556862,
+            "top": 5058487,
+            "bottom": 4927142,
+            "shoes": 5380051
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:09:56.268354"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4460680,
+            "top": 5114898,
+            "bottom": 1574771,
+            "shoes": 4270941
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:57.804071"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 2752336,
+            "top": 4159864,
+            "bottom": 5489044,
+            "shoes": 4232320,
+            "acc": 2884924
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:09:59.334682"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 1231285,
+            "top": 5079619,
+            "bottom": 3089270,
+            "shoes": 5089208
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:01.501742"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4928015,
+            "top": 4333572,
+            "bottom": 5807278,
+            "shoes": 1916131
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:04.040279"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4342178,
+            "top": 4333977,
+            "bottom": 5461698,
+            "shoes": 5359793,
+            "acc": 4966677
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:05.631027"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5183031,
+            "top": 5095805,
+            "bottom": 4060405,
+            "shoes": 5198697,
+            "acc": 3385058
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:08.598393"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3858567,
+            "top": 3397158,
+            "bottom": 5119884,
+            "shoes": 4238031
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:11.058104"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5251607,
+            "top": 4003712,
+            "bottom": 2959410,
+            "shoes": 3053318
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:50.689069"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5644916,
+            "top": 4852233,
+            "bottom": 3902312,
+            "shoes": 4979260
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:53.689465"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5644916,
+            "top": 4337341,
+            "bottom": 5182656,
+            "shoes": 5384279
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:56.366461"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5346952,
+            "top": 4125405,
+            "bottom": 4743948,
+            "shoes": 4945153
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:58.251889"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3432234,
+            "top": 5498242,
+            "bottom": 4743945,
+            "shoes": 4709483
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:10:59.948945"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5549632,
+            "top": 4989976,
+            "bottom": 5352289,
+            "shoes": 3533634
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:01.473957"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3516232,
+            "top": 4986714,
+            "bottom": 3778587,
+            "shoes": 4884649
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:03.041314"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 2387358,
+            "top": 4129455,
+            "bottom": 3204881,
+            "shoes": 3530909
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:04.440678"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3897824,
+            "top": 4501437,
+            "bottom": 1880699,
+            "shoes": 4342495
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:05.621860"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5350058,
+            "top": 4120396,
+            "bottom": 3764226,
+            "shoes": 2108070
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:08.623170"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5682974,
+            "top": 1466055,
+            "bottom": 3275338,
+            "shoes": 5520730
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:10.719881"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3621338,
+            "top": 5393242,
+            "bottom": 4002730,
+            "shoes": 5380053
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:13.330656"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5001659,
+            "top": 5112316,
+            "bottom": 5683438,
+            "shoes": 5708358
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:15.373436"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3030988,
+            "top": 4852231,
+            "bottom": 4871865,
+            "shoes": 1784802
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:17.682883"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5460072,
+            "top": 5073707,
+            "bottom": 4029883,
+            "shoes": 5312931
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:19.161937"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5745137,
+            "top": 4685441,
+            "bottom": 4797270,
+            "shoes": 5272331
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:21.123147"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4630195,
+            "top": 4159864,
+            "bottom": 4869307,
+            "shoes": 5588625,
+            "acc": 978524
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:11:23.406806"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5438135,
+            "top": 3931250,
+            "bottom": 3519626,
+            "shoes": 5394569
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:35.303073"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4945148,
+            "top": 4333596,
+            "bottom": 5555347,
+            "shoes": 5391586,
+            "acc": 1353209
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:36.790320"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4219149,
+            "top": 2086687,
+            "bottom": 4942513,
+            "shoes": 5592670
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:38.176582"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4925580,
+            "top": 3956598,
+            "bottom": 1730669,
+            "shoes": 2410974
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:40.028524"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4440926,
+            "top": 4327123,
+            "bottom": 5010573,
+            "shoes": 4342495
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:41.598137"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5606476,
+            "top": 2086687,
+            "bottom": 5050085,
+            "shoes": 4876906
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:12:45.277677"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4528741,
+            "top": 3803810,
+            "bottom": 3941516,
+            "shoes": 4270941
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:46.710282"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 2465506,
+            "top": 3922626,
+            "bottom": 4955102,
+            "shoes": 5272331
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:48.192654"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4298976,
+            "top": 4120396,
+            "bottom": 5529964,
+            "shoes": 5253214
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:49.923472"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4564561,
+            "top": 3855093,
+            "bottom": 4971504,
+            "shoes": 5676490
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:51.148828"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4612425,
+            "top": 4080977,
+            "bottom": 4401936,
+            "shoes": 5626232,
+            "acc": 4041422
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:52.586565"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5558184,
+            "top": 2539817,
+            "bottom": 4033606,
+            "shoes": 4510002
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:54.406836"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 2789257,
+            "top": 2323594,
+            "bottom": 4398942,
+            "shoes": 4596581,
+            "acc": 1484146
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:55.805327"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4342134,
+            "top": 4155956,
+            "bottom": 4964143,
+            "shoes": 4375146,
+            "acc": 5233846
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:57.453745"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3509533,
+            "top": 2479813,
+            "bottom": 5365992,
+            "shoes": 5572957,
+            "acc": 5083688
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:12:59.043972"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5350062,
+            "top": 3235379,
+            "bottom": 4648219,
+            "shoes": 4244378
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:01.138564"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5688563,
+            "top": 3956598,
+            "bottom": 4939148,
+            "shoes": 4720384
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T15:13:04.233509"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4369280,
+            "top": 5065222,
+            "bottom": 5127748,
+            "shoes": 5787337
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:06.114478"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4803782,
+            "top": 4666088,
+            "bottom": 3931382,
+            "shoes": 4979267
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:07.631738"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4547515,
+            "top": 3282245,
+            "bottom": 4486682,
+            "shoes": 5360778
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:10.650980"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5556994,
+            "top": 4275742,
+            "bottom": 4871856,
+            "shoes": 4963830
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:12.966921"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3095929,
+            "top": 4986714,
+            "bottom": 4021116,
+            "shoes": 1916131
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:16.264444"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5438179,
+            "top": 3235379,
+            "bottom": 5665177,
+            "shoes": 4399494
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:19.371049"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4580422,
+            "top": 5046236,
+            "bottom": 4060770,
+            "shoes": 5253214
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:20.882557"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5549632,
+            "top": 5094591,
+            "bottom": 3751788,
+            "shoes": 4270946
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:22.256133"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5438179,
+            "top": 5091864,
+            "bottom": 2067899,
+            "shoes": 4270941
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:32.568474"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3030988,
+            "top": 3863544,
+            "bottom": 4638021,
+            "shoes": 5602369
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:33.872427"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3994551,
+            "top": 4129448,
+            "bottom": 3384895,
+            "shoes": 5369174
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:35.275499"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 4339078,
+            "top": 4129455,
+            "bottom": 2998879,
+            "shoes": 4917570
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:37.297067"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5476406,
+            "top": 5135770,
+            "bottom": 4152897,
+            "shoes": 5270418
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:38.990745"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5323513,
+            "top": 5114898,
+            "bottom": 3096985,
+            "shoes": 5626232,
+            "acc": 3642847
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:40.492746"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5128528,
+            "top": 4333540,
+            "bottom": 3777461,
+            "shoes": 5545439,
+            "acc": 3122875
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:42.330401"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3621338,
+            "top": 2539817,
+            "bottom": 4971504,
+            "shoes": 4660885
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:44.102936"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 1600084,
+            "top": 5142358,
+            "bottom": 4003767,
+            "shoes": 3485580
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:46.541874"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 2387357,
+            "top": 5096810,
+            "bottom": 4822569,
+            "shoes": 5058990
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:48.263550"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 3932138,
+            "top": 5097304,
+            "bottom": 3386390,
+            "shoes": 4720273
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:49.606067"
+    },
+    {
+        "persona": "애슬레저",
+        "category_items": {
+            "outer": 5296613,
+            "top": 5610302,
+            "bottom": 3051242,
+            "shoes": 5261717
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T15:13:51.691613"
+    }
+]

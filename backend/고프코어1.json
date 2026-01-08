@@ -1,0 +1,1202 @@
+[
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4638089,
+            "top": 4459914,
+            "bottom": 4024341,
+            "shoes": 5348065,
+            "acc": 3812545
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:07:53.256064"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5549647,
+            "top": 3996956,
+            "bottom": 5183450,
+            "shoes": 4522553,
+            "acc": 3797695
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:07:55.315231"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5698602,
+            "top": 3792534,
+            "bottom": 3258751,
+            "shoes": 5369198,
+            "acc": 5476319
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:08:01.706571"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5374753,
+            "top": 3936864,
+            "bottom": 3437142,
+            "shoes": 3770620,
+            "acc": 1695463
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:08:04.327348"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4615755,
+            "top": 5140212,
+            "bottom": 5217536,
+            "shoes": 2291899,
+            "acc": 5513402
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:08:11.991049"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4734515,
+            "top": 3095051,
+            "bottom": 4405176,
+            "shoes": 5395558,
+            "acc": 5115538
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:08:17.328470"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243463,
+            "top": 4265428,
+            "bottom": 3985370,
+            "shoes": 4477544,
+            "acc": 5625730
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:08:25.871322"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5476895,
+            "top": 3491349,
+            "bottom": 5374969,
+            "shoes": 488357,
+            "acc": 3797695
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:08:28.731479"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5641305,
+            "top": 4415621,
+            "bottom": 3805856,
+            "shoes": 5551428,
+            "acc": 2542978
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:08:30.669970"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3510175,
+            "top": 3484566,
+            "bottom": 4896817,
+            "shoes": 4003617,
+            "acc": 4574598
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:09:07.336575"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4920228,
+            "top": 5249070,
+            "bottom": 5480113,
+            "shoes": 5590006,
+            "acc": 5683489
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:09:09.369103"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5523553,
+            "top": 5713781,
+            "bottom": 933405,
+            "shoes": 3331789,
+            "acc": 4779335
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:09:46.108484"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5655167,
+            "top": 5140833,
+            "bottom": 4180920,
+            "shoes": 5114240,
+            "acc": 4096716
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:09:50.134762"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243478,
+            "top": 4429846,
+            "bottom": 2866771,
+            "shoes": 5214072,
+            "acc": 4992220
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:09:53.614467"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3905755,
+            "top": 5385614,
+            "bottom": 5374969,
+            "shoes": 5594152,
+            "acc": 4711425
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:10:50.873067"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5316370,
+            "top": 4570178,
+            "bottom": 5242554,
+            "shoes": 178139,
+            "acc": 5020568
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:10:58.376089"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5434582,
+            "top": 4895967,
+            "bottom": 5350510,
+            "shoes": 626638,
+            "acc": 3564312
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:01.215625"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5443005,
+            "top": 5338817,
+            "bottom": 4279882,
+            "shoes": 4436799,
+            "acc": 5012933
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:02.917618"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5575033,
+            "top": 3484565,
+            "bottom": 4007299,
+            "shoes": 5600595,
+            "acc": 4424292
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:07.983345"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5439282,
+            "top": 3469898,
+            "bottom": 4488520,
+            "shoes": 3831475,
+            "acc": 5349612
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:11:10.207660"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4262928,
+            "top": 5562201,
+            "bottom": 5662236,
+            "shoes": 5653174,
+            "acc": 5173613
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:15.158863"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5316521,
+            "top": 5463193,
+            "bottom": 5563991,
+            "shoes": 5739959,
+            "acc": 5349631
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:17.661783"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5316477,
+            "top": 4597760,
+            "bottom": 3457827,
+            "shoes": 488386,
+            "acc": 5304285
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:43.788551"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5439330,
+            "top": 3775276,
+            "bottom": 3775664,
+            "shoes": 4780325,
+            "acc": 4271428
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:47.148730"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5459032,
+            "top": 4376693,
+            "bottom": 3363533,
+            "shoes": 1661662,
+            "acc": 5059083
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:11:52.509507"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5469605,
+            "top": 1250563,
+            "bottom": 5197105,
+            "shoes": 3653626,
+            "acc": 4460508
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:12:49.579815"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5809545,
+            "top": 4762007,
+            "bottom": 5662306,
+            "shoes": 1531393,
+            "acc": 4376182
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:13:58.276791"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5635511,
+            "top": 2387345,
+            "bottom": 2264500,
+            "shoes": 2114454,
+            "acc": 4646888
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:14:04.222038"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5551579,
+            "top": 4382067,
+            "bottom": 5032995,
+            "shoes": 2942448,
+            "acc": 5514628
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:14:13.909900"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3459598,
+            "top": 4342071,
+            "bottom": 4185176,
+            "shoes": 2806927,
+            "acc": 4574598
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:14:16.418720"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4256567,
+            "top": 4827855,
+            "bottom": 4293217,
+            "shoes": 3416527,
+            "acc": 3518274
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:14:18.562093"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243049,
+            "top": 5352150,
+            "bottom": 5400770,
+            "shoes": 1803477,
+            "acc": 5226271
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:14:24.113823"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3609975,
+            "top": 4790421,
+            "bottom": 4336513,
+            "shoes": 4743678,
+            "acc": 4767521
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:15:04.263819"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4579800,
+            "top": 5425555,
+            "bottom": 4319548,
+            "shoes": 5284167,
+            "acc": 3778366
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:15:06.638258"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 1782248,
+            "top": 2096933,
+            "bottom": 4376281,
+            "shoes": 4034650,
+            "acc": 4779334
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:15:13.958601"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4280314,
+            "top": 4420389,
+            "bottom": 3045780,
+            "shoes": 5431096,
+            "acc": 4817156
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:16:00.654369"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5439284,
+            "top": 5535062,
+            "bottom": 3792132,
+            "shoes": 5348068,
+            "acc": 5012616
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:16:04.953485"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3556657,
+            "top": 5054418,
+            "bottom": 3363532,
+            "shoes": 5760100,
+            "acc": 3801015
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:16:06.741748"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4344229,
+            "top": 1466767,
+            "bottom": 3792132,
+            "shoes": 3382391,
+            "acc": 4735326
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:16:09.620753"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4262930,
+            "top": 3870110,
+            "bottom": 5217536,
+            "shoes": 4423619,
+            "acc": 3688707
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:16:11.140588"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4379267,
+            "top": 3870114,
+            "bottom": 5425685,
+            "shoes": 4495569,
+            "acc": 4403434
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:16:13.058733"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4893576,
+            "top": 3115941,
+            "bottom": 2707867,
+            "shoes": 5520672,
+            "acc": 5090087
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:16:16.615919"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5332238,
+            "top": 5082685,
+            "bottom": 3548097,
+            "shoes": 4626553,
+            "acc": 5409030
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:17:10.381986"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5476789,
+            "top": 5415090,
+            "bottom": 5424245,
+            "shoes": 5459651,
+            "acc": 4735322
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:17:55.546601"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5469519,
+            "top": 3632864,
+            "bottom": 3213763,
+            "shoes": 5114238,
+            "acc": 5027803
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:18:00.352600"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4392537,
+            "top": 5333845,
+            "bottom": 3938121,
+            "shoes": 4935290,
+            "acc": 3098770
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:01.906538"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5579976,
+            "top": 5341429,
+            "bottom": 3415974,
+            "shoes": 488348,
+            "acc": 4680588
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:04.352859"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3606024,
+            "top": 4333536,
+            "bottom": 5176817,
+            "shoes": 4445825,
+            "acc": 1489807
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:10.038105"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5442131,
+            "top": 2310669,
+            "bottom": 3590278,
+            "shoes": 488315,
+            "acc": 5580200
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:11.906731"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4795588,
+            "top": 5249070,
+            "bottom": 2917849,
+            "shoes": 4935111,
+            "acc": 2976444
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:30.502183"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5648172,
+            "top": 4024850,
+            "bottom": 4438714,
+            "shoes": 5459646,
+            "acc": 5472555
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:40.528459"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4527382,
+            "top": 3571179,
+            "bottom": 4460610,
+            "shoes": 5348271,
+            "acc": 4460527
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:42.563579"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5575035,
+            "top": 1865859,
+            "bottom": 3815902,
+            "shoes": 4330976,
+            "acc": 5407433
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:45.016702"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4734557,
+            "top": 4994566,
+            "bottom": 5551502,
+            "shoes": 3046014,
+            "acc": 5625730
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:18:47.724207"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 2299800,
+            "top": 3026621,
+            "bottom": 3448156,
+            "shoes": 4972893,
+            "acc": 4907830
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:19:23.333396"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5551577,
+            "top": 4095059,
+            "bottom": 5000964,
+            "shoes": 4548293,
+            "acc": 4301496
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:19:25.164628"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243462,
+            "top": 4683254,
+            "bottom": 2707867,
+            "shoes": 3849713,
+            "acc": 3277368
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:19:27.798231"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4382431,
+            "top": 2322718,
+            "bottom": 4167762,
+            "shoes": 3869867,
+            "acc": 5627976
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:26:34.420723"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4579800,
+            "top": 5246086,
+            "bottom": 4630944,
+            "shoes": 4328207,
+            "acc": 4280683
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:26:37.152628"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5145634,
+            "top": 3742627,
+            "bottom": 5652641,
+            "shoes": 4257526,
+            "acc": 3837243
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:26:38.735414"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5635511,
+            "top": 4597281,
+            "bottom": 5385675,
+            "shoes": 5631091,
+            "acc": 2542978
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:26:42.702969"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243110,
+            "top": 4635721,
+            "bottom": 4609680,
+            "shoes": 3900859,
+            "acc": 5169368
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:26:47.920659"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4734567,
+            "top": 5017948,
+            "bottom": 5480113,
+            "shoes": 1803477,
+            "acc": 5737329
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:29:30.732544"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4815562,
+            "top": 3542759,
+            "bottom": 5424245,
+            "shoes": 5114232,
+            "acc": 4116888
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:29:33.810803"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5586886,
+            "top": 4763574,
+            "bottom": 2742376,
+            "shoes": 4358092,
+            "acc": 5506894
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:29:35.933642"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3066232,
+            "top": 5338821,
+            "bottom": 2853428,
+            "shoes": 5479967,
+            "acc": 5382944
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:31:21.498962"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4559408,
+            "top": 2387347,
+            "bottom": 5200023,
+            "shoes": 488386,
+            "acc": 4854763
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:31:25.097043"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3446025,
+            "top": 5138813,
+            "bottom": 5374969,
+            "shoes": 4330976,
+            "acc": 4799325
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:31:28.832947"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5009056,
+            "top": 3816805,
+            "bottom": 3576187,
+            "shoes": 5395571,
+            "acc": 4333618
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:31:30.632267"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243065,
+            "top": 4443981,
+            "bottom": 5397417,
+            "shoes": 5463554,
+            "acc": 2976559
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:31:34.955191"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4399090,
+            "top": 5425555,
+            "bottom": 4265492,
+            "shoes": 5459642,
+            "acc": 4337250
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:34:09.831106"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5358210,
+            "top": 3792528,
+            "bottom": 5653424,
+            "shoes": 5795218,
+            "acc": 4736772
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:34:12.403261"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4734568,
+            "top": 4808864,
+            "bottom": 4550086,
+            "shoes": 5795218,
+            "acc": 4998800
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:34:16.747866"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5755920,
+            "top": 5246085,
+            "bottom": 4728013,
+            "shoes": 4437124,
+            "acc": 4870362
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:35:04.977946"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4379036,
+            "top": 4825515,
+            "bottom": 4590717,
+            "shoes": 5347593,
+            "acc": 4460015
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:35:09.663988"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5672240,
+            "top": 5246085,
+            "bottom": 5662313,
+            "shoes": 1531378,
+            "acc": 3688708
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:41:03.300758"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243441,
+            "top": 3816948,
+            "bottom": 2405892,
+            "shoes": 4972893,
+            "acc": 4136292
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:41:05.235461"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5603255,
+            "top": 5425582,
+            "bottom": 4852702,
+            "shoes": 4072118,
+            "acc": 4366060
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:41:09.149091"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5401569,
+            "top": 4679051,
+            "bottom": 3440381,
+            "shoes": 5594150,
+            "acc": 4905571
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:42:20.180223"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4555336,
+            "top": 4345468,
+            "bottom": 4336513,
+            "shoes": 5318552,
+            "acc": 5506899
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:42:23.023932"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4304182,
+            "top": 4816853,
+            "bottom": 4310117,
+            "shoes": 4437122,
+            "acc": 4271426
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:42:24.992797"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5469612,
+            "top": 4583833,
+            "bottom": 2216253,
+            "shoes": 4761339,
+            "acc": 3444002
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:42:27.073681"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4934996,
+            "top": 3448265,
+            "bottom": 3442334,
+            "shoes": 4935290,
+            "acc": 4966275
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:49:43.598556"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4280412,
+            "top": 5248443,
+            "bottom": 5478982,
+            "shoes": 4546744,
+            "acc": 4393119
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:49:48.907724"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4517095,
+            "top": 4350316,
+            "bottom": 5183802,
+            "shoes": 5550396,
+            "acc": 3816028
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:49:51.249526"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5694496,
+            "top": 4279269,
+            "bottom": 5176924,
+            "shoes": 5484357,
+            "acc": 4403438
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:49:53.384879"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3637493,
+            "top": 3195283,
+            "bottom": 4896817,
+            "shoes": 5633150,
+            "acc": 2850816
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:50:30.202180"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3571715,
+            "top": 3269888,
+            "bottom": 5310856,
+            "shoes": 5567025,
+            "acc": 4277412
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:50:33.234043"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4721433,
+            "top": 4748805,
+            "bottom": 3045780,
+            "shoes": 5403785,
+            "acc": 3811892
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:51:42.436087"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5468949,
+            "top": 5340208,
+            "bottom": 5436890,
+            "shoes": 4781533,
+            "acc": 5708811
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:51:45.983811"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5551579,
+            "top": 5562201,
+            "bottom": 2742378,
+            "shoes": 5114244,
+            "acc": 3564056
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:51:48.581546"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5243103,
+            "top": 4942549,
+            "bottom": 4980255,
+            "shoes": 3369645,
+            "acc": 4853117
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:51:51.391014"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4360781,
+            "top": 3571665,
+            "bottom": 3576859,
+            "shoes": 4272028,
+            "acc": 4815045
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:51:53.501154"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5700439,
+            "top": 4708178,
+            "bottom": 3836096,
+            "shoes": 4787096,
+            "acc": 3914672
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:52:00.907660"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4734567,
+            "top": 4728627,
+            "bottom": 2959391,
+            "shoes": 3010366,
+            "acc": 4560930
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:54:03.197577"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 3609975,
+            "top": 4389344,
+            "bottom": 2853447,
+            "shoes": 4423619,
+            "acc": 3605706
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:54:06.742232"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 2857040,
+            "top": 4798342,
+            "bottom": 4378223,
+            "shoes": 4563100,
+            "acc": 5304283
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:55:03.693128"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 5632374,
+            "top": 3603631,
+            "bottom": 5242565,
+            "shoes": 3541638,
+            "acc": 4735312
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:55:05.435811"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4520733,
+            "top": 5536039,
+            "bottom": 4728015,
+            "shoes": 5479947,
+            "acc": 5500621
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T13:55:07.714231"
+    },
+    {
+        "persona": "고프코어",
+        "category_items": {
+            "outer": 4467538,
+            "top": 5059754,
+            "bottom": 3930803,
+            "shoes": 5030388,
+            "acc": 5034262
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T13:55:10.924288"
+    }
+]

@@ -1,0 +1,1065 @@
+[
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3503922,
+            "bottom": 4999973,
+            "shoes": 1748671
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T09:55:57.603358"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4936840,
+            "bottom": 5083492,
+            "shoes": 5258339
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T09:56:00.241797"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4685044,
+            "bottom": 4947066,
+            "shoes": 4816237,
+            "acc": 4707289
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T09:56:03.984711"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3783464,
+            "bottom": 3816810,
+            "shoes": 4069090,
+            "acc": 2966027
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T09:56:09.624498"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3421369,
+            "bottom": 4054472,
+            "shoes": 4540943,
+            "acc": 5737300
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T09:56:13.717044"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4137615,
+            "bottom": 4905630,
+            "shoes": 5216484,
+            "acc": 5250930
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T09:56:22.761534"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4904216,
+            "bottom": 4145623,
+            "shoes": 4834337,
+            "acc": 4996508
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T09:56:36.168041"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4355680,
+            "bottom": 4222091,
+            "shoes": 4399495
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T09:56:40.139008"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3555410,
+            "bottom": 3861136,
+            "shoes": 4627224,
+            "acc": 4799325
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T09:56:44.018459"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3546311,
+            "bottom": 5209715,
+            "shoes": 5208134,
+            "acc": 4404393
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T09:57:57.891356"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4792071,
+            "bottom": 4827806,
+            "shoes": 5238814,
+            "acc": 4630969
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T09:59:34.184756"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4685047,
+            "bottom": 5140325,
+            "shoes": 4915484,
+            "acc": 4934083
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:02:31.596972"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3938350,
+            "bottom": 4980272,
+            "shoes": 5261715
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:03:43.676855"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4685047,
+            "bottom": 4471515,
+            "shoes": 5584483,
+            "acc": 4996512
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:03:48.407108"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3968324,
+            "bottom": 3073031,
+            "shoes": 5485508,
+            "acc": 5452429
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:03:58.043190"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3398384,
+            "bottom": 4073982,
+            "shoes": 4687278,
+            "acc": 5642799
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:04:01.870022"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4157223,
+            "bottom": 5192626,
+            "shoes": 4814788
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:04:09.052226"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5734813,
+            "bottom": 4609046,
+            "shoes": 3179916,
+            "acc": 4467431
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:04:11.821611"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5049873,
+            "bottom": 4336575,
+            "shoes": 5239445,
+            "acc": 2904139
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:05:33.436513"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5070969,
+            "bottom": 4396927,
+            "shoes": 3053318
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:05:36.544269"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4628728,
+            "bottom": 5118566,
+            "shoes": 5542092,
+            "acc": 212880
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:06:02.938004"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3785502,
+            "bottom": 5214916,
+            "shoes": 5341626,
+            "acc": 5001032
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:06:09.543184"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4771521,
+            "bottom": 5583766,
+            "shoes": 4834337,
+            "acc": 3974782
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:06:27.541826"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5225854,
+            "bottom": 5103943,
+            "shoes": 5360778
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:06:32.677092"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4228556,
+            "bottom": 4955045,
+            "shoes": 5797219,
+            "acc": 4998785
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:06:38.785960"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5323152,
+            "bottom": 4854800,
+            "shoes": 2663687
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:06:40.742905"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4767371,
+            "bottom": 3264844,
+            "shoes": 5291588,
+            "acc": 3610458
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:06:50.405655"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4198993,
+            "bottom": 4710375,
+            "shoes": 4160799,
+            "acc": 5700555
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:07:49.210806"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3555410,
+            "bottom": 4827379,
+            "shoes": 5584434,
+            "acc": 212882
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:07:55.638774"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4385315,
+            "bottom": 1593732,
+            "shoes": 3053318
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:07:59.091785"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4685048,
+            "bottom": 5067471,
+            "shoes": 5199083,
+            "acc": 5130480
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:08:03.892775"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4854736,
+            "bottom": 3322132,
+            "shoes": 5722454,
+            "acc": 5698697
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:08:12.733913"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5002905,
+            "bottom": 4710372,
+            "shoes": 4407585,
+            "acc": 578957
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:08:15.251263"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4972922,
+            "bottom": 4907175,
+            "shoes": 5270994
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:08:27.553426"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4728224,
+            "bottom": 1629616,
+            "shoes": 5410139,
+            "acc": 5282539
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:08:30.060446"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5346984,
+            "bottom": 5151673,
+            "shoes": 4904235,
+            "acc": 5698697
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:08:32.578215"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4060155,
+            "bottom": 5193918,
+            "shoes": 4880181,
+            "acc": 5635219
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:08:35.258311"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3555410,
+            "bottom": 3919955,
+            "shoes": 5584430,
+            "acc": 4926054
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:09:54.689144"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4921397,
+            "bottom": 4781216,
+            "shoes": 5431081,
+            "acc": 4526658
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:10:03.899346"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5174362,
+            "bottom": 4907054,
+            "shoes": 2410975
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:10:07.480662"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5214902,
+            "bottom": 2527845,
+            "shoes": 4526932
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:10:10.197939"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4175146,
+            "bottom": 578375,
+            "shoes": 2410975
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:10:12.449470"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5566813,
+            "bottom": 4099393,
+            "shoes": 4880181,
+            "acc": 4638926
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:10:22.678800"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4199824,
+            "bottom": 4998897,
+            "shoes": 5609653,
+            "acc": 4344390
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:10:26.827864"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4357146,
+            "bottom": 2364998,
+            "shoes": 5485505,
+            "acc": 4148645
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:10:28.876545"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5566813,
+            "bottom": 5326925,
+            "shoes": 4436713,
+            "acc": 1695455
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:10:31.850959"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5003903,
+            "bottom": 4055512,
+            "shoes": 4720386
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:10:35.481291"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5254120,
+            "bottom": 3073031,
+            "shoes": 5262635,
+            "acc": 3716519
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:11:42.056187"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4424126,
+            "bottom": 3556477,
+            "shoes": 5001373,
+            "acc": 2966027
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:11:46.250238"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4732650,
+            "bottom": 3822469,
+            "shoes": 5390598,
+            "acc": 3471231
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:11:50.129411"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5359768,
+            "bottom": 4081728,
+            "shoes": 4210049,
+            "acc": 5634844
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:11:54.524575"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4685048,
+            "bottom": 5338765,
+            "shoes": 5243576,
+            "acc": 3277368
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:12:32.432094"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5135563,
+            "bottom": 4121108,
+            "shoes": 4047740
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:12:34.133294"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4098919,
+            "bottom": 4767549,
+            "shoes": 5253203
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:12:37.536426"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5003798,
+            "bottom": 5668570,
+            "shoes": 3869716,
+            "acc": 2966027
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:12:39.825090"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5042705,
+            "bottom": 4482325,
+            "shoes": 5011947,
+            "acc": 3277309
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:13:50.463430"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4228555,
+            "bottom": 5452625,
+            "shoes": 4861620,
+            "acc": 3435333
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:13:56.592538"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3555410,
+            "bottom": 4345001,
+            "shoes": 5216534,
+            "acc": 2999762
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:17:49.117816"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3421369,
+            "bottom": 4928087,
+            "shoes": 4963534,
+            "acc": 5499972
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:17:59.240307"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4157223,
+            "bottom": 4905583,
+            "shoes": 4452600
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:18:35.167968"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4158681,
+            "bottom": 5270789,
+            "shoes": 2493214
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:18:36.761965"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3106649,
+            "bottom": 5008482,
+            "shoes": 4047740
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:18:41.859823"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4382628,
+            "bottom": 5410491,
+            "shoes": 5709162,
+            "acc": 1695455
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:18:45.009933"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4921397,
+            "bottom": 2866279,
+            "shoes": 5200561,
+            "acc": 5542926
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:18:47.429896"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5169684,
+            "bottom": 4960863,
+            "shoes": 4720384
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:18:48.832695"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 2381354,
+            "bottom": 3921995,
+            "shoes": 4522853,
+            "acc": 2999762
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:18:55.251913"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4159107,
+            "bottom": 1512821,
+            "shoes": 5535909
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:18:58.148061"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4915675,
+            "bottom": 5028811,
+            "shoes": 5305722,
+            "acc": 4926151
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:19:00.070633"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3938350,
+            "bottom": 4854800,
+            "shoes": 5298384
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:19:02.257624"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5052026,
+            "bottom": 5047717,
+            "shoes": 4475479,
+            "acc": 5234234
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:19:03.752794"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 3652255,
+            "bottom": 4145935,
+            "shoes": 5434466
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:19:27.013814"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4070421,
+            "bottom": 4986734,
+            "shoes": 4814790
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:19:28.989975"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5199697,
+            "bottom": 5103943,
+            "shoes": 4884651
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:19:46.833934"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5323077,
+            "bottom": 5083375,
+            "shoes": 5548738
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:19:48.698199"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4159107,
+            "bottom": 4222091,
+            "shoes": 5326509
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:20:31.909545"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4792070,
+            "bottom": 3576613,
+            "shoes": 5047212,
+            "acc": 4043031
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:20:33.683674"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4060155,
+            "bottom": 4876644,
+            "shoes": 3869710,
+            "acc": 5115538
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:20:53.363432"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4158669,
+            "bottom": 4905582,
+            "shoes": 5360781
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:21:33.133138"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5003798,
+            "bottom": 4012775,
+            "shoes": 3869716,
+            "acc": 2870104
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:22:31.844165"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4970847,
+            "bottom": 812603,
+            "shoes": 5326509
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:23:34.090822"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5257818,
+            "bottom": 4897662,
+            "shoes": 5797219,
+            "acc": 4043033
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:23:39.556597"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4058782,
+            "bottom": 4907054,
+            "shoes": 4814790
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:23:42.153483"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4990979,
+            "bottom": 5192626,
+            "shoes": 5535909
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:23:43.850151"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5323077,
+            "bottom": 4767549,
+            "shoes": 3850000
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:23:46.894371"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4852231,
+            "bottom": 4091671,
+            "shoes": 4816237,
+            "acc": 1489810
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:23:57.813741"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4852230,
+            "bottom": 3919976,
+            "shoes": 4624503,
+            "acc": 4425867
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:24:01.101557"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4904928,
+            "bottom": 3816810,
+            "shoes": 4407585,
+            "acc": 3674346
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:24:13.649623"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4792071,
+            "bottom": 5338765,
+            "shoes": 4963533,
+            "acc": 2999762
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:24:22.255242"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5346984,
+            "bottom": 2364998,
+            "shoes": 5709163,
+            "acc": 3277312
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:24:33.942286"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4734355,
+            "bottom": 4905598,
+            "shoes": 4884649
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:24:37.313373"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5270298,
+            "bottom": 3251993,
+            "shoes": 5001373,
+            "acc": 5589784
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:24:40.252030"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 2381357,
+            "bottom": 4872418,
+            "shoes": 5292972,
+            "acc": 2542978
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:24:52.779319"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4329638,
+            "bottom": 5083492,
+            "shoes": 4354342
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:26:14.709765"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4157223,
+            "bottom": 3045193,
+            "shoes": 5289757
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:26:16.729579"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5323152,
+            "bottom": 4818147,
+            "shoes": 5253203
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:26:18.624159"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4852230,
+            "bottom": 5118566,
+            "shoes": 5408936,
+            "acc": 4799325
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:29:08.407209"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5135563,
+            "bottom": 3045194,
+            "shoes": 4506906
+        },
+        "label": "bad",
+        "timestamp": "2026-01-08T10:29:11.155457"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 4897474,
+            "bottom": 5178385,
+            "shoes": 5485503,
+            "acc": 5694740
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:29:13.767895"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5052028,
+            "bottom": 5067471,
+            "shoes": 4950327,
+            "acc": 4707289
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:29:15.337376"
+    },
+    {
+        "persona": "블록코어",
+        "category_items": {
+            "top": 5229774,
+            "bottom": 3263262,
+            "shoes": 5722454,
+            "acc": 3674346
+        },
+        "label": "good",
+        "timestamp": "2026-01-08T10:29:31.973032"
+    }
+]
