@@ -117,6 +117,25 @@ function App() {
     }
   };
 
+  const resetAll = () => {
+    setStep('main');
+    setCurrentIdx(0);
+    setHistory([]);
+    setTypeScores({ A: 0, B: 0, C: 0, D: 0 });
+    setPersonaScores({});
+    setSelectedType(null);
+    setResult("");
+    setRecommendedProducts(null);
+    setCurrentOutfitId(null);
+    setPrices({
+      outer: { min: '', max: '' },
+      top: { min: '', max: '' },
+      bottom: { min: '', max: '' },
+      shoes: { min: '', max: '' },
+      acc: { min: '', max: '' }
+    });
+  };
+
   return (
     <div className="App">
       {step === 'main' && (
@@ -224,7 +243,7 @@ function App() {
           result={result} 
           products={recommendedProducts} 
           currentOutfitId={currentOutfitId} 
-          onBackToMain={() => setStep('main')} 
+          onBackToMain={resetAll} 
           onBackToResult={() => setStep('price_setting')} 
           prices={prices}
         />

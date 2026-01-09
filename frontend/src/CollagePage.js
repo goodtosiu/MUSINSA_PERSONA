@@ -117,7 +117,7 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
         {['outer', 'top', 'bottom', 'shoes', 'acc'].map(cat => (
           <div key={cat} className="cat-section">
             <div className="cat-header">
-              <span className="cat-name">{cat === 'bottom' ? 'BOTTOM (하의)' : cat.toUpperCase()}</span>
+              <span className="cat-name">{cat.toUpperCase()}</span>
               {(!shuffleLoading[cat] && displayItems[cat]?.length > 0) && (
                 <button className="shuffle-btn" onClick={() => handleShuffle(cat)}>셔플</button>
               )}
