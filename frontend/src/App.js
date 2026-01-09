@@ -205,7 +205,16 @@ function App() {
             <button className="start-btn" onClick={fetchRecommendations} disabled={isLoading || isAnyPriceError || !serverPriceRanges}>
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
             </button>
-            <button className="secondary-btn" onClick={() => setStep('main')}>다시하기</button>
+            <button className="secondary-btn" onClick={() => {
+              setStep('main'); 
+              setPrices({
+                outer: { min: '', max: '' },
+                top: { min: '', max: '' },
+                bottom: { min: '', max: '' },
+                shoes: { min: '', max: '' },
+                acc: { min: '', max: '' }
+              });
+            }}>다시하기</button>
           </div>
         </div>
       )}
