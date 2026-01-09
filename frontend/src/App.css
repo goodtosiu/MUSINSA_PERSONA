@@ -242,6 +242,7 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  width: 100%; /* 전체 너비 확보 */
 }
 
 .price-input-row {
@@ -253,6 +254,8 @@ body, html {
   border-radius: 12px;
   border: 1px solid transparent;
   transition: all 0.3s;
+  width: 100%; /* 부모 너비에 맞춤 */
+  box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
 }
 
 .price-input-row.error-border {
@@ -265,29 +268,48 @@ body, html {
   font-weight: bold;
   font-size: 1rem;
   text-align: left;
+  flex-shrink: 0;
 }
 
 .price-input-field {
-  flex: 1;
-  padding: 10px;
+  flex: 1;           /* 남은 공간을 모두 차지하여 꽉 차게 만듦 */
+  min-width: 0;      /* flex 아이템이 컨테이너를 벗어나지 않도록 방지 */
+  padding: 10px 15px;
   border-radius: 8px;
   border: 1px solid #444;
   background: #222;
   color: #fff;
   font-size: 0.9rem;
+  text-align : left !important;
+  display: block;
+}
+
+/* Placeholder에 대한 왼쪽 정렬 (브라우저별 호환성 포함) */
+.price-input-field::placeholder {
+  text-align: left;
+  color: #666;
+}
+
+.price-input-field::-webkit-outer-spin-button,
+.price-input-field::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .price-tilde {
   color: #666;
+  flex-shrink: 0;    /* 물결 기호가 찌그러지지 않게 설정 */
 }
 
 .error-message {
   color: #ff4d4f;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-align: left;
-  margin-left: 102px;
+  /* row의 padding-left(20px) + 라벨 width(90px) + gap(12px) = 122px */
+  margin-left: 122px; 
   margin-top: 2px;
   font-weight: 500;
+  word-break: keep-all;
 }
 
 .mt-30 {

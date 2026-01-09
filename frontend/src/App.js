@@ -26,18 +26,17 @@ function App() {
     acc: { min: '', max: '' }
   });
 
-  // [수정] 앱 시작 시 서버에서 가격 범위를 즉시 가져옴
+  // [수정] 앱 시작 시 npz 기반 가격 범위를 제공하는 전용 API 호출
   useEffect(() => {
     const fetchInitialRanges = async () => {
       try {
-        // 특정 페르소나에 국한되지 않고 전체 범위를 가져오기 위해 파라미터 없이 호출하거나 기본값 사용
-        const res = await fetch('http://127.0.0.1:5000/api/products'); 
+        const res = await fetch('http://127.0.0.1:5000/api/price-ranges'); 
         const data = await res.json();
-        if (data && data.price_ranges) {
-          setServerPriceRanges(data.price_ranges);
+        if (data && !data.error) {
+          setServerPriceRanges(data);
         }
       } catch (err) {
-        console.error("초기 가격 범위를 가져오는데 실패했습니다.", err);
+        console.error("가격 범위를 가져오는데 실패했습니다.", err);
       }
     };
     fetchInitialRanges();
@@ -124,8 +123,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* ... (중략: main, step1, step2, result 단계는 기존과 동일) ... */}
-      
+      {/* 메인 단계 */}
       {step === 'main' && (
         <div className="main-container fade-in">
           <div className="content-wrapper">
@@ -146,6 +144,7 @@ function App() {
         </div>
       )}
 
+      {/* 질문 단계 */}
       {(step === 'step1' || step === 'step2') && (
         <div className="question-container fade-in">
           <div className="progress-bar">
@@ -164,6 +163,7 @@ function App() {
         </div>
       )}
 
+      {/* 결과 단계 */}
       {step === 'result' && (
         <div className="result-container fade-in">
           <p className="result-label">당신의 페르소나는</p>
@@ -176,6 +176,7 @@ function App() {
         </div>
       )}
 
+      {/* 예산 설정 단계 */}
       {step === 'price_setting' && (
         <div className="price-setting-container fade-in">
           <h2 className="price-title">예산 설정</h2>
@@ -198,11 +199,11 @@ function App() {
                     <span className="price-cat-label">
                       {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
                     </span>
+                    
                     <input 
                       type="number" 
                       step="5000"
                       className="price-input-field" 
-                      // [수정] 데이터 로딩 전에는 빈 값 대신 로딩 상태를 보여주거나 조건부 렌더링
                       placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} 
                       value={prices[cat].min} 
                       onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} 
@@ -217,8 +218,9 @@ function App() {
                       onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} 
                     />
                   </div>
+
                   {hasError && range && (
-                    <p className="error-message" style={{ color: '#ff4d4f', fontSize: '13px', marginTop: '6px' }}>
+                    <p className="error-message">
                       {isCrossErr 
                         ? "최소 가격이 최대 가격보다 클 수 없습니다." 
                         : `${range.min.toLocaleString()}원 ~ ${range.max.toLocaleString()}원 사이로 입력해주세요.`}
@@ -243,6 +245,7 @@ function App() {
         </div>
       )}
 
+      {/* 콜라주 페이지 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
