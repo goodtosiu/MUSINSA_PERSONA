@@ -1,110 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import CollagePage from './CollagePage';
-// data.js 파일이 src 폴더에 있어야 합니다.
-import { questions, personas, personaDescriptions } from './data'; 
+import { step1Questions, step2Groups, personaDescriptions } from './data'; 
 
 function App() {
   const [step, setStep] = useState('main'); 
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [scores, setScores] = useState(Object.fromEntries(personas.map(p => [p, 0])));
   const [history, setHistory] = useState([]);
-  const [result, setResult] = useState("");
   
-  // 서버 데이터 상태 관리
+  const [typeScores, setTypeScores] = useState({ A: 0, B: 0, C: 0, D: 0 });
+  const [personaScores, setPersonaScores] = useState({});
+  const [selectedType, setSelectedType] = useState(null);
+  const [result, setResult] = useState("");
+
   const [recommendedProducts, setRecommendedProducts] = useState(null); 
   const [currentOutfitId, setCurrentOutfitId] = useState(null); 
-  
+  const [serverPriceRanges, setServerPriceRanges] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // [수정 완료] 누락되었던 prices 상태 추가
   const [prices, setPrices] = useState({
     outer: { min: '', max: '' },
     top: { min: '', max: '' },
     bottom: { min: '', max: '' },
     shoes: { min: '', max: '' },
-    accessory: { min: '', max: '' }
+    acc: { min: '', max: '' }
   });
 
-  // [수정 완료] 누락되었던 handlePriceChange 함수 추가
-  const handlePriceChange = (category, type, value) => {
-    setPrices(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [type]: value
+  useEffect(() => {
+    const fetchInitialRanges = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:5000/api/price-ranges'); 
+        const data = await res.json();
+        if (data && !data.error) {
+          setServerPriceRanges(data);
+        }
+      } catch (err) {
+        console.error("가격 범위를 가져오는데 실패했습니다.", err);
       }
-    }));
+    };
+    fetchInitialRanges();
+  }, []);
+
+  const isAnyPriceError = Object.keys(prices).some((cat) => {
+    const range = serverPriceRanges ? serverPriceRanges[cat] : null;
+    if (!range) return false;
+    const minVal = prices[cat].min !== '' ? Number(prices[cat].min) : null;
+    const maxVal = prices[cat].max !== '' ? Number(prices[cat].max) : null;
+    const isMinErr = minVal !== null && minVal >= range.max;
+    const isMaxErr = maxVal !== null && maxVal <= range.min;
+    const isCrossErr = (minVal !== null && maxVal !== null) && minVal > maxVal;
+    return isMinErr || isMaxErr || isCrossErr;
+  });
+
+  const handlePriceChange = (category, type, value) => {
+    setPrices(prev => ({ ...prev, [category]: { ...prev[category], [type]: value } }));
   };
 
-  // 퀴즈 시작 핸들러
-  const handleStart = () => {
-    setStep('question');
-    setCurrentIdx(0);
-    setScores(Object.fromEntries(personas.map(p => [p, 0])));
-    setHistory([]);
-    setRecommendedProducts(null);
-    setCurrentOutfitId(null);
+  const handleAnswer = (answer) => {
+    setHistory([...history, { typeScores: {...typeScores}, personaScores: {...personaScores}, currentIdx, selectedType, step }]);
+    if (step === 'step1') {
+      const newScores = { ...typeScores, [answer.type]: typeScores[answer.type] + 1 };
+      setTypeScores(newScores);
+      if (currentIdx + 1 < step1Questions.length) {
+        setCurrentIdx(currentIdx + 1);
+      } else {
+        const finalType = Object.keys(newScores).reduce((a, b) => newScores[a] >= newScores[b] ? a : b);
+        setSelectedType(finalType);
+        setCurrentIdx(0);
+        setStep('step2');
+      }
+    } else if (step === 'step2') {
+      const targetPersona = answer.res;
+      const newPersonaScores = { ...personaScores, [targetPersona]: (personaScores[targetPersona] || 0) + 1 };
+      setPersonaScores(newPersonaScores);
+      const currentGroupQuestions = step2Groups[selectedType].questions;
+      if (currentIdx + 1 < currentGroupQuestions.length) {
+        setCurrentIdx(currentIdx + 1);
+      } else {
+        const finalResult = Object.keys(newPersonaScores).reduce((a, b) => newPersonaScores[a] >= newPersonaScores[b] ? a : b);
+        setResult(finalResult);
+        setStep('result');
+      }
+    }
   };
 
-  // Flask에서 추천 데이터 가져오는 함수
+  const goBack = () => {
+    if (history.length === 0) { setStep('main'); return; }
+    const last = history[history.length - 1];
+    setTypeScores(last.typeScores);
+    setPersonaScores(last.personaScores);
+    setCurrentIdx(last.currentIdx);
+    setSelectedType(last.selectedType);
+    setStep(last.step);
+    setHistory(history.slice(0, -1));
+  };
+
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      // 1. 결과 페르소나를 쿼리 스트링으로 전달
-      // 필요하다면 prices 정보도 여기서 함께 보낼 수 있습니다.
-      const res = await fetch(`http://127.0.0.1:5000/api/products?persona=${result}`);
+      const queryParams = new URLSearchParams({ persona: result });
+      Object.keys(prices).forEach(cat => {
+        if (prices[cat].min) queryParams.append(`min_${cat}`, prices[cat].min);
+        if (prices[cat].max) queryParams.append(`max_${cat}`, prices[cat].max);
+      });
+      const res = await fetch(`http://127.0.0.1:5000/api/products?${queryParams.toString()}`);
       const data = await res.json();
-
-      // 2. 변경된 데이터 구조 처리 ({ current_outfit_id, items })
       if (data.items) {
         setRecommendedProducts(data.items); 
         setCurrentOutfitId(data.current_outfit_id); 
         setStep('collage');
-      } else {
-        alert("추천 상품을 불러오는데 문제가 발생했습니다.");
       }
-
     } catch (err) {
-      console.error(err);
-      alert("서버 연결에 실패했습니다. Flask 서버가 실행 중인지 확인해주세요.");
+      alert("데이터 로드 실패");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleAnswer = (types) => {
-    setHistory([...history, { ...scores }]);
-    const newScores = { ...scores };
-    types.forEach(type => { if (newScores[type] !== undefined) newScores[type]++; });
-    setScores(newScores);
-
-    if (currentIdx + 1 < questions.length) {
-      setCurrentIdx(currentIdx + 1);
-    } else {
-      const sorted = Object.keys(newScores).sort((a, b) => newScores[b] - newScores[a]);
-      setResult(sorted[0]);
-      setStep('result'); 
-    }
-  };
-
-  const handleBack = () => {
-    if (currentIdx > 0) {
-      setScores(history[history.length - 1]);
-      setHistory(history.slice(0, -1));
-      setCurrentIdx(currentIdx - 1);
-    } else {
-      setStep('main');
-    }
-  };
-
   return (
     <div className="App">
-      {/* 메인 화면 */}
       {step === 'main' && (
         <div className="main-container fade-in">
           <div className="content-wrapper">
-            <h2 className="top-title">패션 인격 찾기</h2>
+            <h2 className="top-title">패션 페르소나 찾기</h2>
             <h1 className="main-title">
               <span className="brand">MUSINSA</span>
               <span className="separator"> X </span>
@@ -114,81 +132,77 @@ function App() {
               <p>총 8가지 문항으로 옷장 속 숨겨진 당신의</p>
               <p><strong>16가지 패션 페르소나를 찾아보세요</strong></p>
             </div>
-            <button className="start-btn" onClick={handleStart}>
+            <button className="start-btn" onClick={() => { setStep('step1'); setCurrentIdx(0); }}>
               테스트 시작
             </button>
           </div>
         </div>
       )}
 
-      {/* 질문 화면 */}
-      {step === 'question' && (
+      {(step === 'step1' || step === 'step2') && (
         <div className="question-container fade-in">
           <div className="progress-bar">
-            <div className="progress" style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}></div>
+            <div className="progress" style={{ width: `${((step === 'step1' ? currentIdx : currentIdx + 4) / 8) * 100}%` }}></div>
           </div>
-          <p className="q-count">{currentIdx + 1} / {questions.length}</p>
-          <h2 className="question-text">{questions[currentIdx].q}</h2>
+          <p className="q-count">Q. {step === 'step1' ? currentIdx + 1 : currentIdx + 5} / 8</p>
+          <h2 className="question-text">
+            {step === 'step1' ? step1Questions[currentIdx].q : step2Groups[selectedType].questions[currentIdx].q}
+          </h2>
           <div className="answer-group">
-            {questions[currentIdx].a.map((ans, i) => (
-              <button key={i} className="ans-btn" onClick={() => handleAnswer(ans.score)}>{ans.text}</button>
+            {(step === 'step1' ? step1Questions[currentIdx].a : step2Groups[selectedType].questions[currentIdx].a).map((a, i) => (
+              <button key={i} className="ans-btn" onClick={() => handleAnswer(a)}>{a.text}</button>
             ))}
           </div>
-          <button className="back-btn" onClick={handleBack}>이전 질문으로</button>
+          <button className="back-btn" onClick={goBack}>이전 질문으로</button>
         </div>
       )}
 
-      {/* STEP 1: 결과 설명 창 */}
       {step === 'result' && (
-        <div className="result-container fade-in" style={{ maxWidth: '800px', margin: '80px auto', padding: '40px', background: 'rgba(255,255,255,0.05)', borderRadius: '20px', textAlign: 'center' }}>
+        <div className="result-container fade-in">
           <p className="result-label">당신의 페르소나는</p>
-          <h1 className="result-title" style={{ fontSize: '3.5rem', margin: '20px 0' }}>{result}</h1>
-          <p className="persona-desc" style={{ marginBottom: '40px', fontSize: '1.2rem', lineHeight: '1.8', color: '#ccc' }}>
-            {personaDescriptions[result] || "당신만의 특별한 스타일을 탐구해보세요."}
-          </p>
-          <div className="btn-group" style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+          <h1 className="result-title-main">{result}</h1>
+          <p className="persona-desc">{personaDescriptions[result]}</p>
+          <div className="btn-group-center">
             <button className="start-btn" onClick={() => setStep('price_setting')}>확인</button>
-            <button className="secondary-btn" onClick={() => setStep('main')}>다시하기</button>
+            <button className="secondary-btn" onClick={() => window.location.reload()}>다시하기</button>
           </div>
         </div>
       )}
 
-      {/* STEP 2: 가격 카테고리 설정 창 */}
       {step === 'price_setting' && (
-        <div className="price-setting-container fade-in" style={{ maxWidth: '700px', margin: '60px auto', padding: '30px', background: 'rgba(255,255,255,0.05)', borderRadius: '25px', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <h2 style={{ marginBottom: '10px', color: '#fff' }}>예산 설정</h2>
-          <p style={{ color: '#888', marginBottom: '25px' }}>각 카테고리별로 원하는 가격대를 입력해주세요.</p>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            {/* prices 객체가 정의되었으므로 이제 에러가 나지 않습니다 */}
-            {Object.keys(prices).map((cat) => (
-              <div key={cat} style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(0,0,0,0.3)', padding: '12px 20px', borderRadius: '12px' }}>
-                <span style={{ width: '90px', color: '#eee', fontWeight: 'bold', fontSize: '1rem', textAlign: 'left' }}>
-                  {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
-                </span>
-                <input 
-                  type="number" 
-                  placeholder="최소"
-                  value={prices[cat].min}
-                  step="5000"
-                  onChange={(e) => handlePriceChange(cat, 'min', e.target.value)}
-                  style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #444', background: '#222', color: '#fff', fontSize: '0.9rem' }}
-                />
-                <span style={{ color: '#666' }}>~</span>
-                <input 
-                  type="number" 
-                  placeholder="최대"
-                  step="5000"
-                  value={prices[cat].max}
-                  onChange={(e) => handlePriceChange(cat, 'max', e.target.value)}
-                  style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #444', background: '#222', color: '#fff', fontSize: '0.9rem' }}
-                />
-              </div>
-            ))}
+        <div className="price-setting-container fade-in">
+          <h2 className="price-title">예산 설정</h2>
+          <p className="price-subtitle">각 카테고리별로 원하는 가격대를 입력해주세요.</p>
+          <div className="price-input-list">
+            {Object.keys(prices).map((cat) => {
+              const range = serverPriceRanges ? serverPriceRanges[cat] : null;
+              const minVal = prices[cat].min !== '' ? Number(prices[cat].min) : null;
+              const maxVal = prices[cat].max !== '' ? Number(prices[cat].max) : null;
+              const isMinErr = range && minVal !== null && minVal >= range.max;
+              const isMaxErr = range && maxVal !== null && maxVal <= range.min;
+              const isCrossErr = (minVal !== null && maxVal !== null) && minVal > maxVal;
+              const hasError = isMinErr || isMaxErr || isCrossErr;
+              return (
+                <div key={cat} className="price-item-wrapper">
+                  <div className={`price-input-row ${hasError ? 'error-border' : ''}`}>
+                    <span className="price-cat-label">
+                      {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
+                    </span>
+                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
+                    <span className="price-tilde">~</span>
+                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
+                  </div>
+                  {hasError && range && (
+                    <p className="error-message">
+                      {isCrossErr ? "최소 가격이 최대 가격보다 클 수 없습니다." : `${range.min.toLocaleString()}원 ~ ${range.max.toLocaleString()}원 사이로 입력해주세요.`}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
           </div>
-
-          <div className="btn-group" style={{ marginTop: '30px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
-            <button className="start-btn" onClick={fetchRecommendations} disabled={isLoading}>
+          <div className="btn-group-center mt-30">
+            <button className="start-btn" onClick={fetchRecommendations} disabled={isLoading || isAnyPriceError || !serverPriceRanges}>
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
             </button>
             <button className="secondary-btn" onClick={() => setStep('main')}>다시하기</button>
@@ -196,14 +210,14 @@ function App() {
         </div>
       )}
 
-      {/* 콜라주 페이지 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
           products={recommendedProducts} 
           currentOutfitId={currentOutfitId} 
-          onBackToMain={() => setStep('main')}
-          onBackToResult={() => setStep('price_setting')}
+          onBackToMain={() => setStep('main')} 
+          onBackToResult={() => setStep('price_setting')} 
+          prices={prices}
         />
       )}
     </div>
