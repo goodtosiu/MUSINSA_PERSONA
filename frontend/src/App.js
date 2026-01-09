@@ -199,7 +199,6 @@ function App() {
                     <span className="price-cat-label">
                       {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
                     </span>
-                    
                     <input 
                       type="number" 
                       step="5000"
