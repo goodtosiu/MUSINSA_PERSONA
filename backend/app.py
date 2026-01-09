@@ -113,6 +113,8 @@ def get_recommendations():
     persona = request.args.get('persona', '아메카지')
     fixed_outfit_id = request.args.get('outfit_id')
     target_category_filter = request.args.get('category') 
+    
+    print(f"\n🔍 [추천 요청] 페르소나: {persona}, OutfitID: {fixed_outfit_id or '랜덤'}")
 
     if not master_data: 
         return jsonify({"error": "Server data not loaded"}), 500
@@ -124,9 +126,12 @@ def get_recommendations():
             else:
                 outfit_query = "SELECT DISTINCT outfit FROM persona_item WHERE persona = %s"
                 outfits_df = pd.read_sql(outfit_query, conn, params=(persona,))
-                if outfits_df.empty: return jsonify({"error": "Persona not found"}), 404
+                if outfits_df.empty: 
+                    print(f"❌ 페르소나 '{persona}'에 해당하는 코디가 없습니다.")
+                    return jsonify({"error": "Persona not found"}), 404
                 selected_outfit = int(np.random.choice(outfits_df['outfit'].tolist()))
 
+            print(f"👗 선택된 코디 ID: {selected_outfit}")
             item_query = "SELECT product_id FROM persona_item WHERE persona = %s AND outfit = %s"
             target_ids = pd.read_sql(item_query, conn, params=(persona, selected_outfit))['product_id'].tolist()
             
@@ -147,12 +152,22 @@ def get_recommendations():
                 continue
 
             if kor_val not in target_item_map:
+                print(f"   ⚠️ {kor_val} 카테고리에 해당하는 기본 아이템이 없습니다.")
                 final_response["items"][eng_key] = [] 
                 continue
 
             target_idx = target_item_map[kor_val]
+            
+            # [추가] 기준 상품(Target) 정보 출력
+            target_name = master_data['names'][target_idx]
+            print(f"   🎯 카테고리 분석: {kor_val}")
+            print(f"      기준 상품: {target_name} (ID: {master_data['ids'][target_idx]})")
+
             cat_min = request.args.get(f'min_{eng_key}', type=int)
             cat_max = request.args.get(f'max_{eng_key}', type=int)
+            
+            if cat_min or cat_max:
+                print(f"      필터 적용: {cat_min or 0} ~ {cat_max or '무제한'}원")
 
             sim_name = np.dot(master_data['name_vecs'], master_data['name_vecs'][target_idx])
             sim_brand = np.dot(master_data['brand_vecs'], master_data['brand_vecs'][target_idx])
@@ -172,16 +187,24 @@ def get_recommendations():
             cat_real_indices = np.where(combined_mask)[0]
             
             if len(cat_scores) == 0:
+                print(f"      ❌ 가격 조건에 맞는 {kor_val} 상품이 없습니다.")
                 final_response["items"][eng_key] = []
                 continue
 
+            # 유사도 기반 정렬 및 상위 5개 선택
             sorted_indices = np.argsort(cat_scores)[::-1][:100]
             selected_local = np.random.choice(sorted_indices, min(5, len(sorted_indices)), replace=False)
             
             items_list = []
             for loc_idx in selected_local:
                 original_idx = cat_real_indices[loc_idx]
+                score = cat_scores[loc_idx]
                 p_id = int(master_data['ids'][original_idx])
+                p_name = str(master_data['names'][original_idx])
+                
+                # [추가] 추천 후보별 유사도 점수 및 상품명 출력
+                print(f"      ✨ 추천 후보: {p_name[:30]}... | 점수: {score:.4f}")
+
                 processed_filename = f"nobg_{p_id}.png"
                 processed_file_path = os.path.join(PROCESSED_DIR, processed_filename)
                 
@@ -193,15 +216,17 @@ def get_recommendations():
 
                 items_list.append({
                     "product_id": p_id,
-                    "product_name": str(master_data['names'][original_idx]),
+                    "product_name": p_name,
                     "price": int(master_data['prices'][original_idx]),
                     "img_url": final_img_url,
                     "category": kor_val,
                 })
             final_response["items"][eng_key] = items_list
 
+        print(f"✅ 추천 결과 생성 완료 (Outfit ID: {selected_outfit})")
         return jsonify(final_response)
     except Exception as e:
+        print(f"❌ 추천 에러 발생: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/static/processed_imgs/<path:filename>')

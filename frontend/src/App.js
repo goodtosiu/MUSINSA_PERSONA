@@ -26,7 +26,6 @@ function App() {
     acc: { min: '', max: '' }
   });
 
-  // [수정] 앱 시작 시 npz 기반 가격 범위를 제공하는 전용 API 호출
   useEffect(() => {
     const fetchInitialRanges = async () => {
       try {
@@ -45,14 +44,11 @@ function App() {
   const isAnyPriceError = Object.keys(prices).some((cat) => {
     const range = serverPriceRanges ? serverPriceRanges[cat] : null;
     if (!range) return false;
-
     const minVal = prices[cat].min !== '' ? Number(prices[cat].min) : null;
     const maxVal = prices[cat].max !== '' ? Number(prices[cat].max) : null;
-
     const isMinErr = minVal !== null && minVal >= range.max;
     const isMaxErr = maxVal !== null && maxVal <= range.min;
     const isCrossErr = (minVal !== null && maxVal !== null) && minVal > maxVal;
-
     return isMinErr || isMaxErr || isCrossErr;
   });
 
@@ -123,7 +119,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* 메인 단계 */}
       {step === 'main' && (
         <div className="main-container fade-in">
           <div className="content-wrapper">
@@ -144,7 +139,6 @@ function App() {
         </div>
       )}
 
-      {/* 질문 단계 */}
       {(step === 'step1' || step === 'step2') && (
         <div className="question-container fade-in">
           <div className="progress-bar">
@@ -163,7 +157,6 @@ function App() {
         </div>
       )}
 
-      {/* 결과 단계 */}
       {step === 'result' && (
         <div className="result-container fade-in">
           <p className="result-label">당신의 페르소나는</p>
@@ -176,67 +169,40 @@ function App() {
         </div>
       )}
 
-      {/* 예산 설정 단계 */}
       {step === 'price_setting' && (
         <div className="price-setting-container fade-in">
           <h2 className="price-title">예산 설정</h2>
           <p className="price-subtitle">각 카테고리별로 원하는 가격대를 입력해주세요.</p>
-          
           <div className="price-input-list">
             {Object.keys(prices).map((cat) => {
               const range = serverPriceRanges ? serverPriceRanges[cat] : null;
               const minVal = prices[cat].min !== '' ? Number(prices[cat].min) : null;
               const maxVal = prices[cat].max !== '' ? Number(prices[cat].max) : null;
-
               const isMinErr = range && minVal !== null && minVal >= range.max;
               const isMaxErr = range && maxVal !== null && maxVal <= range.min;
               const isCrossErr = (minVal !== null && maxVal !== null) && minVal > maxVal;
               const hasError = isMinErr || isMaxErr || isCrossErr;
-
               return (
                 <div key={cat} className="price-item-wrapper">
                   <div className={`price-input-row ${hasError ? 'error-border' : ''}`}>
                     <span className="price-cat-label">
                       {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
                     </span>
-                    <input 
-                      type="number" 
-                      step="5000"
-                      className="price-input-field" 
-                      placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} 
-                      value={prices[cat].min} 
-                      onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} 
-                    />
+                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
                     <span className="price-tilde">~</span>
-                    <input 
-                      type="number" 
-                      step="5000"
-                      className="price-input-field" 
-                      placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} 
-                      value={prices[cat].max} 
-                      onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} 
-                    />
+                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
                   </div>
-
                   {hasError && range && (
                     <p className="error-message">
-                      {isCrossErr 
-                        ? "최소 가격이 최대 가격보다 클 수 없습니다." 
-                        : `${range.min.toLocaleString()}원 ~ ${range.max.toLocaleString()}원 사이로 입력해주세요.`}
+                      {isCrossErr ? "최소 가격이 최대 가격보다 클 수 없습니다." : `${range.min.toLocaleString()}원 ~ ${range.max.toLocaleString()}원 사이로 입력해주세요.`}
                     </p>
                   )}
                 </div>
               );
             })}
           </div>
-
           <div className="btn-group-center mt-30">
-            <button 
-              className="start-btn" 
-              onClick={fetchRecommendations} 
-              disabled={isLoading || isAnyPriceError || !serverPriceRanges}
-              style={{ opacity: (isLoading || isAnyPriceError || !serverPriceRanges) ? 0.6 : 1 }}
-            >
+            <button className="start-btn" onClick={fetchRecommendations} disabled={isLoading || isAnyPriceError || !serverPriceRanges}>
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
             </button>
             <button className="secondary-btn" onClick={() => setStep('main')}>다시하기</button>
@@ -244,7 +210,6 @@ function App() {
         </div>
       )}
 
-      {/* 콜라주 페이지 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
@@ -252,6 +217,7 @@ function App() {
           currentOutfitId={currentOutfitId} 
           onBackToMain={() => setStep('main')} 
           onBackToResult={() => setStep('price_setting')} 
+          prices={prices}
         />
       )}
     </div>
