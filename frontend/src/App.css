@@ -214,35 +214,54 @@ body, html {
    6. 페르소나 설명 페이지 전용 스타일
    ========================================================== */
 .desc-list-container {
-  text-align: left;
-  max-height: 55vh;
-  overflow-y: auto;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4열 고정 */
+  gap: 12px; /* ★중요: 가로, 세로 간격을 12px로 강제 통일 */
+  padding: 0; 
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto; /* 위아래 여백 */
+  /* 스크롤바 제거를 위해 높이 제한 및 overflow 삭제 */
+  max-height: none; 
+  overflow: visible;
 }
 
 .desc-item {
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #444;
-  text-align: left; /* 리스트 내 텍스트 왼쪽 정렬 */
+  background-color: #fff; /* 흰색 배경 */
+  color: #000; /* 글자색 검정 */
+  border-radius: 12px; /* 둥근 모서리 */
+  aspect-ratio: 1 / 1; /* 정사각형 비율 고정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  /* 마진 제거 (gap으로 간격 조정하므로 필요 없음) */
+  margin: 0; 
+}
+
+.desc-item:hover {
+  transform: none;
+  z-index: auto;
 }
 
 .desc-item-name {
   display: block;
-  font-size: 1.1rem;
-  color: #fff;
+  font-size: 0.95rem;
   font-weight: 800;
-  text-align: left;
+  margin-bottom: 6px;
+  color: #000;
+  word-break: keep-all;
 }
 
 .desc-item-text {
-  margin: 5px 0 0;
-  color: #aaa;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  text-align: left;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  color: #333;
+  margin: 0;
+  word-break: keep-all;
 }
 
 /* 메인 화면에서의 '페르소나 설명' 버튼 간격 조절 */

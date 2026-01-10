@@ -136,10 +136,8 @@ function App() {
     });
   };
 
-
   return (
     <div className="App">
-      {/* 1. 메인 화면: 페르소나 설명 버튼 삭제됨 */}
       {step === 'main' && (
         <div className="main-container fade-in">
           <div className="content-wrapper">
@@ -178,7 +176,6 @@ function App() {
         </div>
       )}
 
-      {/* 2. 결과 화면: 버튼 위치를 이쪽 하단으로 이동 */}
       {step === 'result' && (
         <div className="result-container fade-in">
           <p className="result-label">당신의 페르소나는</p>
@@ -188,14 +185,13 @@ function App() {
             <button className="start-btn" onClick={() => setStep('price_setting')}>확인</button>
             <button className="secondary-btn" onClick={() => window.location.reload()}>다시하기</button>
           </div>
-          {/* 페르소나 설명 보기 버튼 추가 */}
           <button className="back-btn mt-15" onClick={() => setStep('descriptions')}>
             모든 페르소나 설명 보기
           </button>
         </div>
       )}
 
-      {/* 3. 페르소나 설명 리스트 페이지: 코드 위치를 result 다음으로 이동 */}
+      {/* 페르소나 설명 페이지 (스크롤바 제거 및 균일한 간격 적용됨) */}
       {step === 'descriptions' && (
         <div className="question-container fade-in">
           <h2 className="price-title">페르소나 가이드</h2>
