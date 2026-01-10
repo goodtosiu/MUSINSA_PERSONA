@@ -225,7 +225,7 @@ function App() {
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
             </button>
             <button className="secondary-btn" onClick={() => {
-              setStep('main'); 
+              window.location.reload(); 
               setPrices({
                 outer: { min: '', max: '' },
                 top: { min: '', max: '' },
