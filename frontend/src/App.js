@@ -117,8 +117,29 @@ function App() {
     }
   };
 
+  const resetAll = () => {
+    setStep('main');
+    setCurrentIdx(0);
+    setHistory([]);
+    setTypeScores({ A: 0, B: 0, C: 0, D: 0 });
+    setPersonaScores({});
+    setSelectedType(null);
+    setResult("");
+    setRecommendedProducts(null);
+    setCurrentOutfitId(null);
+    setPrices({
+      outer: { min: '', max: '' },
+      top: { min: '', max: '' },
+      bottom: { min: '', max: '' },
+      shoes: { min: '', max: '' },
+      acc: { min: '', max: '' }
+    });
+  };
+
+
   return (
     <div className="App">
+      {/* 1. 메인 화면: 페르소나 설명 버튼 삭제됨 */}
       {step === 'main' && (
         <div className="main-container fade-in">
           <div className="content-wrapper">
@@ -157,6 +178,7 @@ function App() {
         </div>
       )}
 
+      {/* 2. 결과 화면: 버튼 위치를 이쪽 하단으로 이동 */}
       {step === 'result' && (
         <div className="result-container fade-in">
           <p className="result-label">당신의 페르소나는</p>
@@ -166,6 +188,28 @@ function App() {
             <button className="start-btn" onClick={() => setStep('price_setting')}>확인</button>
             <button className="secondary-btn" onClick={() => window.location.reload()}>다시하기</button>
           </div>
+          {/* 페르소나 설명 보기 버튼 추가 */}
+          <button className="back-btn mt-15" onClick={() => setStep('descriptions')}>
+            모든 페르소나 설명 보기
+          </button>
+        </div>
+      )}
+
+      {/* 3. 페르소나 설명 리스트 페이지: 코드 위치를 result 다음으로 이동 */}
+      {step === 'descriptions' && (
+        <div className="question-container fade-in">
+          <h2 className="price-title">페르소나 가이드</h2>
+          <div className="desc-list-container">
+            {Object.entries(personaDescriptions).map(([name, desc]) => (
+              <div key={name} className="desc-item">
+                <strong className="desc-item-name">{name}</strong>
+                <p className="desc-item-text">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <button className="back-btn mt-30" onClick={() => setStep('result')}>
+            결과로 돌아가기
+          </button>
         </div>
       )}
 
@@ -205,7 +249,16 @@ function App() {
             <button className="start-btn" onClick={fetchRecommendations} disabled={isLoading || isAnyPriceError || !serverPriceRanges}>
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
             </button>
-            <button className="secondary-btn" onClick={() => setStep('main')}>다시하기</button>
+            <button className="secondary-btn" onClick={() => {
+              window.location.reload(); 
+              setPrices({
+                outer: { min: '', max: '' },
+                top: { min: '', max: '' },
+                bottom: { min: '', max: '' },
+                shoes: { min: '', max: '' },
+                acc: { min: '', max: '' }
+              });
+            }}>다시하기</button>
           </div>
         </div>
       )}
@@ -215,7 +268,7 @@ function App() {
           result={result} 
           products={recommendedProducts} 
           currentOutfitId={currentOutfitId} 
-          onBackToMain={() => setStep('main')} 
+          onBackToMain={() => resetAll} 
           onBackToResult={() => setStep('price_setting')} 
           prices={prices}
         />

@@ -211,7 +211,47 @@ body, html {
 }
 
 /* ==========================================================
-   6. 가격 설정 페이지 (PriceSetting) 스타일 이관
+   6. 페르소나 설명 페이지 전용 스타일
+   ========================================================== */
+.desc-list-container {
+  text-align: left;
+  max-height: 55vh;
+  overflow-y: auto;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.desc-item {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+  text-align: left; /* 리스트 내 텍스트 왼쪽 정렬 */
+}
+
+.desc-item-name {
+  display: block;
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 800;
+  text-align: left;
+}
+
+.desc-item-text {
+  margin: 5px 0 0;
+  color: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* 메인 화면에서의 '페르소나 설명' 버튼 간격 조절 */
+.mt-15 {
+  margin-top: 15px !important;
+}
+
+/* ==========================================================
+   7. 가격 설정 페이지 (PriceSetting) 스타일 이관
    ========================================================== */
 .price-setting-container {
   max-width: 700px;
@@ -317,7 +357,7 @@ body, html {
 }
 
 /* ==========================================================
-   7. 공통 레이아웃 및 애니메이션
+   8. 공통 레이아웃 및 애니메이션
    ========================================================== */
 .content-wrapper {
   display: flex;
