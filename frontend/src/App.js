@@ -191,7 +191,6 @@ function App() {
         </div>
       )}
 
-<<<<<<< HEAD
       {step === 'price_setting' && (
         <div className="price-setting-container fade-in">
           <h2 className="price-title">예산 설정</h2>
@@ -224,58 +223,6 @@ function App() {
               );
             })}
           </div>
-=======
-      {/* 페르소나 설명 페이지 (스크롤바 제거 및 균일한 간격 적용됨) */}
-      {step === 'descriptions' && (
-        <div className="question-container fade-in">
-          <h2 className="price-title">페르소나 가이드</h2>
-          <div className="desc-list-container">
-            {Object.entries(personaDescriptions).map(([name, desc]) => (
-              <div key={name} className="desc-item">
-                <strong className="desc-item-name">{name}</strong>
-                <p className="desc-item-text">{desc}</p>
-              </div>
-            ))}
-          </div>
-          <button className="back-btn mt-30" onClick={() => setStep('result')}>
-            결과로 돌아가기
-          </button>
-        </div>
-      )}
-
-      {step === 'price_setting' && (
-        <div className="price-setting-container fade-in">
-          <h2 className="price-title">예산 설정</h2>
-          <p className="price-subtitle">각 카테고리별로 원하는 가격대를 입력해주세요.</p>
-          <div className="price-input-list">
-            {Object.keys(prices).map((cat) => {
-              const range = serverPriceRanges ? serverPriceRanges[cat] : null;
-              const minVal = prices[cat].min !== '' ? Number(prices[cat].min) : null;
-              const maxVal = prices[cat].max !== '' ? Number(prices[cat].max) : null;
-              const isMinErr = range && minVal !== null && minVal >= range.max;
-              const isMaxErr = range && maxVal !== null && maxVal <= range.min;
-              const isCrossErr = (minVal !== null && maxVal !== null) && minVal > maxVal;
-              const hasError = isMinErr || isMaxErr || isCrossErr;
-              return (
-                <div key={cat} className="price-item-wrapper">
-                  <div className={`price-input-row ${hasError ? 'error-border' : ''}`}>
-                    <span className="price-cat-label">
-                      {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
-                    </span>
-                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
-                    <span className="price-tilde">~</span>
-                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
-                  </div>
-                  {hasError && range && (
-                    <p className="error-message">
-                      {isCrossErr ? "최소 가격이 최대 가격보다 클 수 없습니다." : `${range.min.toLocaleString()}원 ~ ${range.max.toLocaleString()}원 사이로 입력해주세요.`}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
->>>>>>> design-KHG
           <div className="btn-group-center mt-30">
             <button className="start-btn" onClick={fetchRecommendations} disabled={isLoading || isAnyPriceError || !serverPriceRanges}>
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
@@ -299,11 +246,7 @@ function App() {
           result={result} 
           products={recommendedProducts} 
           currentOutfitId={currentOutfitId} 
-<<<<<<< HEAD
           onBackToMain={resetAll} 
-=======
-          onBackToMain={() => resetAll} 
->>>>>>> design-KHG
           onBackToResult={() => setStep('price_setting')} 
           prices={prices}
         />
