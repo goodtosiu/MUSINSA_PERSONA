@@ -191,6 +191,24 @@ function App() {
         </div>
       )}
 
+      {/* 페르소나 설명 페이지 (스크롤바 제거 및 균일한 간격 적용됨) */}
+      {step === 'descriptions' && (
+        <div className="question-container fade-in">
+          <h2 className="price-title">페르소나 가이드</h2>
+          <div className="desc-list-container">
+            {Object.entries(personaDescriptions).map(([name, desc]) => (
+              <div key={name} className="desc-item">
+                <strong className="desc-item-name">{name}</strong>
+                <p className="desc-item-text">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <button className="back-btn mt-30" onClick={() => setStep('result')}>
+            결과로 돌아가기
+          </button>
+        </div>
+      )}
+
       {step === 'price_setting' && (
         <div className="price-setting-container fade-in">
           <h2 className="price-title">예산 설정</h2>
