@@ -1,0 +1,114 @@
+/* PurchasePage.css */
+
+.right-purchase-area {
+  flex: 0 0 450px;
+  height: 805px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.purchase-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+  letter-spacing: -0.5px;
+}
+
+.selected-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+/* 상품 행 디자인 */
+.purchase-item-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+}
+
+.item-thumb {
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.item-thumb img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+.item-details {
+  text-align: left;
+}
+
+.brand-name { font-size: 0.75rem; color: #888; margin: 0; }
+.product-name { font-size: 0.95rem; font-weight: 500; margin: 4px 0; }
+.product-price { font-size: 0.9rem; font-weight: 600; }
+
+/* 중앙 로고 */
+.center-logo {
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  color: #fff;
+  margin: 40px 0;
+}
+
+/* 버튼 섹션 */
+.payment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.coupon-btn {
+  width: 100%;
+  height: 55px;
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.total-buy-btn {
+  width: 100%;
+  height: 55px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.back-text-btn {
+  background: none;
+  border: none;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.badge {
+  background: #333;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  margin-bottom: 10px;
+}
