@@ -2,7 +2,7 @@ import React from 'react';
 import './PurchasePage.css';
 
 const PurchasePage = ({ selectedItems, onBack, bgPath, onBackToMain }) => {
-  // 가격 합산
+  // 전체 합계 금액 계산
   const totalPrice = selectedItems.reduce((sum, item) => {
     const p = typeof item.price === 'number' ? item.price : parseInt(item.price) || 0;
     return sum + p;
@@ -10,7 +10,7 @@ const PurchasePage = ({ selectedItems, onBack, bgPath, onBackToMain }) => {
 
   return (
     <div className="advanced-collage-layout dark-theme">
-      {/* 왼쪽: 캔버스 (CollagePage.css 스타일 적용됨) */}
+      {/* 왼쪽 영역: 캔버스 상태 유지 */}
       <section className="left-canvas-area">
         <div className="canvas-header">
            <span className="badge">마이 아웃핏</span>
@@ -31,11 +31,10 @@ const PurchasePage = ({ selectedItems, onBack, bgPath, onBackToMain }) => {
         </div>
       </section>
 
-      {/* 오른쪽: 결제 및 상품 리스트 영역 (PurchasePage.css 적용) */}
+      {/* 오른쪽 영역: 순수 클래스 기반 구조 (인라인 스타일 제거) */}
       <section className="right-list-area">
-        <div className="purchase-content-top">
+        <div className="purchase-container">
           <h2 className="sidebar-title">선택 상품</h2>
-          
           <div className="purchase-list">
             {selectedItems.map((item) => (
               <div key={item.instanceId} className="purchase-item-row">
@@ -51,24 +50,11 @@ const PurchasePage = ({ selectedItems, onBack, bgPath, onBackToMain }) => {
           </div>
         </div>
 
-        {/* 로고 및 버튼 영역 */}
-        <div className="purchase-content-bottom">
-          <div className="center-logo-group">
-            <p>LOOK</p>
-            <p>×</p>
-            <p>MBTI</p>
-          </div>
-
-          <div className="action-button-group">
-            <div className="button-group">
-              <button className="btn-secondary" onClick={onBackToMain}>메인으로</button>
-              <button className="btn-secondary" onClick={() => alert("사용 가능한 쿠폰이 없습니다.")}>쿠폰 사용</button>
-              <button className="btn-secondary" onClick={onBack}>이전으로</button>
-            </div>
-            <button className="buy-red-btn" onClick={() => alert("결제 페이지로 이동합니다.")}>
-              {totalPrice.toLocaleString()}원 결제하기
-            </button>
-          </div>
+        {/* 로고 영역 */}
+        <div className="center-logo-group">
+          <p>LOOK</p>
+          <p>×</p>
+          <p>MBTI</p>
         </div>
       </section>
     </div>
