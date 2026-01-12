@@ -11,3 +11,4 @@ scikit-learn
 axios
 onnxruntime
 sqlalchemy
+streamlit
