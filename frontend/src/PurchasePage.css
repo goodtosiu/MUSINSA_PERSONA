@@ -1,0 +1,131 @@
+/* 오른쪽 전체 영역 레이아웃 */
+.right-list-area {
+  flex: 0 0 450px;
+  height: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 상단 리스트와 하단 버튼 분리 */
+  padding: 20px 0;
+}
+
+/* 상단 타이틀 및 리스트 */
+.sidebar-title {
+  font-size: 1.8rem;
+  color: #fff;
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.purchase-list {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* 상품 개별 행 - 좌측 정렬 */
+.purchase-item-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 15px;
+}
+
+.item-thumb {
+  width: 90px;
+  height: 90px;
+  background-color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.item-thumb img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left; /* 텍스트 좌측 정렬 */
+}
+
+.product-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+/* 로고 영역 */
+.center-logo-group {
+  text-align: center;
+  color: #fff;
+  letter-spacing: 6px;
+  font-size: 0.85rem;
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+
+.center-logo-group p {
+  margin: 5px 0;
+}
+
+/* 버튼 영역 */
+.action-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.button-group .btn-secondary {
+  flex: 1;
+  height: 55px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.buy-red-btn {
+  width: 100%;
+  height: 60px;
+  background-color: #fff; /* 무신사 스타일: 흰색 배경에 검은 글씨 혹은 반대 */
+  color: #000;
+  font-weight: 800;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* 스크롤바 커스텀 */
+.purchase-list::-webkit-scrollbar {
+  width: 4px;
+}
+.purchase-list::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}

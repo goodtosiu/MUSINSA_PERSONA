@@ -264,7 +264,7 @@ function App() {
           result={result} 
           products={recommendedProducts} 
           currentOutfitId={currentOutfitId} 
-          onBackToMain={() => resetAll} 
+          onBackToMain={resetAll} 
           onBackToResult={() => setStep('price_setting')} 
           prices={prices}
         />
