@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import CollagePage from './CollagePage';
-import { step1Questions, step2Groups, personaDescriptions } from './data'; 
+import PurchasePage from './PurchasePage';
+// personaBackMap은 배경 경로를 생성하기 위해 import합니다.
+import { step1Questions, step2Groups, personaDescriptions, personaBackMap } from './data'; 
 
 function App() {
   const [step, setStep] = useState('main'); 
@@ -17,6 +19,9 @@ function App() {
   const [currentOutfitId, setCurrentOutfitId] = useState(null); 
   const [serverPriceRanges, setServerPriceRanges] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // [추가] PurchasePage로 넘겨줄 최종 선택 아이템 상태
+  const [finalSelectedItems, setFinalSelectedItems] = useState([]);
 
   const [prices, setPrices] = useState({
     outer: { min: '', max: '' },
@@ -53,6 +58,7 @@ function App() {
   });
 
   const handlePriceChange = (category, type, value) => {
+    const numericValue = value === '' ? '' : Math.max(0, Number(value));
     setPrices(prev => ({ ...prev, [category]: { ...prev[category], [type]: value } }));
   };
 
@@ -117,6 +123,12 @@ function App() {
     }
   };
 
+  // [추가] 콜라주 페이지에서 구매하기를 눌렀을 때 실행될 함수
+  const handleGoToPurchase = (items) => {
+    setFinalSelectedItems(items);
+    setStep('purchase');
+  };
+
   const resetAll = () => {
     setStep('main');
     setCurrentIdx(0);
@@ -127,6 +139,7 @@ function App() {
     setResult("");
     setRecommendedProducts(null);
     setCurrentOutfitId(null);
+    setFinalSelectedItems([]); // 초기화 시 아이템도 비움
     setPrices({
       outer: { min: '', max: '' },
       top: { min: '', max: '' },
@@ -185,6 +198,26 @@ function App() {
             <button className="start-btn" onClick={() => setStep('price_setting')}>확인</button>
             <button className="secondary-btn" onClick={() => window.location.reload()}>다시하기</button>
           </div>
+          <button className="back-btn mt-15" onClick={() => setStep('descriptions')}>
+            모든 페르소나 설명 보기
+          </button>
+        </div>
+      )}
+
+      {step === 'descriptions' && (
+        <div className="question-container fade-in">
+          <h2 className="price-title">페르소나 가이드</h2>
+          <div className="desc-list-container">
+            {Object.entries(personaDescriptions).map(([name, desc]) => (
+              <div key={name} className="desc-item">
+                <strong className="desc-item-name">{name}</strong>
+                <p className="desc-item-text">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <button className="back-btn mt-30" onClick={() => setStep('result')}>
+            결과로 돌아가기
+          </button>
         </div>
       )}
 
@@ -207,9 +240,9 @@ function App() {
                     <span className="price-cat-label">
                       {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
                     </span>
-                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
+                    <input type="number" min = "0" step="5000" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
                     <span className="price-tilde">~</span>
-                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
+                    <input type="number" min = "0" step="5000" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
                   </div>
                   {hasError && range && (
                     <p className="error-message">
@@ -225,7 +258,7 @@ function App() {
               {isLoading ? "분석 중..." : "추천 상품 확인하기"}
             </button>
             <button className="secondary-btn" onClick={() => {
-              setStep('main'); 
+              window.location.reload(); 
               setPrices({
                 outer: { min: '', max: '' },
                 top: { min: '', max: '' },
@@ -238,6 +271,7 @@ function App() {
         </div>
       )}
 
+      {/* [수정] onNavigateToPurchase 추가 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
@@ -246,6 +280,17 @@ function App() {
           onBackToMain={resetAll} 
           onBackToResult={() => setStep('price_setting')} 
           prices={prices}
+          onNavigateToPurchase={handleGoToPurchase} 
+        />
+      )}
+
+      {/* [추가] PurchasePage 렌더링 섹션 */}
+      {step === 'purchase' && (
+        <PurchasePage 
+          selectedItems={finalSelectedItems} 
+          onBack={() => setStep('collage')} 
+          onBackToMain={resetAll}
+          bgPath={personaBackMap[result] ? `/backgrounds/${personaBackMap[result]}` : null}
         />
       )}
     </div>

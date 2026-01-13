@@ -3,7 +3,8 @@ import axios from 'axios';
 import './CollagePage.css';
 import { personaBackMap } from './data'; 
 
-const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackToResult, prices }) => {
+// [수정] props에 onNavigateToPurchase 추가
+const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackToResult, prices, onNavigateToPurchase }) => {
   const [displayItems, setDisplayItems] = useState({
     outer: [], top: [], bottom: [], shoes: [], acc: []
   });
@@ -35,7 +36,7 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
           persona: result,
           outfit_id: currentOutfitId,
           category: category,
-          [`min_${category}`]: prices[category].min, // 가격 필터 유지
+          [`min_${category}`]: prices[category].min, 
           [`max_${category}`]: prices[category].max,
           _t: Date.now()
         }
@@ -125,7 +126,7 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
             <div className="item-grid">
               {(() => {
                 const items = displayItems[cat] || [];
-                const totalSlots = Array.from({ length: 5 }); // 항상 5개 슬롯 유지
+                const totalSlots = Array.from({ length: 5 }); 
                 return totalSlots.map((_, i) => {
                   const item = items[i];
                   if (item) {
@@ -159,7 +160,13 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
             <button className="btn-secondary" onClick={() => setSelectedItems([])}>초기화</button>
             <button className="btn-secondary" onClick={onBackToResult}>이전으로</button>
           </div>
-          <button className="buy-red-btn" onClick={() => alert("구매 페이지로 이동합니다!")}>선택 조합 구매하기</button>
+          {/* [수정] alert 제거 및 상위 컴포넌트로 데이터 전달 */}
+          <button 
+            className="buy-red-btn" 
+            onClick={() => onNavigateToPurchase(selectedItems)}
+          >
+            선택 조합 구매하기
+          </button>
         </div>
       </section>
     </div>

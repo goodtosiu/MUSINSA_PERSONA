@@ -211,7 +211,66 @@ body, html {
 }
 
 /* ==========================================================
-   6. 가격 설정 페이지 (PriceSetting) 스타일 이관
+   6. 페르소나 설명 페이지 전용 스타일
+   ========================================================== */
+.desc-list-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4열 고정 */
+  gap: 12px; /* ★중요: 가로, 세로 간격을 12px로 강제 통일 */
+  padding: 0; 
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto; /* 위아래 여백 */
+  /* 스크롤바 제거를 위해 높이 제한 및 overflow 삭제 */
+  max-height: none; 
+  overflow: visible;
+}
+
+.desc-item {
+  background-color: #fff; /* 흰색 배경 */
+  color: #000; /* 글자색 검정 */
+  border-radius: 12px; /* 둥근 모서리 */
+  aspect-ratio: 1 / 1; /* 정사각형 비율 고정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  /* 마진 제거 (gap으로 간격 조정하므로 필요 없음) */
+  margin: 0; 
+}
+
+.desc-item:hover {
+  transform: none;
+  z-index: auto;
+}
+
+.desc-item-name {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #000;
+  word-break: keep-all;
+}
+
+.desc-item-text {
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: #333;
+  margin: 0;
+  word-break: keep-all;
+}
+
+/* 메인 화면에서의 '페르소나 설명' 버튼 간격 조절 */
+.mt-15 {
+  margin-top: 15px !important;
+}
+
+/* ==========================================================
+   7. 가격 설정 페이지 (PriceSetting) 스타일 이관
    ========================================================== */
 .price-setting-container {
   max-width: 700px;
@@ -317,7 +376,7 @@ body, html {
 }
 
 /* ==========================================================
-   7. 공통 레이아웃 및 애니메이션
+   8. 공통 레이아웃 및 애니메이션
    ========================================================== */
 .content-wrapper {
   display: flex;
