@@ -47,44 +47,42 @@
     user-select: none;
 }
 
-/* 중앙 경계선 및 세로 로고 */
-.vertical-divider {
-    width: 1px;
-    height: 600px;
-    background-color: #1a1a1a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin: 0 40px;
+/* 중앙 경계선 영역 */
+.center-divider-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  border-left: 1px solid #222;
 }
 
-.mbti-logo-vertical {
-    background-color: #000; /* 글자 뒤 선 가리기 */
-    padding: 40px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #fff;
-    letter-spacing: 6px;
-    font-size: 0.95rem;
-    font-weight: 300;
-    line-height: 1.8;
-    position: absolute;
-    white-space: nowrap;
+/* 세로로 쌓이는 로고 스타일 */
+.stacked-mbti-logo {
+  display: flex;
+  flex-direction: column; /* 위에서 아래로 쌓임 */
+  align-items: center;    /* 가운데 정렬 */
+  gap: 0px;              /* 단어 사이 간격 */
+  color: #fff;            /* 로고 색상 */
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+  line-height: 1.0;
 }
 
-.vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    letter-spacing: 8px;
-    font-size: 2rem; /* 폰트 사이즈 조정 */
-    font-weight: 300;
+.logo-text {
+  /* 글자가 가로로 똑바로 보이게 유지 */
+  white-space: nowrap;
+  font-size: 1.2rem;
+  line-height: 1;
+  margin: 0;
 }
 
-.divider-cross {
-    margin: 10px 0;
-    font-size: 1rem;
+.logo-cross {
+  color: #fff;
+  font-weight: 300;
+  font-size: 3rem;
+  margin: -5px 0;
+  line-height: 1.2;
 }
 
 /* 오른쪽 사이드바 영역 */

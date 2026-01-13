@@ -215,11 +215,11 @@ body, html {
    ========================================================== */
 .desc-list-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4열 고정 */
-  gap: 12px; /* ★중요: 가로, 세로 간격을 12px로 강제 통일 */
+  grid-template-columns: repeat(4, 175px); /* 4열 고정 */
+  gap: 18px; /* ★중요: 가로, 세로 간격을 12px로 강제 통일 */
   padding: 0; 
   width: 100%;
-  max-width: 600px;
+  max-width: 760px;
   margin: 20px auto; /* 위아래 여백 */
   /* 스크롤바 제거를 위해 높이 제한 및 overflow 삭제 */
   max-height: none; 
@@ -230,16 +230,17 @@ body, html {
   background-color: #fff; /* 흰색 배경 */
   color: #000; /* 글자색 검정 */
   border-radius: 12px; /* 둥근 모서리 */
-  aspect-ratio: 1 / 1; /* 정사각형 비율 고정 */
+  width: 175px;  /* 너비 145px 고정 */
+  height: 140px; /* 높이 145px 고정 */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 8px;
+  padding: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   /* 마진 제거 (gap으로 간격 조정하므로 필요 없음) */
-  margin: 0; 
+  margin: 0;
 }
 
 .desc-item:hover {
@@ -249,7 +250,7 @@ body, html {
 
 .desc-item-name {
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 800;
   margin-bottom: 6px;
   color: #000;
@@ -257,7 +258,7 @@ body, html {
 }
 
 .desc-item-text {
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.35;
   color: #333;
   margin: 0;
