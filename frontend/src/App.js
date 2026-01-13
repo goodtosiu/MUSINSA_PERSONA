@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import CollagePage from './CollagePage';
-import { step1Questions, step2Groups, personaDescriptions } from './data'; 
+import PurchasePage from './PurchasePage';
+// personaBackMap은 배경 경로를 생성하기 위해 import합니다.
+import { step1Questions, step2Groups, personaDescriptions, personaBackMap } from './data'; 
 
 function App() {
   const [step, setStep] = useState('main'); 
@@ -17,6 +19,9 @@ function App() {
   const [currentOutfitId, setCurrentOutfitId] = useState(null); 
   const [serverPriceRanges, setServerPriceRanges] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // [추가] PurchasePage로 넘겨줄 최종 선택 아이템 상태
+  const [finalSelectedItems, setFinalSelectedItems] = useState([]);
 
   const [prices, setPrices] = useState({
     outer: { min: '', max: '' },
@@ -117,6 +122,12 @@ function App() {
     }
   };
 
+  // [추가] 콜라주 페이지에서 구매하기를 눌렀을 때 실행될 함수
+  const handleGoToPurchase = (items) => {
+    setFinalSelectedItems(items);
+    setStep('purchase');
+  };
+
   const resetAll = () => {
     setStep('main');
     setCurrentIdx(0);
@@ -127,6 +138,7 @@ function App() {
     setResult("");
     setRecommendedProducts(null);
     setCurrentOutfitId(null);
+    setFinalSelectedItems([]); // 초기화 시 아이템도 비움
     setPrices({
       outer: { min: '', max: '' },
       top: { min: '', max: '' },
@@ -191,7 +203,6 @@ function App() {
         </div>
       )}
 
-      {/* 페르소나 설명 페이지 (스크롤바 제거 및 균일한 간격 적용됨) */}
       {step === 'descriptions' && (
         <div className="question-container fade-in">
           <h2 className="price-title">페르소나 가이드</h2>
@@ -259,6 +270,7 @@ function App() {
         </div>
       )}
 
+      {/* [수정] onNavigateToPurchase 추가 */}
       {step === 'collage' && recommendedProducts && (
         <CollagePage 
           result={result} 
@@ -267,6 +279,17 @@ function App() {
           onBackToMain={resetAll} 
           onBackToResult={() => setStep('price_setting')} 
           prices={prices}
+          onNavigateToPurchase={handleGoToPurchase} 
+        />
+      )}
+
+      {/* [추가] PurchasePage 렌더링 섹션 */}
+      {step === 'purchase' && (
+        <PurchasePage 
+          selectedItems={finalSelectedItems} 
+          onBack={() => setStep('collage')} 
+          onBackToMain={resetAll}
+          bgPath={personaBackMap[result] ? `/backgrounds/${personaBackMap[result]}` : null}
         />
       )}
     </div>
