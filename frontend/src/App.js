@@ -58,6 +58,7 @@ function App() {
   });
 
   const handlePriceChange = (category, type, value) => {
+    const numericValue = value === '' ? '' : Math.max(0, Number(value));
     setPrices(prev => ({ ...prev, [category]: { ...prev[category], [type]: value } }));
   };
 
@@ -239,9 +240,9 @@ function App() {
                     <span className="price-cat-label">
                       {cat === 'outer' ? '아우터' : cat === 'top' ? '상의' : cat === 'bottom' ? '하의' : cat === 'shoes' ? '신발' : '액세서리'}
                     </span>
-                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
+                    <input type="number" min = "0" step="5000" className="price-input-field" placeholder={range ? `${range.min.toLocaleString()}` : "계산 중..."} value={prices[cat].min} onChange={(e) => handlePriceChange(cat, 'min', e.target.value)} />
                     <span className="price-tilde">~</span>
-                    <input type="number" step="5000" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
+                    <input type="number" min = "0" step="5000" className="price-input-field" placeholder={range ? `${range.max.toLocaleString()}` : "계산 중..."} value={prices[cat].max} onChange={(e) => handlePriceChange(cat, 'max', e.target.value)} />
                   </div>
                   {hasError && range && (
                     <p className="error-message">
