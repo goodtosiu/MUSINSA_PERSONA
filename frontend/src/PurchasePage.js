@@ -40,7 +40,8 @@ const PurchasePage = ({ selectedItems, onBack, bgPath }) => {
       <section className="right-list-area purchase-sidebar">
         <div className="top-section">
           <h2 className="sidebar-title">선택 상품</h2>
-          <div className="purchase-list scroll-area">
+          {/* [수정] 이 영역에만 스크롤이 적용됩니다 */}
+          <div className="purchase-list"> 
             {selectedItems.map((item) => (
               <div key={item.instanceId} className="purchase-item-card">
                 <div className="item-img-container">
@@ -55,7 +56,7 @@ const PurchasePage = ({ selectedItems, onBack, bgPath }) => {
           </div>
         </div>
 
-        {/* 하단 버튼 섹션 */}
+        {/* 하단 버튼 섹션 (고정) */}
         <div className="action-button-group purchase-actions">
           <button className="coupon-btn" onClick={() => alert("사용 가능한 쿠폰이 없습니다.")}>
             쿠폰 사용

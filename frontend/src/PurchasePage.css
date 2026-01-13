@@ -6,12 +6,16 @@
     background-color: #000;
     min-height: 100vh;
     position: relative;
+    overflow: hidden; /* 전체 페이지 스크롤 방지 */
 }
 
 /* 왼쪽 캔버스 영역 */
 .left-canvas-area {
     flex: 1;
     padding: 40px 0px 40px 40px;
+    height: 700px; /* 높이 고정으로 안정감 부여 */
+    display: flex;
+    flex-direction: column;
 }
 
 .outfit-badge {
@@ -32,7 +36,6 @@
     border: 1px solid #333;
     width: 100%;
     flex: 1;
-    min-height: 600px;
 }
 
 .canvas-item {
@@ -47,20 +50,13 @@
 /* 중앙 경계선 및 세로 로고 */
 .vertical-divider {
     width: 1px;
-    background-color: #1a1a1a; /* 은은한 경계선 */
+    height: 600px;
+    background-color: #1a1a1a;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    margin: 60px 0;
-}
-
-.vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    letter-spacing: 8px;
-    font-size: 2rem;
-    font-weight: 300;
+    margin: 0 40px;
 }
 
 .mbti-logo-vertical {
@@ -71,11 +67,19 @@
     align-items: center;
     color: #fff;
     letter-spacing: 6px;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 300;
     line-height: 1.8;
     position: absolute;
     white-space: nowrap;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 8px;
+    font-size: 2rem; /* 폰트 사이즈 조정 */
+    font-weight: 300;
 }
 
 .divider-cross {
@@ -86,30 +90,40 @@
 /* 오른쪽 사이드바 영역 */
 .purchase-sidebar {
     flex: 1;
+    height: 700px; /* 왼쪽과 높이 통일 */
     padding: 60px 40px 60px 0px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden; /* 사이드바 자체 스크롤 제거 */
+}
+
+.top-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 내부 리스트 스크롤을 위해 필요 */
 }
 
 .sidebar-title {
     text-align: center;
-    margin-bottom: 40px;
-    font-family: inherit;
+    margin-bottom: 30px;
     color: #fff;
 }
 
-.scroll-area {
-    overflow-y: auto;
-    margin-bottom: 20px;
+/* [수정] 상품 리스트 영역만 스크롤 적용 */
+.purchase-list {
     flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
 }
 
 /* 스크롤바 커스텀 */
-.scroll-area::-webkit-scrollbar {
+.purchase-list::-webkit-scrollbar {
     width: 4px;
 }
-.scroll-area::-webkit-scrollbar-thumb {
+.purchase-list::-webkit-scrollbar-thumb {
     background-color: #333;
     border-radius: 2px;
 }
@@ -158,7 +172,6 @@
     color: #fff;
     margin: 8px 0 0 0;
     font-weight: 700;
-    text-align: left;
 }
 
 /* 하단 버튼 그룹 */
@@ -167,6 +180,8 @@
     gap: 12px;
     display: flex;
     flex-direction: column;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 20px;
 }
 
 .coupon-btn {
@@ -177,12 +192,6 @@
     border: 1px solid #fff;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.2s;
-}
-
-.coupon-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
 }
 
 .pay-btn-white {
@@ -191,15 +200,9 @@
     background: #fff;
     color: #000;
     font-weight: 800;
-    font-size: 1.1rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.pay-btn-white:hover {
-    opacity: 0.9;
 }
 
 .back-link-text {
