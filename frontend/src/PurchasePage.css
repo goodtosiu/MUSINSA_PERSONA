@@ -1,0 +1,218 @@
+/* 전체 레이아웃 구성 */
+.advanced-collage-layout.dark-theme {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden; /* 전체 페이지 스크롤 방지 */
+}
+
+/* 왼쪽 캔버스 영역 */
+.left-canvas-area {
+    flex: 1;
+    padding: 40px 0px 40px 40px;
+    height: 700px; /* 높이 고정으로 안정감 부여 */
+    display: flex;
+    flex-direction: column;
+}
+
+.outfit-badge {
+    background: #333;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: #fff;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.collage-canvas {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #333;
+    width: 100%;
+    flex: 1;
+}
+
+.canvas-item {
+    position: absolute;
+}
+
+.canvas-item img {
+    width: 150px;
+    user-select: none;
+}
+
+/* 중앙 경계선 및 세로 로고 */
+.vertical-divider {
+    width: 1px;
+    height: 600px;
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0 40px;
+}
+
+.mbti-logo-vertical {
+    background-color: #000; /* 글자 뒤 선 가리기 */
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    letter-spacing: 6px;
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.8;
+    position: absolute;
+    white-space: nowrap;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 8px;
+    font-size: 2rem; /* 폰트 사이즈 조정 */
+    font-weight: 300;
+}
+
+.divider-cross {
+    margin: 10px 0;
+    font-size: 1rem;
+}
+
+/* 오른쪽 사이드바 영역 */
+.purchase-sidebar {
+    flex: 1;
+    height: 700px; /* 왼쪽과 높이 통일 */
+    padding: 60px 40px 60px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden; /* 사이드바 자체 스크롤 제거 */
+}
+
+.top-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 내부 리스트 스크롤을 위해 필요 */
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+/* [수정] 상품 리스트 영역만 스크롤 적용 */
+.purchase-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+
+/* 스크롤바 커스텀 */
+.purchase-list::-webkit-scrollbar {
+    width: 4px;
+}
+.purchase-list::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 2px;
+}
+
+/* 상품 카드 스타일 */
+.purchase-item-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 20px;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 15px;
+}
+
+.item-img-container {
+    width: 90px;
+    height: 90px;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.item-img-container img {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+}
+
+.item-text-info {
+    color: #fff;
+    text-align: left;
+}
+
+.item-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.item-price {
+    font-size: 1rem;
+    color: #fff;
+    margin: 8px 0 0 0;
+    font-weight: 700;
+    text-align: left;
+}
+
+/* 하단 버튼 그룹 */
+.purchase-actions {
+    padding: 0;
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 20px;
+}
+
+.coupon-btn {
+    width: 100%;
+    height: 55px;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.pay-btn-white {
+    width: 100%;
+    height: 55px;
+    background: #fff;
+    color: #000;
+    font-weight: 800;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.back-link-text {
+    background: none;
+    border: none;
+    color: #666;
+    text-decoration: underline;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-align: center;
+}
