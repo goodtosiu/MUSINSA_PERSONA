@@ -108,9 +108,9 @@ def generate_batch_outfits(persona, count=100):
         
         # 각 카테고리별로 랜덤하게 1개씩 추출
         for eng_key, kor_val in CATEGORY_MAP.items():
-            # 액세서리 확률 등장 (60%)
+            # 액세서리 확률 등장 (20%)
             if eng_key == "acc":
-                if np.random.rand() > 0.6: 
+                if np.random.rand() > 0.2: 
                     continue
 
             if kor_val in category_pool and category_pool[kor_val]:
@@ -180,9 +180,9 @@ with st.sidebar:
     st.header("설정")
     persona_input = st.text_input("페르소나 입력", value="아메카지")
     
-    if st.button("🚀 랜덤 조합 생성 (100개)"):
+    if st.button("🚀 랜덤 조합 생성 (200개)"):
         with st.spinner('아이템 로드 및 조합 중...'):
-            st.session_state.batch_data = generate_batch_outfits(persona_input, 100)
+            st.session_state.batch_data = generate_batch_outfits(persona_input, 200)
             st.session_state.current_index = 0
             st.session_state.labeled_results = [] 
         st.success(f"{len(st.session_state.batch_data)}개 조합 생성 완료!")
