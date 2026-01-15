@@ -137,7 +137,8 @@
 .price-text {
   color: #000 !important; 
   font-size: 0.83rem; 
-  font-weight: 500; 
+  font-weight: 500;
+  user-select: none;
 }
 
 hr {

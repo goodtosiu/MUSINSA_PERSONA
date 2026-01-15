@@ -131,12 +131,22 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
                   const item = items[i];
                   if (item) {
                     return (
-                      <div key={item.product_id} className={`item-card ${shuffleLoading[cat] ? 'shuffling' : ''}`} draggable onDragStart={(e) => handleExternalDragStart(e, item, cat)}>
+                      // 1. 전체 카드(.item-card)의 draggable 속성을 제거합니다.
+                      <div key={item.product_id} className={`item-card ${shuffleLoading[cat] ? 'shuffling' : ''}`}>
                         <div className="img-box">
-                          <img src={item.img_url} alt="" onError={(e) => e.target.src = 'https://via.placeholder.com/150'} /></div>
+                          <img 
+                            src={item.img_url} 
+                            alt="" 
+                            // 2. 이미지 태그에만 드래그 속성과 이벤트를 부여합니다.
+                            draggable 
+                            onDragStart={(e) => handleExternalDragStart(e, item, cat)}
+                            onError={(e) => e.target.src = 'https://via.placeholder.com/150'} 
+                            style={{ cursor: 'grab' }} // 드래그 가능함을 시각적으로 표시
+                          />
+                        </div>
                         <div className="item-info">
                           <p className="price-text">{item.price?.toLocaleString()}원</p>
-                          </div>
+                        </div>
                       </div>
                     );
                   } else {

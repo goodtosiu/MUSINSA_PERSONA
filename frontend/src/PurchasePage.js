@@ -28,11 +28,11 @@ const PurchasePage = ({ selectedItems, onBack, bgPath }) => {
       </section>
 
       {/* 중앙 경계선 및 세로 글자 로고 */}
-      <div className="vertical-divider">
-        <div className="mbti-logo-vertical">
-          <div className="vertical-text">MUSINSA</div>
-          <div className="divider-cross">×</div>
-          <div className="vertical-text">PERSONA</div>
+      <div className="center-divider-area">
+        <div className="stacked-mbti-logo">
+          <div className="logo-text">MUSINSA</div>
+          <div className="logo-cross">×</div>
+          <div className="logo-text">PERSONA</div>
         </div>
       </div>
 
