@@ -6,14 +6,15 @@
     background-color: #000;
     min-height: 100vh;
     position: relative;
-    overflow: hidden; /* 전체 페이지 스크롤 방지 */
+    overflow: hidden;
+    gap: 40px; /* 로고가 빠진 자리에 좌우 간격 추가 */
 }
 
 /* 왼쪽 캔버스 영역 */
 .left-canvas-area {
-    flex: 1;
-    padding: 40px 0px 40px 40px;
-    height: 700px; /* 높이 고정으로 안정감 부여 */
+    flex: 1.2; /* 캔버스 영역을 조금 더 넓게 설정 */
+    padding: 40px;
+    height: 700px;
     display: flex;
     flex-direction: column;
 }
@@ -47,71 +48,35 @@
     user-select: none;
 }
 
-/* 중앙 경계선 및 세로 로고 */
-.vertical-divider {
-    width: 1px;
-    height: 600px;
-    background-color: #1a1a1a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin: 0 40px;
-}
-
-.mbti-logo-vertical {
-    background-color: #000; /* 글자 뒤 선 가리기 */
-    padding: 40px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #fff;
-    letter-spacing: 6px;
-    font-size: 0.95rem;
-    font-weight: 300;
-    line-height: 1.8;
-    position: absolute;
-    white-space: nowrap;
-}
-
-.vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    letter-spacing: 8px;
-    font-size: 2rem; /* 폰트 사이즈 조정 */
-    font-weight: 300;
-}
-
-.divider-cross {
-    margin: 10px 0;
-    font-size: 1rem;
-}
+/* [삭제] .center-divider-area, .stacked-mbti-logo 관련 스타일 모두 삭제 */
 
 /* 오른쪽 사이드바 영역 */
 .purchase-sidebar {
-    flex: 1;
-    height: 700px; /* 왼쪽과 높이 통일 */
-    padding: 60px 40px 60px 0px;
+    flex: 0.8; /* 리스트 영역 비율 조정 */
+    height: 700px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden; /* 사이드바 자체 스크롤 제거 */
+    overflow: hidden;
+    border-left: 1px solid #222; /* 로고 대신 좌측에 경계선 추가 (선택 사항) */
 }
 
 .top-section {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* 내부 리스트 스크롤을 위해 필요 */
+    overflow: hidden;
 }
 
 .sidebar-title {
-    text-align: center;
+    text-align: left; /* 중앙 정렬에서 왼쪽 정렬로 변경하여 가독성 향상 */
     margin-bottom: 30px;
     color: #fff;
+    font-size: 1.5rem;
 }
 
-/* [수정] 상품 리스트 영역만 스크롤 적용 */
+/* 상품 리스트 영역 스크롤 */
 .purchase-list {
     flex: 1;
     overflow-y: auto;
@@ -119,7 +84,6 @@
     margin-bottom: 20px;
 }
 
-/* 스크롤바 커스텀 */
 .purchase-list::-webkit-scrollbar {
     width: 4px;
 }
@@ -139,8 +103,8 @@
 }
 
 .item-img-container {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     background: #fff;
     border-radius: 8px;
     display: flex;
@@ -157,12 +121,11 @@
 
 .item-text-info {
     color: #fff;
-    text-align: left;
 }
 
 .item-name {
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 500;
     margin: 0;
     line-height: 1.4;
 }
@@ -170,40 +133,39 @@
 .item-price {
     font-size: 1rem;
     color: #fff;
-    margin: 8px 0 0 0;
+    margin: 5px 0 0 0;
     font-weight: 700;
     text-align: left;
 }
 
 /* 하단 버튼 그룹 */
 .purchase-actions {
-    padding: 0;
+    padding-top: 20px;
     gap: 12px;
     display: flex;
     flex-direction: column;
     border-top: 1px solid #1a1a1a;
-    padding-top: 20px;
+}
+
+.coupon-btn, .pay-btn-white {
+    width: 100%;
+    height: 55px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
 .coupon-btn {
-    width: 100%;
-    height: 55px;
     background: transparent;
     color: #fff;
-    border: 1px solid #fff;
-    border-radius: 8px;
-    cursor: pointer;
+    border: 1px solid #444;
 }
 
 .pay-btn-white {
-    width: 100%;
-    height: 55px;
     background: #fff;
     color: #000;
     font-weight: 800;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
 }
 
 .back-link-text {
@@ -214,5 +176,4 @@
     margin-top: 10px;
     cursor: pointer;
     font-size: 0.85rem;
-    text-align: center;
 }
