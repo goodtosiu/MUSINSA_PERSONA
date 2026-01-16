@@ -180,9 +180,9 @@ with st.sidebar:
     st.header("설정")
     persona_input = st.text_input("페르소나 입력", value="아메카지")
     
-    if st.button("🚀 랜덤 조합 생성 (200개)"):
+    if st.button("🚀 랜덤 조합 생성 (100개)"):
         with st.spinner('아이템 로드 및 조합 중...'):
-            st.session_state.batch_data = generate_batch_outfits(persona_input, 200)
+            st.session_state.batch_data = generate_batch_outfits(persona_input, 100)
             st.session_state.current_index = 0
             st.session_state.labeled_results = [] 
         st.success(f"{len(st.session_state.batch_data)}개 조합 생성 완료!")
