@@ -26,7 +26,7 @@ os.makedirs(PROCESSED_DIR, exist_ok=True)
 def init_data():
     global master_data
     try:
-        path = 'master_data.npz'
+        path = 'data/master_data.npz'
         if not os.path.exists(path):
             print(f"🚨 [오류] {path} 파일 없음")
             return
@@ -58,6 +58,7 @@ def init_data():
 
 init_data()
 
+# localhost
 db_url = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 engine = create_engine(db_url)
 
@@ -234,4 +235,4 @@ def serve_processed_image(filename):
     return send_from_directory(PROCESSED_DIR, filename)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(port=5000)

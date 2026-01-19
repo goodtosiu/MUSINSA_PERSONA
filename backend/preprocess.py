@@ -4,7 +4,8 @@ from sqlalchemy import create_engine
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+# backend 디렉토리의 .env 파일 로드
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 def create_master_data():
     print("🔄 완전체 마스터 데이터 결합 시작...")
@@ -51,10 +52,10 @@ def create_master_data():
         return mapping
 
     print("\n📦 개별 벡터 파일 로딩 및 분석...")
-    name_map = get_vec_map('name_emb.npz', "상품명")
-    img_map = get_vec_map('image_embeddings.npz', "이미지")
-    cat_map = get_vec_map('cat_emb.npz', "카테고리")
-    brand_map = get_vec_map('brand_emb.npz', "브랜드")
+    name_map = get_vec_map('data/product_name_emb.npz', "상품명")
+    img_map = get_vec_map('data/image_emb.npz', "이미지")
+    cat_map = get_vec_map('data/category_emb.npz', "카테고리")
+    brand_map = get_vec_map('data/brand_description_emb.npz', "브랜드")
 
     # 차원 설정
     def get_dim(v_map, default):
@@ -73,8 +74,8 @@ def create_master_data():
     print(f"\n🏗️ 데이터 매칭 및 결합 시작... (Total: {len(df_base)} items)")
     print(f"   - Dimensions: Name({d_name}), Brand({d_brand}), Img({d_img}), Cat({d_cat})")
     
-    stats = {"name_hit": 0, "brand_hit": 0, "img_hit": 0}
-    
+    stats = {"name_hit": 0, "brand_hit": 0, "img_hit": 0, "cat_hit": 0}
+
     total_count = len(df_base)
     for i, (_, row) in enumerate(df_base.iterrows()):
         if i % 2000 == 0:
@@ -105,7 +106,7 @@ def create_master_data():
         nv = fetch_vec(name_map, pid, d_name, "name_hit")
         bv = fetch_vec(brand_map, bid, d_brand, "brand_hit")
         iv = fetch_vec(img_map, pid, d_img, "img_hit")
-        cv = fetch_vec(cat_map, cid, d_cat)
+        cv = fetch_vec(cat_map, cid, d_cat, "cat_hit")
 
         ids.append(pid)
         names.append(row['product_name'])
@@ -129,16 +130,19 @@ def create_master_data():
     print(f"   👉 상품명 매칭 성공: {stats['name_hit']} / {total_count} ({(stats['name_hit']/total_count)*100:.1f}%)")
     print(f"   👉 브랜드 매칭 성공: {stats['brand_hit']} / {total_count} ({(stats['brand_hit']/total_count)*100:.1f}%)")
     print(f"   👉 이미지 매칭 성공: {stats['img_hit']} / {total_count} ({(stats['img_hit']/total_count)*100:.1f}%)")
-    
+    print(f"   👉 카테고리 매칭 성공: {stats['cat_hit']} / {total_count} ({(stats['cat_hit']/total_count)*100:.1f}%)")
+
     if stats['name_hit'] == 0:
         print("🚨 경고: 상품명 벡터 매칭 실패.")
     if stats['brand_hit'] == 0:
         print("🚨 경고: 브랜드 벡터 매칭 실패.")
+    if stats['cat_hit'] == 0:
+        print("🚨 경고: 카테고리 벡터 매칭 실패.")
 
     print(f"\n✅ 파일 저장 중...")
     
     # [수정 4] 저장 시 lower_cats 추가
-    np.savez_compressed('master_data.npz', 
+    np.savez_compressed('data/master_data.npz', 
                         ids=np.array(ids), 
                         names=np.array(names), 
                         prices=np.array(prices), 

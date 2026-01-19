@@ -4,6 +4,7 @@ import CollagePage from './CollagePage';
 import PurchasePage from './PurchasePage';
 // personaBackMap은 배경 경로를 생성하기 위해 import합니다.
 import { step1Questions, step2Groups, personaDescriptions, personaBackMap } from './data'; 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:5000';
 
 function App() {
   const [step, setStep] = useState('main'); 
@@ -34,7 +35,7 @@ function App() {
   useEffect(() => {
     const fetchInitialRanges = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:5000/api/price-ranges'); 
+        const res = await fetch(`${API_BASE_URL}/api/price-ranges`);
         const data = await res.json();
         if (data && !data.error) {
           setServerPriceRanges(data);
@@ -109,7 +110,7 @@ function App() {
         if (prices[cat].min) queryParams.append(`min_${cat}`, prices[cat].min);
         if (prices[cat].max) queryParams.append(`max_${cat}`, prices[cat].max);
       });
-      const res = await fetch(`http://127.0.0.1:5000/api/products?${queryParams.toString()}`);
+      const res = await fetch(`${API_BASE_URL}/api/products?${queryParams.toString()}`);
       const data = await res.json();
       if (data.items) {
         setRecommendedProducts(data.items); 

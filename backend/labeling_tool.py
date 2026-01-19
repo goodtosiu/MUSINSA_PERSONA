@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 from datetime import datetime
 
 # 환경 변수 및 데이터 로드 설정
-load_dotenv()
+# backend 디렉토리의 .env 파일 로드
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 # [설정]
 DATA_PATH = 'master_data.npz'
@@ -25,8 +26,8 @@ def load_resources():
         return None, None
     
     data = np.load(DATA_PATH, allow_pickle=True)
-    master_data = {k: data[k] for k in ['ids', 'names', 'prices', 'imgs', 'cats', 
-                                        'name_vecs', 'brand_vecs', 'img_vecs', 'cat_vecs']}
+    # [수정] 'lower_cats' 키 추가 로드
+    master_data = {k: data[k] for k in ['ids', 'names', 'prices', 'imgs', 'cats', 'lower_cats']}
     
     # 2. DB 연결
     try:
@@ -41,13 +42,15 @@ def load_resources():
 master_data, engine = load_resources()
 
 # ---------------------------------------------------------
-# [2] 추천 조합 생성 로직 (배치 생성)
+# [2] 추천 조합 생성 로직
 # ---------------------------------------------------------
 def generate_batch_outfits(persona, count=100):
     """
-    지정된 페르소나에 대해 랜덤하게 대표 코디를 선정하고,
-    대표 코디의 카테고리 구성을 100% 유지하는 유사 상품 조합을 생성함.
-    구성 요소가 누락되면 해당 조합을 버리고 재시도함.
+    representative_item 테이블에서 해당 페르소나의 아이템을 모두 가져온 뒤,
+    카테고리별로 그룹핑하고 랜덤하게 하나씩 뽑아 조합(Outfit)을 생성함.
+    [룰]
+    1. 액세서리는 30% 확률로만 등장.
+    2. 하위 카테고리(lower_cats) 정보를 이용해, 넥타이는 상의가 '셔츠'일 때만 등장.
     """
     generated_batch = []
     
@@ -55,103 +58,115 @@ def generate_batch_outfits(persona, count=100):
         return []
 
     with engine.connect() as conn:
-        # 1. 해당 페르소나의 모든 Outfit ID 가져오기
-        outfit_query = "SELECT DISTINCT outfit FROM persona_item WHERE persona = %s"
-        outfits_df = pd.read_sql(outfit_query, conn, params=(persona,))
+        # 1. 해당 페르소나의 대표 아이템 ID 모두 가져오기
+        query = "SELECT product_id FROM representative_item WHERE persona = %s"
+        df = pd.read_sql(query, conn, params=(persona,))
         
-        if outfits_df.empty:
-            st.error("해당 페르소나의 코디 데이터가 없습니다.")
+        if df.empty:
+            st.error("해당 페르소나의 대표 아이템 데이터가 없습니다.")
             return []
         
-        all_outfits = outfits_df['outfit'].tolist()
+        target_ids = df['product_id'].tolist()
 
-    # 진행률 표시 바
+    # 2. Master Data와 매핑하여 유효한 아이템 정보 및 카테고리 정보 확보
+    id_to_idx = {pid: i for i, pid in enumerate(master_data['ids'])}
+    
+    # 카테고리별 인덱스 풀(Pool) 생성
+    category_pool = {}
+    
+    for pid in target_ids:
+        if pid in id_to_idx:
+            idx = id_to_idx[pid]
+            cat_name = master_data['cats'][idx] 
+            
+            if cat_name not in category_pool:
+                category_pool[cat_name] = []
+            category_pool[cat_name].append(idx)
+            
+    # 카테고리 매핑
+    CATEGORY_MAP = {
+        "outer": "아우터", 
+        "top": "상의", 
+        "bottom": "바지", 
+        "shoes": "신발", 
+        "acc": "액세서리"
+    }
+
     progress_bar = st.progress(0)
     
-    # [수정] while 루프로 변경하여 목표 개수(count)를 채울 때까지 반복 (재시도 로직)
-    while len(generated_batch) < count:
-        # 랜덤으로 대표 Outfit 하나 선정
-        selected_outfit = int(np.random.choice(all_outfits))
-        
-        # 타겟 아이템 가져오기
-        with engine.connect() as conn:
-            item_query = "SELECT product_id FROM persona_item WHERE persona = %s AND outfit = %s"
-            target_ids = pd.read_sql(item_query, conn, params=(persona, selected_outfit))['product_id'].tolist()
+    attempts = 0
+    max_attempts = count * 20 
 
-        # [검증 1] DB에 있는 상품 ID가 master_data에 실제로 모두 존재하는지 체크
-        # 존재하지 않는 ID가 하나라도 있다면 이 대표 코디는 데이터 불량이므로 스킵하고 다시 뽑음
-        valid_mask = np.isin(target_ids, master_data['ids'])
-        if not np.all(valid_mask):
-            # print(f"Skipping outfit {selected_outfit}: Missing items in master_data")
-            continue 
-
-        target_indices = np.where(np.isin(master_data['ids'], target_ids))[0]
-        target_item_map = {master_data['cats'][idx]: idx for idx in target_indices}
-        
-        CATEGORY_MAP = {"outer": "아우터", "top": "상의", "bottom": "바지", "shoes": "신발", "acc": "액세서리"}
+    while len(generated_batch) < count and attempts < max_attempts:
+        attempts += 1
         
         current_set = {
             "persona": persona,
-            "target_outfit_id": selected_outfit,
-            "items": {},  # {category: {id, name, img_url}}
-            "simple_items": {} # {category: id} -> 저장용
+            "items": {},        
+            "simple_items": {},
+            "item_indices": {} # [추가] 검증 로직을 위해 master_data의 인덱스를 임시 저장
         }
-
-        # 카테고리별 상품 선정
-        target_categories_found = 0
-        expected_categories_count = 0
-
+        
+        # 각 카테고리별로 랜덤하게 1개씩 추출
         for eng_key, kor_val in CATEGORY_MAP.items():
-            # 대표 코디에 해당 카테고리가 있는지 확인
-            if kor_val not in target_item_map:
-                continue
-            
-            expected_categories_count += 1
-            target_idx = target_item_map[kor_val]
-            
-            # 유사도 계산
-            sim_score = (
-                (master_data['name_vecs'] @ master_data['name_vecs'][target_idx]) * 0.1 +
-                (master_data['brand_vecs'] @ master_data['brand_vecs'][target_idx]) * 0.1 +
-                (master_data['img_vecs'] @ master_data['img_vecs'][target_idx]) * 0.6 +
-                (master_data['cat_vecs'] @ master_data['cat_vecs'][target_idx]) * 0.1
-            )
-            
-            # 카테고리 일치 필터
-            cat_mask = (master_data['cats'] == kor_val)
-            cat_scores = sim_score[cat_mask]
-            cat_real_indices = np.where(cat_mask)[0]
-            
-            # 상위 100개 중 1개 랜덤 선택
-            if len(cat_scores) > 0:
-                top_100_indices = np.argsort(cat_scores)[::-1][:100]
-                picked_local_idx = np.random.choice(top_100_indices)
-                original_idx = cat_real_indices[picked_local_idx]
+            # 액세서리 확률 등장 (20%)
+            if eng_key == "acc":
+                if np.random.rand() > 0.2: 
+                    continue
+
+            if kor_val in category_pool and category_pool[kor_val]:
+                picked_idx = int(np.random.choice(category_pool[kor_val]))
                 
                 current_set["items"][eng_key] = {
-                    "id": int(master_data['ids'][original_idx]),
-                    "name": str(master_data['names'][original_idx]),
-                    "img_url": str(master_data['imgs'][original_idx])
+                    "id": int(master_data['ids'][picked_idx]),
+                    "name": str(master_data['names'][picked_idx]),
+                    "img_url": str(master_data['imgs'][picked_idx]),
+                    # UI에 표시할 때 참고하기 위해 하위 카테고리 정보도 같이 넣을 수 있음 (선택사항)
+                    "sub_cat": str(master_data['lower_cats'][picked_idx]) 
                 }
-                current_set["simple_items"][eng_key] = int(master_data['ids'][original_idx])
-                target_categories_found += 1
-            else:
-                # 후보 상품이 아예 없는 경우 (매우 드뭄)
-                pass
+                current_set["simple_items"][eng_key] = int(master_data['ids'][picked_idx])
+                current_set["item_indices"][eng_key] = picked_idx # 인덱스 저장
 
-        # [검증 2] 대표 코디가 가진 카테고리 수와 생성된 코디의 카테고리 수가 같은지 확인
-        # 하나라도 생성 실패했다면(후보 부족 등) 이 조합은 버리고 다시 시도
-        if target_categories_found == expected_categories_count and expected_categories_count > 0:
+        # [수정된 룰] 하위 카테고리(lower_cats) 기반 넥타이 & 셔츠 규칙 적용
+        if "top" in current_set["item_indices"] and "acc" in current_set["item_indices"]:
+            top_idx = current_set["item_indices"]["top"]
+            acc_idx = current_set["item_indices"]["acc"]
+            
+            top_sub = master_data['lower_cats'][top_idx]
+            acc_sub = master_data['lower_cats'][acc_idx]
+            
+            # DB에 저장된 실제 하위 카테고리 명칭을 확인해야 함 (예: '셔츠', '넥타이')
+            # 만약 데이터에 '셔츠/블라우스' 처럼 되어 있다면 in 연산자 사용 권장
+            is_shirt = "셔츠/블라우스" in top_sub
+            is_tie = "넥타이" in acc_sub
+            
+            # 넥타이인데 셔츠가 아니면 -> 액세서리 제거
+            if is_tie and not is_shirt:
+                del current_set["items"]["acc"]
+                del current_set["simple_items"]["acc"]
+                del current_set["item_indices"]["acc"]
+
+        # 최소 조건: 상의, 바지, 신발 필수
+        has_top = "top" in current_set["items"]
+        has_bottom = "bottom" in current_set["items"]
+        has_shoes = "shoes" in current_set["items"]
+        
+        if has_top and has_bottom and has_shoes:
+            # 저장 시 불필요한 item_indices는 제거하고 저장
+            del current_set["item_indices"]
             generated_batch.append(current_set)
-            # 진행률 업데이트
             progress_bar.progress(len(generated_batch) / count)
         
+    if len(generated_batch) < count:
+        st.warning(f"조건을 만족하는 조합이 부족하여 {len(generated_batch)}개만 생성되었습니다.")
+
     return generated_batch
+
 # ---------------------------------------------------------
 # [3] UI 및 인터랙션 로직
 # ---------------------------------------------------------
-st.title("🧥 아웃핏 평가 데이터 생성기")
-st.markdown("생성된 조합을 보고 **페르소나에 어울리면 O, 아니면 X**를 눌러주세요.")
+st.title("🧥 대표 아이템 기반 조합 평가")
+st.markdown("대표 아이템들을 무작위로 조합했습니다. **어울리면 O, 아니면 X**를 눌러주세요.")
 
 # 세션 상태 초기화
 if 'batch_data' not in st.session_state:
@@ -161,23 +176,22 @@ if 'current_index' not in st.session_state:
 if 'labeled_results' not in st.session_state:
     st.session_state.labeled_results = []
 
-# 사이드바: 설정 및 생성
+# 사이드바
 with st.sidebar:
     st.header("설정")
     persona_input = st.text_input("페르소나 입력", value="아메카지")
     
-    if st.button("🚀 배치 데이터 생성 (100개)"):
-        with st.spinner('조합 생성 중...'):
+    if st.button("🚀 랜덤 조합 생성 (100개)"):
+        with st.spinner('아이템 로드 및 조합 중...'):
             st.session_state.batch_data = generate_batch_outfits(persona_input, 100)
             st.session_state.current_index = 0
-            st.session_state.labeled_results = [] # 새로 생성하면 결과 초기화
-        st.success(f"100개 조합 생성 완료!")
+            st.session_state.labeled_results = [] 
+        st.success(f"{len(st.session_state.batch_data)}개 조합 생성 완료!")
 
     st.markdown("---")
     st.write(f"현재 진행: {st.session_state.current_index} / {len(st.session_state.batch_data)}")
     
-    # 중간 저장 기능
-    if st.button("💾 현재까지 결과 파일 저장"):
+    if st.button("💾 결과 저장"):
         if st.session_state.labeled_results:
             with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
                 json.dump(st.session_state.labeled_results, f, ensure_ascii=False, indent=4)
@@ -185,7 +199,7 @@ with st.sidebar:
         else:
             st.warning("저장할 데이터가 없습니다.")
 
-# 메인 화면: 이미지 표시 및 버튼
+# 메인 화면
 if st.session_state.batch_data:
     if st.session_state.current_index < len(st.session_state.batch_data):
         current_data = st.session_state.batch_data[st.session_state.current_index]
@@ -193,30 +207,35 @@ if st.session_state.batch_data:
         
         st.subheader(f"조합 #{st.session_state.current_index + 1} (페르소나: {current_data['persona']})")
         
-        # 이미지 갤러리 (누끼 없이 원본 URL 사용 - 2-4 요구사항)
-        cols = st.columns(len(items))
-        for idx, (cat, info) in enumerate(items.items()):
+        # 이미지 갤러리
+        display_order = ["outer", "top", "bottom", "shoes", "acc"]
+        cols = st.columns(5)
+        
+        for idx, cat_key in enumerate(display_order):
             with cols[idx]:
-                st.image(info['img_url'], use_container_width=True)
-                st.caption(f"[{cat}] {info['name']}")
+                if cat_key in items:
+                    info = items[cat_key]
+                    st.image(info['img_url'], use_container_width=True)
+                    # 하위 카테고리 정보가 있다면 같이 표시해주면 검증에 좋음
+                    sub_text = f"({info.get('sub_cat', '')})" if 'sub_cat' in info else ""
+                    st.caption(f"[{cat_key}] {info['name']} {sub_text}")
+                else:
+                    st.write("") 
 
-        # 평가 버튼 영역
+        # 평가 버튼
+        st.markdown("---")
         col1, col2 = st.columns([1, 1])
         
         def save_decision(label):
-            # 1. 결과 저장 (2-3 요구사항)
             result_entry = {
                 "persona": current_data['persona'],
-                "category_items": current_data['simple_items'], # 카테고리: ID 구조
-                "label": label, # "good" or "bad"
+                "category_items": current_data['simple_items'], 
+                "label": label, 
                 "timestamp": datetime.now().isoformat()
             }
             st.session_state.labeled_results.append(result_entry)
-            
-            # 2. 다음 인덱스로 이동
             st.session_state.current_index += 1
             
-            # 3. 100개 완료 시 자동 저장
             if st.session_state.current_index >= len(st.session_state.batch_data):
                 with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
                     json.dump(st.session_state.labeled_results, f, ensure_ascii=False, indent=4)
@@ -235,4 +254,4 @@ if st.session_state.batch_data:
         st.info("모든 데이터 평가가 완료되었습니다. 사이드바에서 다시 생성할 수 있습니다.")
 
 else:
-    st.info("👈 왼쪽 사이드바에서 페르소나를 입력하고 '배치 데이터 생성'을 눌러주세요.")
+    st.info("👈 왼쪽 사이드바에서 페르소나를 입력하고 '랜덤 조합 생성'을 눌러주세요.")

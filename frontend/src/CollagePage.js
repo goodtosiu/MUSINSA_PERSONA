@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CollagePage.css';
 import { personaBackMap } from './data'; 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:5000';
 
 // [수정] props에 onNavigateToPurchase 추가
 const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackToResult, prices, onNavigateToPurchase }) => {
@@ -31,7 +32,7 @@ const CollagePage = ({ result, products, currentOutfitId, onBackToMain, onBackTo
   const handleShuffle = async (category) => {
     try {
       setShuffleLoading(prev => ({ ...prev, [category]: true }));
-      const response = await axios.get(`http://127.0.0.1:5000/api/products`, {
+      const response = await axios.get(`${API_BASE_URL}/api/products`, {
         params: {
           persona: result,
           outfit_id: currentOutfitId,
