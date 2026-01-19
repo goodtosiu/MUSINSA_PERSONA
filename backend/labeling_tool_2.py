@@ -48,7 +48,7 @@ def generate_batch_outfits(persona, count=100):
     representative_item 테이블에서 해당 페르소나의 아이템을 모두 가져온 뒤,
     카테고리별로 그룹핑하고 랜덤하게 하나씩 뽑아 조합(Outfit)을 생성함.
     [룰]
-    1. 액세서리는 60% 확률로만 등장.
+    1. 액세서리는 30% 확률로만 등장.
     2. 하위 카테고리(lower_cats) 정보를 이용해, 넥타이는 상의가 '셔츠'일 때만 등장.
     """
     generated_batch = []
@@ -180,9 +180,9 @@ with st.sidebar:
     st.header("설정")
     persona_input = st.text_input("페르소나 입력", value="아메카지")
     
-    if st.button("🚀 랜덤 조합 생성 (200개)"):
+    if st.button("🚀 랜덤 조합 생성 (100개)"):
         with st.spinner('아이템 로드 및 조합 중...'):
-            st.session_state.batch_data = generate_batch_outfits(persona_input, 200)
+            st.session_state.batch_data = generate_batch_outfits(persona_input, 100)
             st.session_state.current_index = 0
             st.session_state.labeled_results = [] 
         st.success(f"{len(st.session_state.batch_data)}개 조합 생성 완료!")
