@@ -48,7 +48,7 @@ def generate_batch_outfits(persona, count=100):
     representative_item 테이블에서 해당 페르소나의 아이템을 모두 가져온 뒤,
     카테고리별로 그룹핑하고 랜덤하게 하나씩 뽑아 조합(Outfit)을 생성함.
     [룰]
-    1. 액세서리는 60% 확률로만 등장.
+    1. 액세서리는 30% 확률로만 등장.
     2. 하위 카테고리(lower_cats) 정보를 이용해, 넥타이는 상의가 '셔츠'일 때만 등장.
     """
     generated_batch = []
