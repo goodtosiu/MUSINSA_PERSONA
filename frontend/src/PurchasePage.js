@@ -1,8 +1,42 @@
 import React from 'react';
 import './PurchasePage.css';
 
-const PurchasePage = ({ selectedItems, onBack, bgPath }) => {
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:5000';
+
+const PurchasePage = ({ selectedItems, onBack, bgPath, persona }) => {
   const totalPrice = selectedItems.reduce((sum, item) => sum + (item.price || 0), 0);
+
+  const handlePay = async () => {
+    try {
+      // selectedItems -> backend expected payload
+      const payload = {
+        persona,
+        items: selectedItems
+          .filter(it => it && it.product_id && it.category)
+          .map(it => ({ category: it.category, product_id: it.product_id }))
+      };
+
+      const res = await fetch(`${API_BASE_URL}/api/outfit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.status === 201) {
+        alert("✅ 결제가 완료되어 아웃핏이 저장되었습니다!");
+        return;
+      }
+      if (res.status === 409) {
+        alert("ℹ️ 이미 저장된(중복) 아웃핏입니다.");
+        return;
+      }
+      alert(`❌ 결제/저장 실패: ${data.error || res.status}`);
+    } catch (e) {
+      alert(`❌ 결제/저장 실패: ${e?.message || e}`);
+    }
+  };
 
   return (
     <div className="advanced-collage-layout dark-theme">
@@ -53,7 +87,7 @@ const PurchasePage = ({ selectedItems, onBack, bgPath }) => {
           <button className="coupon-btn" onClick={() => alert("사용 가능한 쿠폰이 없습니다.")}>
             쿠폰 사용
           </button>
-          <button className="pay-btn-white" onClick={() => alert("결제 페이지로 이동합니다!")}>
+          <button className="pay-btn-white" onClick={handlePay}>
             {totalPrice.toLocaleString()}원 결제하기
           </button>
           <button className="back-link-text" onClick={onBack}>

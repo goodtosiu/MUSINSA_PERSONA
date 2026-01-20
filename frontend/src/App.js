@@ -291,6 +291,7 @@ function App() {
           selectedItems={finalSelectedItems} 
           onBack={() => setStep('collage')} 
           onBackToMain={resetAll}
+          persona={result}
           bgPath={personaBackMap[result] ? `/backgrounds/${personaBackMap[result]}` : null}
         />
       )}

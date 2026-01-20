@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import IntegrityError
 import requests
 from io import BytesIO
 from PIL import Image
@@ -61,6 +62,83 @@ init_data()
 # localhost
 db_url = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 engine = create_engine(db_url)
+
+# ---------------------------------------------------------
+# [API] 구매한 아웃핏 저장
+# ---------------------------------------------------------
+@app.route('/api/outfit', methods=['POST'])
+def create_outfit():
+    """
+    Frontend payload example:
+    {
+      "persona": "아메카지",
+      "items": [
+        {"category":"top","product_id":123},
+        {"category":"bottom","product_id":456},
+        {"category":"shoes","product_id":789},
+        {"category":"outer","product_id":111},   // optional
+        {"category":"acc","product_id":222}      // optional
+      ]
+    }
+
+    Rules:
+    - top/bottom/shoes are required
+    - outer/acc are optional; if missing, store 0 (dummy product_id meaning "None")
+    - outfit table should enforce uniqueness via UNIQUE(outer_id, top_id, bottom_id, shoes_id, acc_id)
+    """
+    payload = request.get_json(silent=True) or {}
+    persona = payload.get('persona')
+    items = payload.get('items', [])
+
+    if not persona or not isinstance(persona, str):
+        return jsonify({"ok": False, "error": "persona is required"}), 400
+    if not isinstance(items, list):
+        return jsonify({"ok": False, "error": "items must be a list"}), 400
+
+    by_cat = {}
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        cat = it.get('category')
+        pid = it.get('product_id')
+        if cat in ['outer', 'top', 'bottom', 'shoes', 'acc'] and pid is not None:
+            try:
+                by_cat[cat] = int(pid)
+            except Exception:
+                pass
+
+    # Required
+    if 'top' not in by_cat or 'bottom' not in by_cat or 'shoes' not in by_cat:
+        return jsonify({"ok": False, "error": "top, bottom, shoes are required"}), 400
+
+    # Optional -> dummy 0
+    outer_id = int(by_cat.get('outer', 0))
+    acc_id = int(by_cat.get('acc', 0))
+    top_id = int(by_cat['top'])
+    bottom_id = int(by_cat['bottom'])
+    shoes_id = int(by_cat['shoes'])
+
+    stmt = text("""
+        INSERT INTO outfit (persona, outer_id, acc_id, top_id, bottom_id, shoes_id)
+        VALUES (:persona, :outer_id, :acc_id, :top_id, :bottom_id, :shoes_id)
+    """)
+
+    try:
+        with engine.begin() as conn:
+            conn.execute(stmt, {
+                "persona": persona,
+                "outer_id": outer_id,
+                "acc_id": acc_id,
+                "top_id": top_id,
+                "bottom_id": bottom_id,
+                "shoes_id": shoes_id
+            })
+        return jsonify({"ok": True}), 201
+    except IntegrityError:
+        # duplicate UNIQUE or FK failure
+        return jsonify({"ok": False, "error": "duplicate outfit or invalid product_id"}), 409
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
 
 # ---------------------------------------------------------
 # [신규 API] master_data(npz)에서 카테고리별 가격 범위 추출
@@ -332,8 +410,10 @@ def get_recommendations():
                         break
         
         # 5. 카테고리별로 5개씩 랜덤 선택
+        # Keep compatibility with frontend which expects current_outfit_id
         final_response = {
             "persona": persona,
+            "current_outfit_id": None,
             "items": {}
         }
         
