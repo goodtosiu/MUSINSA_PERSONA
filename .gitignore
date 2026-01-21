@@ -10,7 +10,8 @@
 
 # 이미지 파일
 *.png
-!docs/*.png
+!docs/**/*.png
+
 *.jpg
 *.jpeg
 

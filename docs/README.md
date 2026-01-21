@@ -22,9 +22,9 @@ MUSINSA_WEB은 사용자의 패션 선호도와 라이프스타일을 분석하�
 ## 🤓 화면 미리보기미리보기
 
 #### 📝 페르소나 검사
-![페르소나 검사](./docs/images/persona_test_demo.gif)
+![페르소나 검사](persona_test_demo.gif)
 #### 🎨 추천 상품 조합
-![캔버스](./docs/images/canvas_demo.gif)
+![캔버스](canvas_demo.gif)
 
 ## 🏗️ 프로젝트 구조 및 아키텍처
 
@@ -159,7 +159,7 @@ npm run dev <br>(명령어를 사용하면 백엔드(port:5000)와 프론트엔�
 - python app.py             # 프로덕션 모드
 
 ## 📊 데이터 스키마 (master_data.npz)
-![캔버스](./docs/images/ERD.png)
+![캔버스](ERD.png)
 빠른 추천을 위해 모든 상품 정보와 벡터는 압축된 NumPy 포맷으로 캐싱됩니다.  
 
 | 키(Key) | 차원 | 설명 |
