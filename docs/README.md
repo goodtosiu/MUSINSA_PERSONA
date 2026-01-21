@@ -159,6 +159,7 @@ npm run dev <br>(명령어를 사용하면 백엔드(port:5000)와 프론트엔�
 - python app.py             # 프로덕션 모드
 
 ## 📊 데이터 스키마 (master_data.npz)
+![캔버스](./docs/images/ERD.png)
 빠른 추천을 위해 모든 상품 정보와 벡터는 압축된 NumPy 포맷으로 캐싱됩니다.  
 
 | 키(Key) | 차원 | 설명 |
