@@ -368,13 +368,13 @@ def get_recommendations():
             sim_img = np.dot(master_data['img_vecs'], master_data['img_vecs'][rep_idx])
             sim_cat = np.dot(master_data['cat_vecs'], master_data['cat_vecs'][rep_idx])
             
-            final_scores = (sim_name * 0.1) + (sim_brand * 0.1) + (sim_img * 0.6) + (sim_cat * 0.1)
+            final_scores = (sim_name * 0.1) + (sim_brand * 0.2) + (sim_img * 0.6) + (sim_cat * 0.1)
             
             # 대표 상품 자체는 제외
             final_scores[rep_idx] = -1.0
             
             # 상위 3개 선택
-            top_3_indices = np.argsort(final_scores)[::-1][:3]
+            top_3_indices = np.argsort(final_scores)[::-1][:10]
             
             for candidate_idx in top_3_indices:
                 candidate_id = int(master_data['ids'][candidate_idx])
