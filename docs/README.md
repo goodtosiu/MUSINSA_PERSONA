@@ -172,9 +172,13 @@ npm run dev <br>(명령어를 사용하면 백엔드(port:5000)와 프론트엔�
 - python app_local.py         # 로컬 모드
 - python app.py             # 프로덕션 모드
 
-## 📊 데이터 스키마 (master_data.npz)
+## 📊 데이터 스키마 
 ![캔버스](./images/ERD.png)
 빠른 추천을 위해 모든 상품 정보와 벡터는 압축된 NumPy 포맷으로 캐싱됩니다.  
+
+## master_data.npz 구조
+- 키 개수: 10
+- 키 목록: ['ids', 'names', 'prices', 'imgs', 'cats', 'lower_cats', 'name_vecs', 'brand_vecs', 'img_vecs', 'cat_vecs']
 
 | 키(Key) | 차원 | 설명 |
 | :--- | :--- | :--- |
@@ -185,6 +189,19 @@ npm run dev <br>(명령어를 사용하면 백엔드(port:5000)와 프론트엔�
 | **name_vecs** | (N, 200) | 상품명 텍스트 임베딩 |
 | **img_vecs** | (N, 512) | 상품 이미지 임베딩 (ResNet/CLIP) |
 | **style_vecs** | (N, Style) | 페르소나별 적합도 벡터 |
+
+
+
+ids        | dtype=int64 | shape=(211311,)
+names      | dtype=<U94 | shape=(211311,)
+prices     | dtype=int64 | shape=(211311,)
+imgs       | dtype=<U105 | shape=(211311,)
+cats       | dtype=<U4 | shape=(211311,)
+lower_cats | dtype=<U12 | shape=(211311,)
+name_vecs  | dtype=float32 | shape=(211311, 200)
+brand_vecs | dtype=float32 | shape=(211311, 768)
+img_vecs   | dtype=float32 | shape=(211311, 512)
+cat_vecs   | dtype=float32 | shape=(211311, 50)
 
 ## 📈 성능 최적화 (Optimization)
 #### Backend:
