@@ -96,11 +96,14 @@ MUSINSA_WEB/
 
 | 라이브러리 | 용도 | 비고 |
 | :--- | :--- | :--- |
-| **Flask** | REST API 서버 지원 |  |
-| **SQLAlchemy** | DB 관리 |  |
-| **PyTorch** | REMBG,AI 모델 | 이미지 처리,배경 제거 |
-| **NumPy** | 벡터 연산 | 고속 유사도 계산 |
-| **Pandas** | 마스터 데이터 관리  ||
+| **PyTorch** | REMBG,AI 모델 | |
+| **NumPy** | 벡터 연산 | |
+| **Pandas** | 마스터 데이터 처리 | |
+| **sentence_transformers** | 자연어 임베딩 | |
+| **transformers** | 이미지 임베딩(CLIP) | |
+| **Flask** | REST API 서버 지원 | |
+| **SQLAlchemy** | DB 연결 엔진 |  |
+| **REMBG** | 이미지 처리, 배경 제거 | |
 
 ### Frontend (Node.js 16+ / React)  
 
@@ -121,19 +124,30 @@ MUSINSA_WEB/
 
 - Step 2 (페르소나 결정): 도출된 성향 내에서 심화 질문을 통해 최종 16개 페르소나 중 하나를 확정.
 
-### 2. AI 상품 추천 시스템 (/api/products)
+### 2. 상품 추천 시스템 (/api/products)
 다양한 벡터의 **가중치 합(Weighted Sum)**을 통해 유사도 점수를 계산하고 랭킹을 매깁니다.<br>
-- Filtering: 사용자가 선택한 카테고리 및 가격 범위로 1차 필터링
-- Vector Calculation: 페르소나 임베딩 벡터와 상품 벡터 간 코사인 유사도 계산
-- Ranking: 점수 내림차순 정렬 후 상위 N개 반환
+- Step 1 (Filtering): 사용자가 선택한 카테고리 및 가격 범위로 1차 필터링
+- Step 2 (Vector Calculation): 페르소나 대표 상품 벡터와 전체 상품 벡터 간 코사인 유사도 계산
+- Step 3 (Ranking): 점수 내림차순 정렬 후 상위 100개 중 랜덤 5개 반환
 
 ### 3. 데이터 전처리 및 로컬 모드
-- Prod (MySQL): preprocess.py를 통해 DB에서 데이터를 조회하고 임베딩과 결합하여 master_data.npz 생성.<br>
-- Local (SQLite): app_local.py 실행 시 musinsa_db_dump.sql을 파싱하여 경량화된 SQLite DB를 자동 구축. (MySQL 설치 없이 실행 가능)
+이미지와 자연어 데이터를 각각 CLIP라이브러리와 S-BERT라이브러리를 통해 임베딩하는 과정을 요구합니다.<br>
+- 이미지(image):
+  - CLIPProcessor 전처리를, CLIPModel을 통해 임베딩 벡터를 생성합니다.(model id: "openai/clip-vit-base-patch32")<br>
+  - L2 정규화를 진행해 내적만으로 코사인 유사도를 구할 수 있게끔 처리합니다.<br>
+  - Tensor를 Numpy로 변환해 상품의 ID와 짝지어 .npz 형식으로 저장합니다.<br>
+  
+- 자언어(sentence):
+  - S-BERT 모델을 통해 한국어 데이터를 임베딩합니다.<br>
+  - A: 상품명의 경우 200차원의 벡터공간으로 임베딩합니다.(model id: "intfloat/multilingual-e5-base")<br>
+  - B: 상품 카테고리의 경우 50차원의 벡터공간으로 임베딩합니다.(model id: "intfloat/multilingual-e5-small")<br>
+  - C: 브랜드 정보의 경우 768차원의 벡터공간으로 임베딩합니다.(model id: "sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens")<br>
+
+- preprocess.py를 통해 DB에서 데이터를 조회하고 4가지 임베딩 벡터를 결합해 master_data.npz 생성합니다.<br>
 
 ## 🚀 설치 및 실행 방법 (Setup)
 #### 1. 환경 변수 설정 (.env)
-프로젝트 루트에 .env 파일을 생성한 뒤, 해당 내용을 작성합니다.
+프로젝트 루트에 .env 파일을 생성한 뒤, 구축되어 있는 DB의 연결정보를 다음과 같이 입력합니다.
 
 DB_HOST=your_local_host  
 DB_USER=your_username  
@@ -186,13 +200,12 @@ npm run dev <br>(명령어를 사용하면 백엔드(port:5000)와 프론트엔�
 ## 🙋 FAQ
 
 Q: 페르소나는 왜 16개인가요? <br>
-A: MBTI와 유사하게 4가지 핵심 성향(A/B/C/D)을 기반으로, 각 성향을 4가지 세부 스타일로 나누어 총 16개의 유니크한 패션 스타일을 정의했습니다.  
+A: 우리에게 친숙한 MBTI 검사와 유사하게 초기 페르소나 개수를 16가지로 결정했고 추후 확장할 계획입니다!
 
-Q: 로컬에서 MySQL 없이 실행 가능한가요? <br>
-A: 네! app_local.py는 SQL 덤프 파일을 자동으로 SQLite로 변환하여 구동되므로 별도의 DB 설치 없이 테스트 가능합니다.  
+Q: 로컬에서 실행 가능한가요? <br>
+A: 해당 프로젝트에서 활용한 데이터베이스를 제작한 주체는 무신사이며 상품 이미지 또한 해당 브랜드, 혹은 무신사가 주체가 되어 구성한 저작물입니다.
+그렇기에 로컳에서 실행하기 위한 데이터베이스를 재배포 할 수 없음을 안내드립니다.
 
-Q: 새로운 상품 추가는 어떻게 하나요? <br>
-A: DB에 상품을 추가한 후 preprocess.py를 재실행하면 임베딩을 다시 계산하여 master_data.npz를 업데이트합니다.  
 
 Last Update: 2026/01/15 
 Developed by: 데이터분석가 과정 4조 Team 데스노트
