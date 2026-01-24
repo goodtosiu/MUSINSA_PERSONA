@@ -21,12 +21,14 @@ MUSINSA_PERSONA은 MUSINSA에 등록된 상품을 활용해 제작한 서비스�
 ## 🤓 화면 미리보기
 
 ### 📝 페르소나 검사
-![페르소나 검사](./images/persona_test_demo.gif)
+<img src="./images/persona_test_demo.gif" width="800">
+
 
 - 📝 간단한 질문지를 통해 자신의 패션 취향을 검사할 수 있습니다.
 
 ### 🎨 추천 상품 조합
-![캔버스](./images/canvas_demo.gif)
+<img src="./images/canvas_demo.gif" width="800">
+
 
 - 🎨 추천된 상품을 드래그 앤 드롭해 캔버스에 배치해 자신만의 룩을 완성할 수 있습니다.
 - 🔎 마우스 드래그를 통해 상품 이미지를 확대/축소할 수 있습니다.
@@ -63,41 +65,8 @@ MUSINSA_WEB/
 └── requirements.txt                  # Python 의존성 패키지
 ```
 ### 🔄 데이터 흐름도 (Data Flow)
-```
-┌─────────────────────────────────────────────────────────────┐
-│  사용자 (User / Web Browser)                                  │
-└────────────────────┬────────────────────────────────────────┘
-                     │ HTTP/REST API (Axios)
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Frontend (React)                                           │
-│  ├─ Step 1: 스타일 성향 진단 (8문항 → 성향 도출)                   │
-│  ├─ Step 2: 페르소나 선택 (성향별 4개 중 선택)                     │
-│  ├─ Step 3: CollagePage (AI 추천 및 가상 코디)                  │
-│  └─ Step 4: PurchasePage (최종 결제)                          │
-└────────────────────┬────────────────────────────────────────┘
-                     │ API Requests (/api/products)
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Backend (Flask)                                            │
-│  │                                                          │
-│  │ [API Endpoints]                                          │
-│  ├─ /api/products: 페르소나/카테고리 기반 추천 로직 수행             │
-│  ├─ /api/price-ranges: 카테고리별 가격 범위 반환                  │
-│  └─ /api/outfit: 세션별 아웃핏 ID 관리                          │
-│                                                             │
-│  │ [Data & ML Layer]                                        │
-│  ├─ master_data.npz 로드 (In-Memory Caching)                 │
-│  ├─ Similarity Ranking (Cosine Similarity)                  │
-│  │  └─ Style + Category + Brand + Image Vectors             │
-│  └─ Image Processing (rembg 배경 제거)                        │
-└────────────────────┬────────────────────────────────────────┘
-                     │ Query / Load
-                     ▼
-        ┌────────────────────────────┐
-        │ Database (MySQL / SQLite)  │
-        └────────────────────────────┘
-```
+<img src="./images/dataflow.png" width="800">
+
 ## 💻 기술 스택 (Tech Stack)  
 ### Backend (Python 3.8+)  
 
