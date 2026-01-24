@@ -23,17 +23,21 @@ MUSINSA_PERSONA은 MUSINSA에 등록된 상품을 활용해 제작한 서비스�
 ### 📝 페르소나 검사
 <img src="./images/persona_test_demo.gif" width="800">
 
-
 - 📝 간단한 질문지를 통해 자신의 패션 취향을 검사할 수 있습니다.
 
 ### 🎨 추천 상품 조합
-<img src="./images/canvas_demo.gif" width="800">
+<img src="./images/price_ filter_demo.gif" width="800">
 
+- 🎚️ 가격 필터를 통해 추천 상품의 금액대를 조정할 수 있습니다.
+
+### 🎨 추천 상품 조합
+<img src="./images/canvas_demo.gif" width="800">
 
 - 🎨 추천된 상품을 드래그 앤 드롭해 캔버스에 배치해 자신만의 룩을 완성할 수 있습니다.
 - 🔎 마우스 드래그를 통해 상품 이미지를 확대/축소할 수 있습니다.
 - ❌ 마우스 우클릭을 통해 선택한 상품을 삭제할 수 있습니다.
 - 🆕 상품 추천란 우상단에 위치한 셔플 버튼을 통해 새로운 상품을 추천받을 수 있습니다.
+
 
 ## 🏗️ 프로젝트 구조 및 아키텍처
 
